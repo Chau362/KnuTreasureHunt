@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context="pearsistent.knutreasurehunt.Tab1"
+    android:paddingLeft="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_vertical_margin"
+    android:weightSum="1">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_weight="0.75"
+        android:weightSum="1">
+
+        <FrameLayout
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.41"></FrameLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="10dp"></FrameLayout>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="00:00:00"
+                android:textColor="@android:color/white"
+                android:textSize="28dp"
+                android:layout_weight="0.96"></TextView>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="10dp"></FrameLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/itemList"
+        android:layout_width="match_parent"
+        android:layout_height="462dp"
+        android:background="@drawable/listborder"/>
+
+</LinearLayout>
