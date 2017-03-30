@@ -1,0 +1,96 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context="pearsistent.knutreasurehunt.Tab1"
+    android:paddingLeft="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_vertical_margin"
+    android:paddingBottom="3dp"
+    android:weightSum="1">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="89dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <FrameLayout
+            android:layout_width="54dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.55">
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.41"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.41"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"></FrameLayout>
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="228dp"
+                    android:layout_height="66dp"
+                    android:background="@drawable/border"
+                    android:gravity="center"
+                    android:text="00:00:00"
+                    android:textColor="@android:color/white"
+                    android:textSize="28dp"
+                    android:textStyle="bold"></TextView>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"></FrameLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="50dp"
+            android:orientation="horizontal"
+            android:layout_height="match_parent">
+            <FrameLayout
+                android:layout_width="5dp"
+                android:layout_height="40dp"></FrameLayout>
+            <LinearLayout
+                android:layout_width="38dp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <FrameLayout
+                    android:layout_width="15dp"
+                    android:layout_height="40dp"></FrameLayout>
+                <Button
+                    android:id="@+id/addmember"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:clickable="true"
+                    android:background="@drawable/addmember">
+
+                </Button>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/itemList"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:background="@drawable/listborder" />
+
+</LinearLayout>

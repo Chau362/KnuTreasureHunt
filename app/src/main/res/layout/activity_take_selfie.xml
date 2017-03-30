@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context="pearsistent.knutreasurehunt.TakeSelfie"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/objectName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Object Name"
+            android:textColor="@android:color/black"
+            android:textSize="28dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="235dp"
+        android:paddingRight="45dp"
+        android:paddingLeft="45dp">
+        <ImageView
+            android:id="@+id/objectImage"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_gravity="center"
+            android:src="@drawable/camera"
+            android:clickable="true"
+            android:background="@drawable/listborder"></ImageView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp">
+
+        <TextView
+            android:id="@+id/objectText"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:text="text"
+            android:textSize="20dp"
+            android:background="@drawable/itemborder"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <FrameLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.34"></FrameLayout>
+        <Button
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:text="Submit Selfie"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/buttonborder"
+            android:layout_width="180dp"
+            android:layout_height="45dp" />
+    </LinearLayout>
+</LinearLayout>
