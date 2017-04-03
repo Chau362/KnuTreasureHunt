@@ -19,6 +19,8 @@ import java.util.ArrayList;
  * Use the {@link Tab2#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+// last coder : seulki, 2017.03.28
 public class Tab2 extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

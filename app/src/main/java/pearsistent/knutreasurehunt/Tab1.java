@@ -25,6 +25,9 @@ import static pearsistent.knutreasurehunt.R.id.imageView;
  * Use the {@link Tab1#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+// last coder : seulki, 2017.03.28
+
 public class Tab1 extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

@@ -6,6 +6,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+// last coder : seulki, 2017.03.30
+
 public class AddMember extends AppCompatActivity {
 
     @Override
@@ -16,6 +18,7 @@ public class AddMember extends AppCompatActivity {
         ListView listView = (ListView) this.findViewById(R.id.memberlist);
 
         ArrayList<TeamMember> arr = new ArrayList<>();
+
 
         TeamMember member1 = new TeamMember();
         member1.setMemberName("Tim");
