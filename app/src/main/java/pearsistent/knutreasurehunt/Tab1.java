@@ -8,9 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+
+import static pearsistent.knutreasurehunt.R.id.imageView;
 
 
 /**
@@ -53,6 +57,17 @@ public class Tab1 extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tab1,container,false);
         ListView listView = (ListView) v.findViewById(R.id.itemList);
+        Button addMember = (Button) v.findViewById(R.id.addmember);
+
+        addMember.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getContext(), AddMember.class);
+                startActivity(intent);
+            }
+
+        });
 
         ArrayList<Item> arr = new ArrayList<>();
 
