@@ -37,6 +37,7 @@
         android:textColorHint="#B5B5B5"
         android:backgroundTint="#B5B5B5"
         android:inputType="textPersonName"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textAlignment="center" />
 
     <Space
@@ -53,6 +54,7 @@
         android:backgroundTint="#B5B5B5"
         android:hint="Password"
         android:inputType="textPersonName"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textAlignment="center" />
 
     <Space

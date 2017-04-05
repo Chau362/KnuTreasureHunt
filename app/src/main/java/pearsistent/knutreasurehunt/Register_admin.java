@@ -55,23 +55,17 @@ public class Register_admin extends BaseActivity {
                 //updateUI(user);
             }
         };
-        id = Txt_user.getText().toString();
-        pwd = Txt_pwd.getText().toString();
-        Log.d("why",id);
-        Log.d("pw",pwd);
 
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                id = Txt_user.getText().toString();
+                pwd = Txt_pwd.getText().toString();
                 createAccount(id,pwd);
                 //Intent i = new Intent(getApplicationContext(),MainActivity.class);
                 //startActivity(i);
             }
         });
-
-
-
-        ///id와 pwd가 Edittext 값을 받아오지 못하네
 
     }
     @Override
