@@ -34,7 +34,7 @@
         <activity android:name=".Register_admin" />
         <activity android:name=".Login_Team" />
         <activity android:name=".Register_Team" />
-        <activity android:name=".MainActivity_admin" />
+        <activity android:name=".MainActivity_admin"/>
         <activity android:name=".Timer" />
         <activity android:name=".Progress" />
     </application>

@@ -32,6 +32,7 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textColor="#B5B5B5"
         android:hint="Username"
         android:textColorHint="#B5B5B5"
         android:backgroundTint="#B5B5B5"

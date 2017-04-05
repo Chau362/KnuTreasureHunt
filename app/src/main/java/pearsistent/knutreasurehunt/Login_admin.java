@@ -25,6 +25,9 @@ public class Login_admin extends AppCompatActivity {
             public void onClick(View v) {
                 String user = Txt_user.getText().toString();
                 String pwd = Txt_pwd.getText().toString();
+
+                Intent i = new Intent(Login_admin.this,MainActivity_admin.class);
+                startActivity(i);
             }
         });
         Register.setOnClickListener(new View.OnClickListener() {
