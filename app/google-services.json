@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "486290562390-cud64h8jv9jb90uq37oiifl0sutmobk6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pearsistent.knutreasurehunt",
+            "certificate_hash": "eef3c425b953e349cdb525f3ff26e448cbe37f29"
+          }
+        },
+        {
           "client_id": "486290562390-63cbjtnd43hqjhlnmhijnvqrgea4da6k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
