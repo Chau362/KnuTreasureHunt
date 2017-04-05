@@ -34,6 +34,7 @@
         android:layout_gravity="center"
         android:backgroundTint="#B5B5B5"
         android:ems="10"
+        android:textColor="#B5B5B5"
         android:hint="Username"
         android:inputType="textPersonName"
         android:textAlignment="center"
