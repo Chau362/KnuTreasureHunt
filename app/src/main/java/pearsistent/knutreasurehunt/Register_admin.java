@@ -1,5 +1,6 @@
 package pearsistent.knutreasurehunt;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +23,8 @@ public class Register_admin extends AppCompatActivity {
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Intent i = new Intent(Register_admin.this,MainActivity_admin.class);
+                startActivity(i);
             }
         });
     }
