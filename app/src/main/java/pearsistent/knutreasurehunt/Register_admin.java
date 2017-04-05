@@ -4,6 +4,7 @@ package pearsistent.knutreasurehunt;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+//last coder :seulki, 04.05
 
 public class Register_admin extends BaseActivity {
     private static final String TAG = "EmailPassword";
@@ -53,6 +56,9 @@ public class Register_admin extends BaseActivity {
             }
         };
 
+        //hide type password
+        Txt_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        Txt_cpwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,9 +76,6 @@ public class Register_admin extends BaseActivity {
             }
         });
 
-
-
-        ///id와 pwd가 Edittext 값을 받아오지 못하네
 
     }
     @Override

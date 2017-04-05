@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "830203625855",
-    "firebase_url": "https://knutreasurehunt.firebaseio.com",
-    "project_id": "knutreasurehunt",
-    "storage_bucket": "knutreasurehunt.appspot.com"
+    "project_number": "486290562390",
+    "firebase_url": "https://treasurehunt-5d55f.firebaseio.com",
+    "project_id": "treasurehunt-5d55f",
+    "storage_bucket": "treasurehunt-5d55f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:830203625855:android:9c8d0fbb325fa53f",
+        "mobilesdk_app_id": "1:486290562390:android:9c8d0fbb325fa53f",
         "android_client_info": {
           "package_name": "pearsistent.knutreasurehunt"
         }
       },
       "oauth_client": [
         {
-          "client_id": "830203625855-l7hcd9vn92jh6a0i1lmhfhjb877orrsq.apps.googleusercontent.com",
+          "client_id": "486290562390-63cbjtnd43hqjhlnmhijnvqrgea4da6k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pearsistent.knutreasurehunt",
+            "certificate_hash": "e7799485924f9a476ed865dbb3c43cd972fe0a05"
+          }
+        },
+        {
+          "client_id": "486290562390-cdod8281o825f4qpf7k7hr29ilt6j2cl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDBTh7OUDNxmdqRsqVDrqif-hzLVe13UHo"
+          "current_key": "AIzaSyASnbZAIP6Fe9BZaN50oQE5D8XypgqhrxM"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "486290562390-cdod8281o825f4qpf7k7hr29ilt6j2cl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
