@@ -34,10 +34,10 @@
         android:layout_gravity="center"
         android:backgroundTint="#B5B5B5"
         android:ems="10"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:hint="Username"
         android:inputType="textPersonName"
         android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textColorHint="#B5B5B5" />
 
     <Space
