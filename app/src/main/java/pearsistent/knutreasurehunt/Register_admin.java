@@ -33,39 +33,40 @@ public class Register_admin extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_admin);
-        Txt_user = (EditText) findViewById(R.id.rgstr_admin_usr);
-        Txt_pwd = (EditText) findViewById(R.id.rgstr_admin_pwd);
-        Txt_cpwd= (EditText) findViewById(R.id.rgstr_admin_cpwd);
-        Register = (Button) findViewById(R.id.Btn_rgstr_admin_Register);
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_register_admin);
+            Txt_user = (EditText) findViewById(R.id.rgstr_admin_usr);
+            Txt_pwd = (EditText) findViewById(R.id.rgstr_admin_pwd);
+            Txt_cpwd= (EditText) findViewById(R.id.rgstr_admin_cpwd);
+            Register = (Button) findViewById(R.id.Btn_rgstr_admin_Register);
 
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
+            mAuth = FirebaseAuth.getInstance();
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user != null) {
+                        // User is signed in
+                        Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    } else {
+                        // User is signed out
+                        Log.d(TAG, "onAuthStateChanged:signed_out");
+                    }
+                    //updateUI(user);
                 }
-                //updateUI(user);
-            }
-        };
-
-        Register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                id = Txt_user.getText().toString();
-                pwd = Txt_pwd.getText().toString();
-                createAccount(id,pwd);
-                //Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                //startActivity(i);
-            }
-        });
+            };
+            onStart();
+            Register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    id = Txt_user.getText().toString();
+                    pwd = Txt_pwd.getText().toString();
+                    createAccount(id,pwd);
+                    //Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                    //startActivity(i);
+                }
+            });
+        onStop();
 
     }
     @Override

@@ -52,7 +52,7 @@ public class Login_admin extends BaseActivity {
                 ///// ...
             }
         };
-
+        onStart();
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +68,7 @@ public class Login_admin extends BaseActivity {
                 startActivity(i);
             }
         });
+        onStop();
     }
     @Override
     public void onStart() {
@@ -94,22 +95,19 @@ public class Login_admin extends BaseActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                        Toast.makeText(Login_admin.this, "Success!",
-                                Toast.LENGTH_SHORT).show();
+                       // Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                        if (task.isSuccessful()) {
+                            Log.w(TAG, "signInWithEmail:success", task.getException());
+                            Toast.makeText(Login_admin.this, "Success!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
+                        else  {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(Login_admin.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
-                        }
-
-                        // [START_EXCLUDE]
-                        if (!task.isSuccessful()) {
-                            //mStatusTextView.setText(R.string.auth_failed);
-                            Log.d(TAG,"FAILED");
                         }
                         hideProgressDialog();
                         // [END_EXCLUDE]
