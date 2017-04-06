@@ -40,6 +40,7 @@
         <activity android:name=".Register_Team" />
         <activity android:name=".MainActivity_admin"/>
         <activity android:name=".Timer" />
+        <activity android:name=".AddMemberActivity"/>
         <activity android:name=".Progress" />
 
         <provider

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import java.io.File;
 
-// last coder : seulki, 2017.03.28
+// last coder : seulki, 2017.04.06
 
 public class ObjectDetailActivity extends AppCompatActivity {
 
@@ -37,11 +37,10 @@ public class ObjectDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 File file = getFile();
 
+                //2017.04.06 : seulki : we have to user FileProvider because our API version is over 23.
                 Uri objectURI = FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName()+".provider",file);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, objectURI);
                 startActivityForResult(intent,CAM_REQUEST);
-
-
 
             }
         });
