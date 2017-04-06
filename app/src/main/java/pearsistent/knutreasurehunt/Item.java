@@ -5,12 +5,22 @@ package pearsistent.knutreasurehunt;
  */
 
 public class Item {
-    int image_i;
-    String text;
+    private int image_i;
+    private String text;
+    //String location;
 
-    public void itemSet(String t, int i){
+
+    public Item(String t, int i){
         this.text = t;
         this.image_i = i;
     }
 
+
+    public int getImage_i() {
+        return image_i;
+    }
+
+    public String getText() {
+        return text;
+    }
 }

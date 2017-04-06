@@ -1,11 +1,14 @@
 package pearsistent.knutreasurehunt;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -14,14 +17,15 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Tab2.OnFragmentInteractionListener} interface
+ * {@link UserMainActivity.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Tab2#newInstance} factory method to
+ * Use the {@link UserMainActivity#newInstance} factory method to
  * create an instance of this fragment.
  */
 
 // last coder : seulki, 2017.03.28
-public class Tab2 extends Fragment {
+
+public class UserMainActivity extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,27 +37,10 @@ public class Tab2 extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public Tab2() {
+    public UserMainActivity() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Tab2.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Tab2 newInstance(String param1, String param2) {
-        Tab2 fragment = new Tab2();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,52 +54,62 @@ public class Tab2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_tab2,container,false);
-        ListView listView = (ListView) v.findViewById(R.id.teamList);
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_tab1, container,false);
+        ListView listView = (ListView) v.findViewById(R.id.itemList);
+        Button addMember = (Button) v.findViewById(R.id.addmember);
 
-        ArrayList<Team> arr = new ArrayList<>();
+        addMember.setOnClickListener(new View.OnClickListener() {
 
-        Team team1 = new Team();
-        team1.setTeamTable("Team 1",20);
-        arr.add(team1);
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getContext(), AddMemberActivity.class);
+                startActivity(intent);
+            }
 
-        Team team2 = new Team();
-        team2.setTeamTable("Team 2",10);
-        arr.add(team2);
+        });
 
-        Team team3 = new Team();
-        team3.setTeamTable("Team 3",15);
-        arr.add(team3);
+        ArrayList<Item> arr = new ArrayList<>();
 
-        Team team4 = new Team();
-        team4.setTeamTable("Team 4",12);
-        arr.add(team4);
+        Item item1 = new Item("Objective1",R.drawable.marker);
+        arr.add(item1);
 
-        Team team5 = new Team();
-        team5.setTeamTable("Team 5",5);
-        arr.add(team5);
+        Item item2 = new Item("Objective2",R.drawable.marker);
+        arr.add(item2);
 
-        Team team6 = new Team();
-        team6.setTeamTable("Team 6",3);
-        arr.add(team6);
+        Item item3 = new Item("Objective3",R.drawable.marker);
+        arr.add(item3);
 
+        Item item4 = new Item("Objective4",R.drawable.marker);
+        arr.add(item4);
 
+        Item item5 = new Item("Objective5",0);
+        arr.add(item5);
 
-        teamListAdapter adapter = new teamListAdapter(this.getContext(),R.layout.teamview,arr);
+        Item item6 = new Item("Objective6",0);
+        arr.add(item6);
+
+        Item item7 = new Item("Objective7",0);
+        arr.add(item7);
+
+        Item item8 = new Item("Objective8",0);
+        arr.add(item8);
+
+        ListAdapter adapter = new ListAdapter(this.getContext(),R.layout.itemview,arr);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position==0)
                 {
-                    Intent i = new Intent(getContext(),TakeSelfie.class);
+                    Intent i = new Intent(getContext(),ObjectDetailActivity.class);
                     startActivity(i);
                 }
 
             }
-        });*/
+        });
 
         return v;
     }

@@ -7,34 +7,37 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class Login_Team extends AppCompatActivity {
-    EditText Txt_user;
-    EditText Txt_pwd;
-    Button Login;
-    Button Register;
+public class LoginTeamActivity extends AppCompatActivity {
+    EditText userName;
+    EditText userPwd;
+    Button loginBtn;
+    Button registerBtn;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login__team);
-        Txt_user = (EditText) findViewById(R.id.login_team_usr);
-        Txt_pwd = (EditText) findViewById(R.id.login_team_pwd);
-        Login = (Button) findViewById(R.id.Btn_login_team_Login);
-        Register = (Button) findViewById(R.id.Btn_login_team_Register);
-        Login.setOnClickListener(new View.OnClickListener() {
+
+        userName = (EditText) findViewById(R.id.login_team_usr);
+        userPwd = (EditText) findViewById(R.id.login_team_pwd);
+        loginBtn = (Button) findViewById(R.id.Btn_login_team_Login);
+        registerBtn = (Button) findViewById(R.id.Btn_login_team_Register);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String user = Txt_user.getText().toString();
-                String pwd = Txt_pwd.getText().toString();
+                String user = userName.getText().toString();
+                String pwd = userPwd.getText().toString();
 
                 //2017.04.03 seulki : If you complete login function, you can use it.
                 //Intent i = new Intent(getApplicationContext(),MainActivity.class);
                 //startActivity(i);
             }
         });
-        Register.setOnClickListener(new View.OnClickListener() {
+        registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Login_Team.this,Register_Team.class);
+                Intent i = new Intent(LoginTeamActivity.this, RegisterTeamActivity.class);
                 startActivity(i);
             }
         });
