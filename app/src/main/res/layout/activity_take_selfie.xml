@@ -12,6 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -30,6 +31,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="235dp"
+        android:gravity="center"
         android:paddingRight="45dp"
         android:paddingLeft="45dp">
         <ImageView
@@ -45,6 +47,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="201dp"
+        android:gravity="center"
         android:paddingRight="30dp"
         android:paddingLeft="30dp">
 
@@ -62,12 +65,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="1">
-        <FrameLayout
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.34"></FrameLayout>
 
         <Button
             android:id="@+id/selfieSubmitButton"

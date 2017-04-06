@@ -1,8 +1,9 @@
 package pearsistent.knutreasurehunt;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,10 @@ public class RegisterTeamActivity extends AppCompatActivity {
         userConfirmPwd= (EditText) findViewById(R.id.rgstr_team_cpwd);
         userTeamname = (EditText) findViewById(R.id.rgstr_teamname);
         registerBtn = (Button) findViewById(R.id.Btn_rgstr_team_Register);
+
+        //hide type password
+        userPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        userConfirmPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override

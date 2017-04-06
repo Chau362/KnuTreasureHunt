@@ -3,6 +3,7 @@ package pearsistent.knutreasurehunt;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,8 +22,8 @@ public class LoginAdminActivity extends BaseActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private EditText userName;
-    private EditText userPwd;
+    private EditText adminName;
+    private EditText adminPwd;
     private Button loginBtn;
     private Button registerBtn;
 
@@ -31,10 +32,15 @@ public class LoginAdminActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_admin);
 
-        userName = (EditText) findViewById(R.id.login_admin_usr);
-        userPwd = (EditText) findViewById(R.id.login_admin_pwd);
+        adminName = (EditText) findViewById(R.id.login_admin_usr);
+        adminPwd = (EditText) findViewById(R.id.login_admin_pwd);
         loginBtn = (Button) findViewById(R.id.Btn_login_admin_Login);
         registerBtn = (Button) findViewById(R.id.Btn_login_admin_Register);
+
+        //hide type password
+        adminPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -55,13 +61,10 @@ public class LoginAdminActivity extends BaseActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String user = userName.getText().toString();
-                String pwd = userPwd.getText().toString();
+                String user = adminName.getText().toString();
+                String pwd = adminPwd.getText().toString();
                 signIn(user,pwd);
 
-                //seulki, 04.06 : if user login successful, go to next step.
-                Intent i = new Intent(LoginAdminActivity.this,MainActivity_admin.class);
-                startActivity(i);
 
             }
         });
@@ -105,6 +108,10 @@ public class LoginAdminActivity extends BaseActivity {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(LoginAdminActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
+
+                            //seulki, 04.06 : if user login successful, go to next step.
+                            Intent i = new Intent(LoginAdminActivity.this,MainActivity_admin.class);
+                            startActivity(i);
 
 
                         }
