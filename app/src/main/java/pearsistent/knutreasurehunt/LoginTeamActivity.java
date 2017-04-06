@@ -30,8 +30,8 @@ public class LoginTeamActivity extends AppCompatActivity {
                 String pwd = userPwd.getText().toString();
 
                 //2017.04.03 seulki : If you complete login function, you can use it.
-                //Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                //startActivity(i);
+                Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(i);
             }
         });
         registerBtn.setOnClickListener(new View.OnClickListener() {
