@@ -15,26 +15,26 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Login_admin extends BaseActivity {
+public class LoginAdminActivity extends BaseActivity {
     private static final String TAG = "LOGIN_ADMIN";
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private EditText Txt_user;
-    private EditText Txt_pwd;
-    private Button Login;
-    private Button Register;
+    private EditText userName;
+    private EditText userPwd;
+    private Button loginBtn;
+    private Button registerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_admin);
 
-        Txt_user= (EditText) findViewById(R.id.login_admin_usr);
-        Txt_pwd= (EditText) findViewById(R.id.login_admin_pwd);
-        Login = (Button) findViewById(R.id.Btn_login_admin_Login);
-        Register = (Button) findViewById(R.id.Btn_login_admin_Register);
+        userName = (EditText) findViewById(R.id.login_admin_usr);
+        userPwd = (EditText) findViewById(R.id.login_admin_pwd);
+        loginBtn = (Button) findViewById(R.id.Btn_login_admin_Login);
+        registerBtn = (Button) findViewById(R.id.Btn_login_admin_Register);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -52,19 +52,23 @@ public class Login_admin extends BaseActivity {
             }
         };
 
-        Login.setOnClickListener(new View.OnClickListener() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String user = Txt_user.getText().toString();
-                String pwd = Txt_pwd.getText().toString();
+                String user = userName.getText().toString();
+                String pwd = userPwd.getText().toString();
                 signIn(user,pwd);
+
+                //seulki, 04.06 : if user login successful, go to next step.
+                Intent i = new Intent(LoginAdminActivity.this,MainActivity_admin.class);
+                startActivity(i);
 
             }
         });
-        Register.setOnClickListener(new View.OnClickListener() {
+        registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Login_admin.this,Register_admin.class);
+                Intent i = new Intent(LoginAdminActivity.this,RegisterAdminActivity.class);
                 startActivity(i);
             }
         });
@@ -99,19 +103,17 @@ public class Login_admin extends BaseActivity {
 
                         if(task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                            Toast.makeText(Login_admin.this, "Success!",
+                            Toast.makeText(LoginAdminActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
 
-                            //seulki, 04.06 : if user login successful, go to next step.
-                            Intent i = new Intent(Login_admin.this,Register_admin.class);
-                            startActivity(i);
+
                         }
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         else if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(Login_admin.this, R.string.auth_failed,
+                            Toast.makeText(LoginAdminActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
 
                         }

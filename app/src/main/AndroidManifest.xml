@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
-            android:name=".Registration"
+            android:name=".RegistrationActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,12 +28,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TakeSelfie" />
+        <activity android:name=".ObjectDetailActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".Login_admin" />
-        <activity android:name=".Register_admin" />
-        <activity android:name=".Login_Team" />
-        <activity android:name=".Register_Team" />
+        <activity android:name=".LoginAdminActivity" />
+        <activity android:name=".RegisterAdminActivity" />
+        <activity android:name=".LoginTeamActivity" />
+        <activity android:name=".RegisterTeamActivity" />
         <activity android:name=".MainActivity_admin"/>
         <activity android:name=".Timer" />
         <activity android:name=".Progress" />

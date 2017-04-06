@@ -1,5 +1,7 @@
 package pearsistent.knutreasurehunt;
 
+import java.util.ArrayList;
+
 /**
  * Created by Zzeulki on 2017. 3. 28..
  */
@@ -7,9 +9,18 @@ package pearsistent.knutreasurehunt;
 public class Team {
     String teamName;
     int teamPoint;
+    ArrayList<TeamMember> teamMembers = new ArrayList<>();
 
-    public void setTeamTable(String n, int p){
+    public Team(String n, int p){
         this.teamName = n;
         this.teamPoint = p;
+    }
+
+    public void addTeamMember(TeamMember newTeamMember) {
+        this.teamMembers.add(newTeamMember);
+    }
+
+    public void removeTeamMember(TeamMember chosenTeamMember) {
+        this.teamMembers.remove(chosenTeamMember);
     }
 }

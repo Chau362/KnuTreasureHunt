@@ -19,13 +19,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 //last coder :seulki, 04.05
 
-public class Register_admin extends BaseActivity {
+public class RegisterAdminActivity extends BaseActivity {
     private static final String TAG = "EmailPassword";
 
-    private EditText Txt_user;
-    private EditText Txt_pwd;
-    private EditText Txt_cpwd;
-    private Button Register;
+    private EditText adminName;
+    private EditText adminPwd;
+    private EditText adminConfirmPwd;
+    private Button registerBtn;
 
     String id,pwd;
     private FirebaseAuth mAuth;
@@ -35,10 +35,10 @@ public class Register_admin extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_admin);
-        Txt_user = (EditText) findViewById(R.id.rgstr_admin_usr);
-        Txt_pwd = (EditText) findViewById(R.id.rgstr_admin_pwd);
-        Txt_cpwd= (EditText) findViewById(R.id.rgstr_admin_cpwd);
-        Register = (Button) findViewById(R.id.Btn_rgstr_admin_Register);
+        adminName = (EditText) findViewById(R.id.rgstr_admin_usr);
+        adminPwd = (EditText) findViewById(R.id.rgstr_admin_pwd);
+        adminConfirmPwd= (EditText) findViewById(R.id.rgstr_admin_cpwd);
+        registerBtn = (Button) findViewById(R.id.Btn_rgstr_admin_Register);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -57,15 +57,15 @@ public class Register_admin extends BaseActivity {
         };
 
         //hide type password
-        Txt_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        Txt_cpwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        adminPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        adminConfirmPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
-        Register.setOnClickListener(new View.OnClickListener() {
+        registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                id = Txt_user.getText().toString();
-                pwd = Txt_pwd.getText().toString();
+                id = adminName.getText().toString();
+                pwd = adminPwd.getText().toString();
                 Log.i("eeee","etest");
                 Log.i("why","id:"+id);
                 Log.i("pw","pass:"+pwd);
@@ -108,7 +108,7 @@ public class Register_admin extends BaseActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(Register_admin.this, R.string.auth_failed,
+                            Toast.makeText(RegisterAdminActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
                         // [START_EXCLUDE]
@@ -124,18 +124,18 @@ public class Register_admin extends BaseActivity {
         //String email = Txt_user.getText().toString();
 
         if (TextUtils.isEmpty(id)) {
-            Txt_user.setError("Required.");
+            adminName.setError("Required.");
             valid = false;
         } else {
-            Txt_user.setError(null);
+            adminName.setError(null);
         }
 
         //  String password = mPasswordField.getText().toString();
         if (TextUtils.isEmpty(pwd)) {
-            Txt_pwd.setError("Required.");
+            adminPwd.setError("Required.");
             valid = false;
         } else {
-            Txt_pwd.setError(null);
+            adminPwd.setError(null);
         }
 
         return valid;
