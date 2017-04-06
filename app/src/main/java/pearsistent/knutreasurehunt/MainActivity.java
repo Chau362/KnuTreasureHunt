@@ -125,13 +125,13 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = null;
 
             if(position == 0){
-                fragment = new Tab1();
+                fragment = new UserMainActivity();
                 bundle = new Bundle();
                 //Log.i("eee","tab1");
             }
 
             if(position == 1){
-                fragment = new Tab2();
+                fragment = new UserAdditionalActivity();
                 bundle = new Bundle();
                 //Log.i("eee","tab2");
             }

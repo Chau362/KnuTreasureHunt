@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@android:color/white"
-    tools:context="pearsistent.knutreasurehunt.Tab1"
+    tools:context="pearsistent.knutreasurehunt.UserMainActivity"
     android:paddingLeft="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_vertical_margin"
     android:paddingBottom="3dp"
