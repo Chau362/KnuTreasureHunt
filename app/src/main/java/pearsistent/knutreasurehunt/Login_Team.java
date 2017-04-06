@@ -27,8 +27,8 @@ public class Login_Team extends AppCompatActivity {
                 String pwd = Txt_pwd.getText().toString();
 
                 //2017.04.03 seulki : If you complete login function, you can use it.
-                //Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                //startActivity(i);
+                Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(i);
             }
         });
         Register.setOnClickListener(new View.OnClickListener() {
