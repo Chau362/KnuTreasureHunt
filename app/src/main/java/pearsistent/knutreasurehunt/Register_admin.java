@@ -21,7 +21,7 @@ import org.w3c.dom.Text;
 
 public class Register_admin extends BaseActivity {
     private static final String TAG = "EmailPassword";
-
+    private EditText fff;
     private EditText Txt_user;
     private EditText Txt_pwd;
     private EditText Txt_cpwd;
