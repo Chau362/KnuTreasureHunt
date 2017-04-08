@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Activities that contain this fragment must implement the
  * {@link UserMainActivity.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link UserMainActivity#newInstance} factory method to
+ * Use the {@link UserMainActivity #newInstance} factory method to
  * create an instance of this fragment.
  */
 
