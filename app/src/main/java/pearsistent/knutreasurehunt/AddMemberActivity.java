@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 // last coder : seulki, 2017.03.30
 
-public class AddMember extends AppCompatActivity {
+public class AddMemberActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class AddMember extends AppCompatActivity {
         arr.add(member7);
 
 
-        memberListAdapter adapter = new memberListAdapter(this.getApplicationContext(),R.layout.memberview,arr);
+        MemberListAdapter adapter = new MemberListAdapter(this.getApplicationContext(),R.layout.memberview,arr);
         listView.setAdapter(adapter);
     }
 }

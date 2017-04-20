@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "486290562390-1bkfd2fqgk86kthj06a2jpdn9d6q9qp7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pearsistent.knutreasurehunt",
+            "certificate_hash": "8b15aa341f45e5b6c998abb62a75c4e80b10a18f"
+          }
+        },
+        {
+          "client_id": "486290562390-cud64h8jv9jb90uq37oiifl0sutmobk6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pearsistent.knutreasurehunt",
+            "certificate_hash": "eef3c425b953e349cdb525f3ff26e448cbe37f29"
+          }
+        },
+        {
           "client_id": "486290562390-63cbjtnd43hqjhlnmhijnvqrgea4da6k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -29,7 +45,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyASnbZAIP6Fe9BZaN50oQE5D8XypgqhrxM"
+          "current_key": "AIzaSyBikYW8K9Wb3Ayytw3CjnGyipRyOpgsfGQ"
         }
       ],
       "services": {
