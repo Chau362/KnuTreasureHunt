@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 
 public class Team {
+
     String teamName;
     int teamPoint;
     ArrayList<TeamMember> teamMembers = new ArrayList<>();

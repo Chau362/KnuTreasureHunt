@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/itemNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="Item name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/itemDescriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="Item description"
+        android:inputType="textMultiLine" />
+
+    <ImageButton
+        android:id="@+id/addItemToDatabaseBtn"
+        style="@android:style/Widget.Material.ImageButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="?android:attr/textCheckMark" />
+
+</LinearLayout>
