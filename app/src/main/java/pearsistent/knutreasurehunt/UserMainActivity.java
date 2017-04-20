@@ -71,7 +71,7 @@ public class UserMainActivity extends Fragment {
 
         ArrayList<Item> arr = new ArrayList<>();
 
-        Item item1 = new Item("Objective1",R.drawable.marker);
+/*        Item item1 = new Item("Objective1",R.drawable.marker);
         arr.add(item1);
 
         Item item2 = new Item("Objective2",R.drawable.marker);
@@ -93,7 +93,7 @@ public class UserMainActivity extends Fragment {
         arr.add(item7);
 
         Item item8 = new Item("Objective8",0);
-        arr.add(item8);
+        arr.add(item8);*/
 
         ListAdapter adapter = new ListAdapter(this.getContext(),R.layout.itemview,arr);
         listView.setAdapter(adapter);

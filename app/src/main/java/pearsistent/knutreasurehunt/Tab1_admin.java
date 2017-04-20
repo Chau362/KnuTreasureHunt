@@ -4,26 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
-import static java.security.AccessController.getContext;
+import java.util.ArrayList;
 
 
 /**
@@ -33,6 +22,8 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
     Button countdown, createlist;
     Intent intent;
+    ListView objectListView;
+    ArrayList<Item> itemArrayList;
     CheckBox checkBox;
 
     public Tab1_admin() {
@@ -61,8 +52,15 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         countdown = (Button)rootView.findViewById(R.id.countbutton);
         countdown.setOnClickListener(this);
 
+        objectListView = (ListView) rootView.findViewById(R.id.objectList);
         createlist = (Button)rootView.findViewById(R.id.createlist);
 
+
+        itemArrayList = this.intent.getParcelableArrayListExtra("objects");
+
+        //TODO: Create new Adapter and override getView method
+        ListAdapter adapter = new ListAdapter(this.getContext(), R.layout.objectitem, itemArrayList);
+        objectListView.setAdapter(adapter);
 
 
 
