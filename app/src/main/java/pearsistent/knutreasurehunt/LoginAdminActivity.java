@@ -124,12 +124,6 @@ public class LoginAdminActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
 
                         }
-
-                        // [START_EXCLUDE]
-                        if (!task.isSuccessful()) {
-                            //mStatusTextView.setText(R.string.auth_failed);
-                            Log.d(TAG,"FAILED");
-                        }
                         hideProgressDialog();
                         // [END_EXCLUDE]
 
