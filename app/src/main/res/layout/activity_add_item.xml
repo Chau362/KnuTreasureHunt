@@ -22,7 +22,6 @@
 
     <ImageButton
         android:id="@+id/addItemToDatabaseBtn"
-        style="@android:style/Widget.Material.ImageButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:srcCompat="?android:attr/textCheckMark" />
