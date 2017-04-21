@@ -11,13 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-
 import java.util.ArrayList;
-
-import static pearsistent.knutreasurehunt.R.id.mapView;
 
 
 /**
@@ -25,7 +19,7 @@ import static pearsistent.knutreasurehunt.R.id.mapView;
  * Activities that contain this fragment must implement the
  * {@link UserMainActivity.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link UserMainActivity#newInstance} factory method to
+ * Use the {@link UserMainActivity #newInstance} factory method to
  * create an instance of this fragment.
  */
 

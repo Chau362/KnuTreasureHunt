@@ -126,6 +126,7 @@ public class RegisterAdminActivity extends BaseActivity {
                 });
     }
     // [END create_user_with_email]
+
     private boolean validateForm() {
         boolean valid = true;
 
