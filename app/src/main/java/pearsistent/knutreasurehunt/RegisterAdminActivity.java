@@ -72,7 +72,7 @@ public class RegisterAdminActivity extends BaseActivity {
                 Log.i("why","id:"+id);
                 Log.i("pw","pass:"+pwd);
                 createAdmin(id,pwd);
-                //Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                //Intent i = new Intent(getApplicationContext(),LoginAdminActivity.class);
                 //startActivity(i);
             }
         });
