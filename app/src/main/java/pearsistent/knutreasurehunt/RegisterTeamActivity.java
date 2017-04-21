@@ -3,7 +3,6 @@ package pearsistent.knutreasurehunt;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -19,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.lang.reflect.Member;
 
 
 ///////Edited by bogyu 4.18
@@ -118,7 +115,7 @@ public class RegisterTeamActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
 
                             //if admin sign up is successful, go to Login.
-                            Intent i = new Intent(RegisterTeamActivity.this,LoginAdminActivity.class);
+                            Intent i = new Intent(RegisterTeamActivity.this,LoginTeamActivity.class);
                             startActivity(i);
                         }
                         // If sign up fails, display a message to the user. If sign in succeeds
