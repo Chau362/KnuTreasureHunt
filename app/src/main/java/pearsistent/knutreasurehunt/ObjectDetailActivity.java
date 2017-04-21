@@ -55,6 +55,13 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+
+               /*     //이미지를 선택
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요."), 0);*/
+
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 file = getFile();
 
@@ -75,24 +82,25 @@ public class ObjectDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                Toast.makeText(ObjectDetailActivity.this,"button click", Toast.LENGTH_SHORT).show();
+                //uploadFile();
+               //Toast.makeText(ObjectDetailActivity.this,"button click", Toast.LENGTH_SHORT).show();
 
-                //StorageReference childRef = storageRef.child(objectURI.getLastPathSegment());
+                StorageReference childRef = storageRef.child(objectURI.getLastPathSegment());
 
-                UploadTask uploadTask = storageRef.putFile(objectURI);
+                UploadTask uploadTask = childRef.putFile(objectURI);
 
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         // Handle unsuccessful uploads
                         //Log.i(TAG, exception.toString());
-                        Toast.makeText(ObjectDetailActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ObjectDetailActivity.this, "upload fail", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Toast.makeText(ObjectDetailActivity.this, "success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ObjectDetailActivity.this, "upload success", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -137,4 +145,6 @@ public class ObjectDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }*/
     }
+
+
 }
