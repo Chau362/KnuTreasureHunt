@@ -23,7 +23,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
-// last coder : seulki, 2017.04.06
+// last coder : seulki, 2017.04.21
 
 public class ObjectDetailActivity extends AppCompatActivity {
 
@@ -48,7 +48,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
         submitBtn = (Button) findViewById(R.id.selfieSubmitButton);
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
-        
+
 
 
         objectImage.setOnClickListener(new View.OnClickListener(){
@@ -58,27 +58,29 @@ public class ObjectDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 file = getFile();
 
-                //2017.04.06 : seulki : we have to user FileProvider because our API version is over 23.
+                //2017.04.06 : seulki : we have to use FileProvider because our API version is over 23.
                 objectURI = FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName()+".provider",file);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, objectURI);
                 startActivityForResult(intent,CAM_REQUEST);
 
+
+
             }
         });
 
+        //check on android phone
         submitBtn.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
 
-                //Log.i("button","submit click");
 
                 Toast.makeText(ObjectDetailActivity.this,"button click", Toast.LENGTH_SHORT).show();
 
-
-                StorageReference childRef = storageRef.child("cam_image.jpg");
+                //StorageReference childRef = storageRef.child(objectURI.getLastPathSegment());
 
                 UploadTask uploadTask = storageRef.putFile(objectURI);
+
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
@@ -89,9 +91,8 @@ public class ObjectDetailActivity extends AppCompatActivity {
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                       // Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        Toast.makeText(ObjectDetailActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(ObjectDetailActivity.this, "success", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -121,14 +122,16 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
 
         String path = "sdcard/carmera_app/cam_image.jpg";
-        objectImage.setImageDrawable(Drawable.createFromPath(path));
-        //filePath = data.getData();
-       /* try {
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
 
+        objectImage.setImageDrawable(Drawable.createFromPath(path));
+
+        /*
+       try {
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), objectURI);
+            objectImage.setImageBitmap(bitmap);
 
         } catch (IOException e) {
             e.printStackTrace();
