@@ -63,7 +63,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_usermap, container, false);
-        mapView = (MapView) rootView.findViewById(R.id.mapView);
+        mapView = (MapView) rootView.findViewById(R.id.mapView2);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
@@ -107,7 +107,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
         public void onLocationChanged(Location location) {
             String msg = "Latitude : " + latitude + "\nLongitude:" + longitude;
             Log.i("GPSLocationService", msg);
-            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
         }
 
         public void onProviderDisabled(String provider) {

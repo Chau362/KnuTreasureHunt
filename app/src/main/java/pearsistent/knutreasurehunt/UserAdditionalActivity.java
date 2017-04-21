@@ -1,5 +1,6 @@
 package pearsistent.knutreasurehunt;
 
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 
@@ -21,11 +26,14 @@ import java.util.ArrayList;
  */
 
 // last coder : seulki, 2017.03.28
-public class UserAdditionalActivity extends Fragment {
+public class UserAdditionalActivity extends Fragment implements OnMapReadyCallback {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private MapView mapView;
+    private LocationManager locationManager;;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -68,6 +76,11 @@ public class UserAdditionalActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab2,container,false);
+        /*mapView = (MapView) v.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+        mapView.getMapAsync(this);*/
+
 
         ListView listView = (ListView) v.findViewById(R.id.teamList);
         ArrayList<Team> teamList = new ArrayList<>();
@@ -131,6 +144,11 @@ public class UserAdditionalActivity extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 
     /**

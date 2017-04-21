@@ -1,15 +1,25 @@
 package pearsistent.knutreasurehunt;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
@@ -20,6 +30,13 @@ public class ObjectDetailActivity extends AppCompatActivity {
     private ImageView objectImage;
     private TextView objectText;
     public final int CAM_REQUEST = 1;
+    private StorageReference mStorageRef;
+    public Button submitBtn;
+    public File file;
+    public Uri objectURI;
+    public Uri filePath;
+    public Bitmap bitmap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +45,10 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
         objectImage = (ImageView) findViewById(R.id.objectImage);
         objectText = (TextView) findViewById(R.id.objectText);
+        submitBtn = (Button) findViewById(R.id.selfieSubmitButton);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        final StorageReference storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
+        
 
 
         objectImage.setOnClickListener(new View.OnClickListener(){
@@ -35,12 +56,44 @@ public class ObjectDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File file = getFile();
+                file = getFile();
 
                 //2017.04.06 : seulki : we have to user FileProvider because our API version is over 23.
-                Uri objectURI = FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName()+".provider",file);
+                objectURI = FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName()+".provider",file);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, objectURI);
                 startActivityForResult(intent,CAM_REQUEST);
+
+            }
+        });
+
+        submitBtn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+
+                //Log.i("button","submit click");
+
+                Toast.makeText(ObjectDetailActivity.this,"button click", Toast.LENGTH_SHORT).show();
+
+
+                StorageReference childRef = storageRef.child("cam_image.jpg");
+
+                UploadTask uploadTask = storageRef.putFile(objectURI);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        //Log.i(TAG, exception.toString());
+                        Toast.makeText(ObjectDetailActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                       // Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        Toast.makeText(ObjectDetailActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });
@@ -54,7 +107,14 @@ public class ObjectDetailActivity extends AppCompatActivity {
             folder.mkdir();
         }
 
+
+
         File imageFile = new File(folder,"cam_image.jpg");
+        if(imageFile.exists()){
+            imageFile.delete();
+            imageFile = new File(folder,"cam_image.jpg");
+        }
+
 
         return imageFile;
     }
@@ -65,6 +125,13 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
         String path = "sdcard/carmera_app/cam_image.jpg";
         objectImage.setImageDrawable(Drawable.createFromPath(path));
+        //filePath = data.getData();
+       /* try {
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
 
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 }
