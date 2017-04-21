@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@android:color/white"
-    tools:context="pearsistent.knutreasurehunt.Tab1"
+    tools:context="pearsistent.knutreasurehunt.UserMainActivity"
     android:paddingLeft="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_vertical_margin"
     android:paddingBottom="3dp"
@@ -43,7 +43,7 @@
 
                 <TextView
                     android:id="@+id/textView2"
-                    android:layout_width="228dp"
+                    android:layout_width="220dp"
                     android:layout_height="66dp"
                     android:background="@drawable/border"
                     android:gravity="center"
@@ -90,7 +90,7 @@
     <ListView
         android:id="@+id/itemList"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:background="@drawable/listborder" />
 
 </LinearLayout>

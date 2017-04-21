@@ -1,34 +1,27 @@
 package pearsistent.knutreasurehunt;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-
-import static pearsistent.knutreasurehunt.R.id.imageView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Tab1.OnFragmentInteractionListener} interface
+ * {@link UserAdditionalActivity.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Tab1#newInstance} factory method to
+ * Use the {@link UserAdditionalActivity#newInstance} factory method to
  * create an instance of this fragment.
  */
 
 // last coder : seulki, 2017.03.28
-
-public class Tab1 extends Fragment {
+public class UserAdditionalActivity extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,10 +33,27 @@ public class Tab1 extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public Tab1() {
+    public UserAdditionalActivity() {
         // Required empty public constructor
     }
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment Tab2.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static UserAdditionalActivity newInstance(String param1, String param2) {
+        UserAdditionalActivity fragment = new UserAdditionalActivity();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,60 +67,34 @@ public class Tab1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_tab1,container,false);
-        ListView listView = (ListView) v.findViewById(R.id.itemList);
-        Button addMember = (Button) v.findViewById(R.id.addmember);
+        View v = inflater.inflate(R.layout.fragment_tab2,container,false);
 
-        addMember.setOnClickListener(new View.OnClickListener() {
+        ListView listView = (ListView) v.findViewById(R.id.teamList);
+        ArrayList<Team> teamList = new ArrayList<>();
 
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(getContext(), AddMember.class);
-                startActivity(intent);
-            }
+        Team team1 = new Team("Team 1",20);
+        teamList.add(team1);
 
-        });
+        Team team2 = new Team("Team 2",10);
+        teamList.add(team2);
 
-        ArrayList<Item> arr = new ArrayList<>();
+        Team team3 = new Team("Team 3",15);
+        teamList.add(team3);
 
-        Item item1 = new Item();
-        item1.itemSet("Objective1",R.drawable.marker);
-        arr.add(item1);
+        Team team4 = new Team("Team 4",12);
+        teamList.add(team4);
 
-        Item item2 = new Item();
-        item2.itemSet("Objective2",R.drawable.marker);
-        arr.add(item2);
+        Team team5 = new Team("Team 5",5);
+        teamList.add(team5);
 
-        Item item3 = new Item();
-        item3.itemSet("Objective3",R.drawable.marker);
-        arr.add(item3);
+        Team team6 = new Team("Team 6",3);
+        teamList.add(team6);
 
-        Item item4 = new Item();
-        item4.itemSet("Objective4",R.drawable.marker);
-        arr.add(item4);
-
-        Item item5 = new Item();
-        item5.itemSet("Objective5",0);
-        arr.add(item5);
-
-        Item item6 = new Item();
-        item6.itemSet("Objective6",0);
-        arr.add(item6);
-
-        Item item7 = new Item();
-        item7.itemSet("Objective7",0);
-        arr.add(item7);
-
-        Item item8 = new Item();
-        item8.itemSet("Objective8",0);
-        arr.add(item8);
-
-        listAdapter adapter = new listAdapter(this.getContext(),R.layout.itemview,arr);
+        TeamListAdapter adapter = new TeamListAdapter(this.getContext(),R.layout.teamview, teamList);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position==0)
@@ -120,7 +104,7 @@ public class Tab1 extends Fragment {
                 }
 
             }
-        });
+        });*/
 
         return v;
     }

@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * The {@link ViewPager} that will host the section contents.
      */
+    //edited by Bogyu 4.15, add page
     private ViewPager mViewPager;
 
     @Override
@@ -125,15 +126,20 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = null;
 
             if(position == 0){
-                fragment = new Tab1();
+                fragment = new UserMainActivity();
                 bundle = new Bundle();
                 //Log.i("eee","tab1");
             }
 
             if(position == 1){
-                fragment = new Tab2();
+                fragment = new UserAdditionalActivity();
                 bundle = new Bundle();
                 //Log.i("eee","tab2");
+            }
+            if(position == 2){
+                fragment = new Usermap();
+                bundle = new Bundle();
+
             }
 
             return fragment;
@@ -141,17 +147,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 2;
+            // Show 4 total pages.
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "TAB 1";
                 case 1:
-                    return "SECTION 2";
+                    return "TAB 2";
+                case 2:
+                    return "TAB 3";
             }
             return null;
         }

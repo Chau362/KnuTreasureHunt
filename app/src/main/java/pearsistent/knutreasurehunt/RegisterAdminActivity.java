@@ -2,30 +2,32 @@ package pearsistent.knutreasurehunt;
 
 //Edited by Bogyu 4.4
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import org.w3c.dom.Text;
 
-public class Register_admin extends BaseActivity {
+//last coder :seulki, 04.05
+//Edited by bogyu, 4.18 : distinguish success or failure
+
+public class RegisterAdminActivity extends BaseActivity {
     private static final String TAG = "EmailPassword";
 
-    private EditText Txt_user;
-    private EditText Txt_pwd;
-    private EditText Txt_cpwd;
-    private Button Register;
+    private EditText adminName;
+    private EditText adminPwd;
+    private EditText adminConfirmPwd;
+    private Button registerBtn;
 
     String id,pwd;
     private FirebaseAuth mAuth;
@@ -35,10 +37,10 @@ public class Register_admin extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_admin);
-        Txt_user = (EditText) findViewById(R.id.rgstr_admin_usr);
-        Txt_pwd = (EditText) findViewById(R.id.rgstr_admin_pwd);
-        Txt_cpwd= (EditText) findViewById(R.id.rgstr_admin_cpwd);
-        Register = (Button) findViewById(R.id.Btn_rgstr_admin_Register);
+        adminName = (EditText) findViewById(R.id.rgstr_admin_usr);
+        adminPwd = (EditText) findViewById(R.id.rgstr_admin_pwd);
+        adminConfirmPwd= (EditText) findViewById(R.id.rgstr_admin_cpwd);
+        registerBtn = (Button) findViewById(R.id.Btn_rgstr_admin_Register);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -56,16 +58,25 @@ public class Register_admin extends BaseActivity {
             }
         };
 
-        Register.setOnClickListener(new View.OnClickListener() {
+        //hide type password
+        adminPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        adminConfirmPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+        registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                id = Txt_user.getText().toString();
-                pwd = Txt_pwd.getText().toString();
-                createAccount(id,pwd);
+
+                id = adminName.getText().toString();
+                pwd = adminPwd.getText().toString();
+                Log.i("eeee","etest");
+                Log.i("why","id:"+id);
+                Log.i("pw","pass:"+pwd);
+                createAdmin(id,pwd);
                 //Intent i = new Intent(getApplicationContext(),MainActivity.class);
                 //startActivity(i);
             }
         });
+
 
     }
     @Override
@@ -81,8 +92,8 @@ public class Register_admin extends BaseActivity {
         }
     }
 
-    private void createAccount(String email, String password) {
-        Log.d(id, "createAccount:" + email);
+    private void createAdmin(String email, String password) {
+        Log.d(id, "createAdminAccount:" + email);
         if (!validateForm()) {
             return;
         }
@@ -93,17 +104,24 @@ public class Register_admin extends BaseActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                        hideProgressDialog();
+                        // [END_EXCLUDE]
+                        if(task.isSuccessful()) {
+                            Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                            Toast.makeText(RegisterAdminActivity.this, "Success!",
+                                    Toast.LENGTH_SHORT).show();
 
+                            //Bogyu, 04.18 : if admin sigup is successful, go to next step.
+                            Intent i = new Intent(RegisterAdminActivity.this,LoginAdminActivity.class);
+                            startActivity(i);
+
+                        }
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(Register_admin.this, R.string.auth_failed,
-                                    Toast.LENGTH_SHORT).show();
+                        else if (!task.isSuccessful()) {
+                            Log.w(TAG, "signUpWithEmail:failed", task.getException());
                         }
-                        // [START_EXCLUDE]
-                        hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
     }
@@ -114,18 +132,18 @@ public class Register_admin extends BaseActivity {
         //String email = Txt_user.getText().toString();
 
         if (TextUtils.isEmpty(id)) {
-            Txt_user.setError("Required.");
+            adminName.setError("Required.");
             valid = false;
         } else {
-            Txt_user.setError(null);
+            adminName.setError(null);
         }
 
         //  String password = mPasswordField.getText().toString();
         if (TextUtils.isEmpty(pwd)) {
-            Txt_pwd.setError("Required.");
+            adminPwd.setError("Required.");
             valid = false;
         } else {
-            Txt_pwd.setError(null);
+            adminPwd.setError(null);
         }
 
         return valid;
