@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+
 import android.widget.ListView;
 
 import java.util.ArrayList;
+
 
 
 /**
@@ -55,6 +57,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
         createlist = (Button)rootView.findViewById(R.id.createlist);
 
+
         ArrayList<Mission>  missionList = new ArrayList<>();
 
         Mission mission1 = new Mission("mission itme 1",new CheckBox(getContext()));
@@ -75,6 +78,12 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
 
         /*        checkBox = (CheckBox)rootView.findViewById(R.id.option1);
+
+
+
+
+/*        checkBox = (CheckBox)rootView.findViewById(R.id.option1);
+
         checkBox.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
