@@ -42,6 +42,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_selfie);
 
+        Database database = new Database();
 
         objectImage = (ImageView) findViewById(R.id.objectImage);
         objectText = (TextView) findViewById(R.id.objectText);
@@ -50,17 +51,10 @@ public class ObjectDetailActivity extends AppCompatActivity {
         final StorageReference storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
 
 
-
         objectImage.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
-
-               /*     //이미지를 선택
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요."), 0);*/
 
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 file = getFile();
@@ -69,8 +63,6 @@ public class ObjectDetailActivity extends AppCompatActivity {
                 objectURI = FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName()+".provider",file);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, objectURI);
                 startActivityForResult(intent,CAM_REQUEST);
-
-
 
             }
         });
@@ -81,26 +73,26 @@ public class ObjectDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                //make a Folder
+                StorageReference parentRef = storageRef.child("TeamA");
 
-                //uploadFile();
-               //Toast.makeText(ObjectDetailActivity.this,"button click", Toast.LENGTH_SHORT).show();
+                //can make a image file name
+                StorageReference childRef = storageRef.child("TeamA/"+objectURI.getLastPathSegment());
 
-                StorageReference childRef = storageRef.child(objectURI.getLastPathSegment());
-
+                //upload task
                 UploadTask uploadTask = childRef.putFile(objectURI);
 
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        //Log.i(TAG, exception.toString());
-                        Toast.makeText(ObjectDetailActivity.this, "upload fail", Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(ObjectDetailActivity.this, "Upload Fail", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Toast.makeText(ObjectDetailActivity.this, "upload success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -115,8 +107,6 @@ public class ObjectDetailActivity extends AppCompatActivity {
         if(!folder.exists()){
             folder.mkdir();
         }
-
-
 
         File imageFile = new File(folder,"cam_image.jpg");
         if(imageFile.exists()){
@@ -136,14 +126,6 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
         objectImage.setImageDrawable(Drawable.createFromPath(path));
 
-        /*
-       try {
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), objectURI);
-            objectImage.setImageBitmap(bitmap);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
 

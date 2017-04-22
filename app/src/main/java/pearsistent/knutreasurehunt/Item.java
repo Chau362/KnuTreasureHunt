@@ -1,10 +1,12 @@
 package pearsistent.knutreasurehunt;
 
+import java.util.ArrayList;
+
 /**
  * Created by Zzeulki on 2017. 3. 28..
  */
 
-public class Item {
+public class Item extends ArrayList<Item> {
     private int image_i;
     private String text;
     private String name;
