@@ -49,6 +49,10 @@ public class Item {
 
     public CheckBox getCheckBox(){ return this.checkBox;}
 
+    public void setCheckBox(CheckBox c){
+        this.checkBox = c;
+    }
+
     public String getText() {
         return this.text;
     }

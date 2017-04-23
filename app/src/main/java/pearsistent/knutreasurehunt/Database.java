@@ -8,7 +8,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import static com.google.android.gms.wearable.DataMap.TAG;
+import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Zzeulki on 2017. 4. 22..
@@ -16,20 +18,73 @@ import static com.google.android.gms.wearable.DataMap.TAG;
 
 public class Database {
     private DatabaseReference mDatabase;
-    //private ArrayList<Team>
+    static private  ArrayList<Item> itemList;
+    private ArrayList<Team> teamList;
+
 
     public Database() {
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+    }
 
-        //final String userId = getUid();
+    public void getItemListFromDB(){
+
+        final ArrayList<Item> tempList = new ArrayList<Item>();
+
         mDatabase.child("Items").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get Item data value
-                        Item itemList = dataSnapshot.getValue(Item.class);
-                        Log.i("getValue",itemList.getName());
+                        for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                            Item item = tempSnapshot.getValue(Item.class);
+                            tempList.add(item);
+                        }
+                        /*for(int i=0; i<tempList.size();i++){
+                            Log.i("value1 " + i, tempList.get(i).getName());
+                        }*/
 
+                        setItemList(tempList);
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+
+
+                });
+    }
+
+    public void setItemList(ArrayList<Item> itemlist){
+        this.itemList = itemlist;
+    }
+
+    public ArrayList<Item> getItemList(){
+
+        getItemListFromDB();
+
+        return  itemList;
+    }
+
+    public ArrayList<Team> getTeamList(){
+        //final String userId = getUid();
+        mDatabase.child("Team").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        teamList = new ArrayList<Team>();
+
+                        // Get Item data value
+                        for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                            Team team = tempSnapshot.getValue(Team.class);
+                            teamList.add(team);
+                        }
+                        /*for(int i=0; i<itemList.size();i++){
+                            Log.i("value " + i, itemList.get(i).getName());
+                        }*/
                     }
 
                     @Override
@@ -38,21 +93,8 @@ public class Database {
                     }
                 });
 
-        //I will try to get Team data from DB
-        /*mDatabase.child("Team").addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user value
-                        Team  = dataSnapshot.getValue(Item.class);
-                        Log.i("getValue",temp.getName());
-                        // ...
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                    }
-                });*/
+        return  teamList;
     }
+
+
 }
