@@ -12,11 +12,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by Chau Pham on 17.04.2017.
@@ -51,18 +51,17 @@ public class AddItemActivity extends AppCompatActivity{
                 String name = itemName.getText().toString();
                 String description = itemDescription.getText().toString();
                 Item newItem = new Item(name, description);
-                String itemKey = "Item"+countOfItem;
+
+                //if you have any question about this part ask to seulki
+                String itemKey = "Item"+countOfItem;    //make a item Key
 
 
                 if(newItem != null) {
                     FirebaseUser user = mAuth.getCurrentUser();
-                    String userId = user.getUid();
+                    //String userId = user.getUid();
 
                     Toast.makeText(AddItemActivity.this, newItem.getText(), Toast.LENGTH_SHORT).show();
-                    //myRef.child(userId).child("Item").setValue(newItem);
                     myRef.child(itemKey).setValue(newItem);
-
-
 
                     itemName.setText("");
                     itemDescription.setText("");
@@ -87,29 +86,15 @@ public class AddItemActivity extends AppCompatActivity{
             }
         };
 
-        myRef.addChildEventListener(new ChildEventListener(){
+
+        myRef.addValueEventListener(new ValueEventListener(){
 
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //get count of children
                 countOfItem = dataSnapshot.getChildrenCount();
-                Toast.makeText(AddItemActivity.this, "ee"+countOfItem, Toast.LENGTH_SHORT).show();
-
             }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {

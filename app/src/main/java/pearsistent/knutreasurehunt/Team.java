@@ -8,10 +8,9 @@ import java.util.ArrayList;
 
 public class Team {
 
-    String teamName;
-    int teamPoint;
-    ArrayList<TeamMember> teamMembers = new ArrayList<>();
-
+    private String teamName;
+    private int teamPoint;
+    private ArrayList<TeamMember> teamMembers = new ArrayList<>();
 
 
     public Team(String n, int p){
@@ -19,8 +18,24 @@ public class Team {
         this.teamPoint = p;
     }
 
-    public Team(String teamname, String email, String pwd, Object o, int i) {
+    public Team(String teamname, ArrayList<TeamMember> teamMembers, int i) {
 
+        this.teamName = teamname;
+        this.teamMembers = teamMembers;
+        this.teamPoint = i;
+
+    }
+
+    public String getTeamName(){
+        return this.teamName;
+    }
+
+    public int getTeamPoint(){
+        return this.teamPoint;
+    }
+
+    public ArrayList<TeamMember> getTeamMembers(){
+        return this.teamMembers;
     }
 
     public void addTeamMember(TeamMember newTeamMember) {

@@ -66,7 +66,7 @@ public class RegisterTeamActivity extends BaseActivity {
             }
         };
         ///////For DB
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team");
 
         /////////
 
@@ -130,13 +130,15 @@ public class RegisterTeamActivity extends BaseActivity {
 
     /////Put team into DB
     private void addTeamToDB(String teamname, String email, String pwd, String username){
-        Team team = new Team(teamname, email, pwd, null, 0);
+        Team team = new Team(teamname, null, 0);
         TeamMember member = new TeamMember();
         member.setMemberName(username);
-      //  team.addTeamMember(member);
+        //team.addTeamMember(member);
 
-        mDatabase.child("team").push();
-        mDatabase.child("team").setValue(team);
+        //Log.i("Team name",team.getTeamName());
+        //mDatabase.setValue("team");
+        mDatabase.child(team.getTeamName()).setValue(team);
+        //mDatabase.child("team").setValue(team);
 
 
     }

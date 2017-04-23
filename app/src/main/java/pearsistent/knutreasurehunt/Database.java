@@ -16,7 +16,7 @@ import static com.google.android.gms.wearable.DataMap.TAG;
 
 public class Database {
     private DatabaseReference mDatabase;
-
+    //private ArrayList<Team>
 
     public Database() {
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");

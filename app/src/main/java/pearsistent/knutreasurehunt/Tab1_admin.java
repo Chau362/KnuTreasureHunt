@@ -58,21 +58,24 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         createlist = (Button)rootView.findViewById(R.id.createlist);
 
 
-        ArrayList<Mission>  missionList = new ArrayList<>();
+        ArrayList<Item>  choicedList = new ArrayList<>();
 
-        Mission mission1 = new Mission("mission itme 1",new CheckBox(getContext()));
-        missionList.add(mission1);
+        Item Item1 = new Item("mission itme 1",new CheckBox(getContext()));
+        choicedList.add(Item1);
 
-        Mission mission2 = new Mission("mission itme 2",new CheckBox(getContext()));
-        missionList.add(mission2);
+        Item Item2 = new Item("mission itme 2",new CheckBox(getContext()));
+        choicedList.add(Item2);
 
-        Mission mission3 = new Mission("mission itme 3",new CheckBox(getContext()));
-        missionList.add(mission3);
+        Item Item3 = new Item("mission itme 3",new CheckBox(getContext()));
+        choicedList.add(Item3);
 
-        Mission mission4 = new Mission("mission itme 4",new CheckBox(getContext()));
-        missionList.add(mission4);
+        Item Item4 = new Item("mission itme 4",new CheckBox(getContext()));
+        choicedList.add(Item4);
 
-        CreateMissionListAdapter adapter = new CreateMissionListAdapter(this.getContext(),R.layout.objectitemview, missionList);
+        Item Item5 = new Item("mission itme 5",new CheckBox(getContext()));
+        choicedList.add(Item5);
+
+        CreateMissionListAdapter adapter = new CreateMissionListAdapter(this.getContext(),R.layout.objectitemview, choicedList);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
