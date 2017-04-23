@@ -12,6 +12,8 @@ public class Team {
     int teamPoint;
     ArrayList<TeamMember> teamMembers = new ArrayList<>();
 
+
+
     public Team(String n, int p){
         this.teamName = n;
         this.teamPoint = p;

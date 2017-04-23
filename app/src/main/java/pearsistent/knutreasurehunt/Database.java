@@ -17,8 +17,9 @@ import static com.google.android.gms.wearable.DataMap.TAG;
 public class Database {
     private DatabaseReference mDatabase;
 
+
     public Database() {
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/RQUnAn3LHyToX7WmCLWCRMIG7qT2");
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
 
         //final String userId = getUid();
         mDatabase.child("Items").addListenerForSingleValueEvent(
