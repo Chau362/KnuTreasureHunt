@@ -113,10 +113,6 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 //        }
 
 
-
-
-
-
         return rootView;
     }
 
