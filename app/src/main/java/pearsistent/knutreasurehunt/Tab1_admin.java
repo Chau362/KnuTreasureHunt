@@ -83,6 +83,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
                     item.setCheckBox(new CheckBox(getContext()));
                     itemList.add(item);
                 }
+                //Set Item listview
                 makeListView(listView,itemList);
             }
 
