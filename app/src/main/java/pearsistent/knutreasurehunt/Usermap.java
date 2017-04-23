@@ -189,7 +189,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
             e.printStackTrace();
         }
         return bf.toString();
-    }
+    }///
 
 }
 
