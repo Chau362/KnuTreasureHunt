@@ -140,8 +140,6 @@ public class RegisterTeamActivity extends BaseActivity {
 
         mDatabase.child("team").push();
         mDatabase.child("team").setValue(team);
-
-
     }
     private boolean validateForm() {
         boolean valid = true;
