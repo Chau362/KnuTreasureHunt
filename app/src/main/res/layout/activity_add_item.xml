@@ -9,14 +9,14 @@
     android:layout_height="match_parent">
 
     <TextView
-    android:id="@+id/add_item_title"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Add Item"
-    android:textColor="#000"
-    android:textStyle="bold"
-    android:textAlignment="center"
-    android:textSize="28dp" />
+        android:id="@+id/add_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Item"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textSize="28dp" />
 
     <EditText
         android:id="@+id/itemNameEditText"

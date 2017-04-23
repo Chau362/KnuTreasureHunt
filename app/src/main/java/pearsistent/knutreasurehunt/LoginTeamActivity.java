@@ -16,7 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginTeamActivity extends BaseActivity{
+public class LoginTeamActivity extends BaseActivity {
     private static final String TAG = "LOGIN_TEAM_USER";
 
     private FirebaseAuth mAuth;
@@ -63,7 +63,7 @@ public class LoginTeamActivity extends BaseActivity{
                 String user = userName.getText().toString();
                 String pwd = userPwd.getText().toString();
 
-                signIn(user,pwd);
+                signIn(user, pwd);
 
             }
         });
@@ -81,6 +81,7 @@ public class LoginTeamActivity extends BaseActivity{
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -88,6 +89,7 @@ public class LoginTeamActivity extends BaseActivity{
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
     private void signIn(String email, String password) {
 
         Log.d(TAG, "signIn:" + email);
@@ -104,13 +106,13 @@ public class LoginTeamActivity extends BaseActivity{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(LoginTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
 
                             //2017.04.03 seulki : If you complete login function, you can use it.
-                            Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(i);
 
 

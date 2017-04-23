@@ -27,7 +27,7 @@ public class Database {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get Item data value
                         Item itemList = dataSnapshot.getValue(Item.class);
-                        Log.i("getValue",itemList.getName());
+                        Log.i("getValue", itemList.getName());
 
                     }
 

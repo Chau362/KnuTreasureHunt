@@ -18,7 +18,7 @@
             android:id="@+id/objectList"
             android:layout_width="match_parent"
             android:layout_height="450dp"
-            android:background="@drawable/listborder"/>
+            android:background="@drawable/listborder" />
 
 
         <LinearLayout

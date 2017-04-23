@@ -1,7 +1,5 @@
 package pearsistent.knutreasurehunt;
 
-import java.util.ArrayList;
-
 /**
  * Created by Zzeulki on 2017. 3. 28..
  */
@@ -21,7 +19,7 @@ public class Item {
         this.name = n;
     }
 
-    public Item(String t, int i){
+    public Item(String t, int i) {
         this.text = t;
         this.image_i = i;
     }

@@ -9,7 +9,7 @@ public class TeamMember {
 
     String memberName;
 
-    public TeamMember(){
+    public TeamMember() {
 
     }
 

@@ -32,7 +32,8 @@ public class UserAdditionalActivity extends Fragment implements OnMapReadyCallba
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private MapView mapView;
-    private LocationManager locationManager;;
+    private LocationManager locationManager;
+    ;
 
 
     // TODO: Rename and change types of parameters

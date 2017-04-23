@@ -14,16 +14,16 @@
         android:gravity="center"
         android:weightSum="3">
 
-         <TextView
-             android:id="@+id/objectNameTextView"
-             android:gravity="center_vertical"
-             android:paddingLeft="22dp"
-             android:layout_width="0dp"
-             android:layout_weight="2.5"
-             android:layout_height="30dp"
-             android:text="Object Name"
-             android:textColor="#000"
-             android:textSize="18sp" />
+        <TextView
+            android:id="@+id/objectNameTextView"
+            android:gravity="center_vertical"
+            android:paddingLeft="22dp"
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:layout_height="30dp"
+            android:text="Object Name"
+            android:textColor="#000"
+            android:textSize="18sp" />
 
 
         <CheckBox

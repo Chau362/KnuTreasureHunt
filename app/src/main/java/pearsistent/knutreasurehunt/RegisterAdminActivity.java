@@ -1,6 +1,7 @@
 package pearsistent.knutreasurehunt;
 
 //Edited by Bogyu 4.4
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -71,7 +72,7 @@ public class RegisterAdminActivity extends BaseActivity {
                 Log.i("eeee","etest");
                 Log.i("why","id:"+id);
                 Log.i("pw","pass:"+pwd);
-                createAdmin(id,pwd);
+                createAdmin(id, pwd);
                 //Intent i = new Intent(getApplicationContext(),LoginAdminActivity.class);
                 //startActivity(i);
             }
@@ -106,13 +107,13 @@ public class RegisterAdminActivity extends BaseActivity {
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
                         hideProgressDialog();
                         // [END_EXCLUDE]
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(RegisterAdminActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
 
                             //Bogyu, 04.18 : if admin sigup is successful, go to next step.
-                            Intent i = new Intent(RegisterAdminActivity.this,LoginAdminActivity.class);
+                            Intent i = new Intent(RegisterAdminActivity.this, LoginAdminActivity.class);
                             startActivity(i);
 
                         }

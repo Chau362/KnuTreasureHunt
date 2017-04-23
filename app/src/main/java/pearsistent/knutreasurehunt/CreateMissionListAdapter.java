@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Created by Zzeulki on 2017. 4. 21..
  */
 
-public class CreateMissionListAdapter extends BaseAdapter{
+public class CreateMissionListAdapter extends BaseAdapter {
     Context context;
     int layout;
     ArrayList<Mission> missionList;
@@ -25,7 +25,7 @@ public class CreateMissionListAdapter extends BaseAdapter{
         this.context = context;
         this.layout = layout;
         this.missionList = missionList;
-        this.inf = (LayoutInflater)context
+        this.inf = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -55,9 +55,10 @@ public class CreateMissionListAdapter extends BaseAdapter{
         Mission mission = missionList.get(position);
 
 
-        Log.i("objectName",mission.getObjectName());
+        Log.i("objectName", mission.getObjectName());
         objectName.setText(mission.getObjectName());
         checkBox = mission.getCheckBox();
+        checkBox.setChecked(true);
 
         return convertView;
     }

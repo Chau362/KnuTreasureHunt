@@ -60,7 +60,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
                 file = getFile();
 
                 //2017.04.06 : seulki : we have to use FileProvider because our API version is over 23.
-                objectURI = FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName()+".provider",file);
+                objectURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, objectURI);
                 startActivityForResult(intent,CAM_REQUEST);
 
@@ -68,7 +68,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
         });
 
         //check on android phone
-        submitBtn.setOnClickListener(new View.OnClickListener(){
+        submitBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -77,7 +77,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
                 StorageReference parentRef = storageRef.child("TeamA");
 
                 //can make a image file name
-                StorageReference childRef = storageRef.child("TeamA/"+objectURI.getLastPathSegment());
+                StorageReference childRef = storageRef.child("TeamA/" + objectURI.getLastPathSegment());
 
                 //upload task
                 UploadTask uploadTask = childRef.putFile(objectURI);
@@ -109,9 +109,9 @@ public class ObjectDetailActivity extends AppCompatActivity {
         }
 
         File imageFile = new File(folder,"cam_image.jpg");
-        if(imageFile.exists()){
+        if (imageFile.exists()) {
             imageFile.delete();
-            imageFile = new File(folder,"cam_image.jpg");
+            imageFile = new File(folder, "cam_image.jpg");
         }
 
 
