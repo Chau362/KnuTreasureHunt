@@ -24,9 +24,10 @@ public class Item {
         this.name = n;
         this.checkBox = c;
     }
-    public Item(String t, String n) {
-        this.text = t;
+    public Item(String n, String t) {
+
         this.name = n;
+        this.text = t;
         this.choice = false;
     }
 

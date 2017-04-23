@@ -60,7 +60,7 @@ public class AddItemActivity extends AppCompatActivity{
                     FirebaseUser user = mAuth.getCurrentUser();
                     //String userId = user.getUid();
 
-                    Toast.makeText(AddItemActivity.this, newItem.getText(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddItemActivity.this, newItem.getText()+" Item Upload Success!", Toast.LENGTH_SHORT).show();
                     myRef.child(itemKey).setValue(newItem);
 
                     itemName.setText("");

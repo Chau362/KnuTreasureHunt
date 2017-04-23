@@ -29,7 +29,7 @@ import static com.google.android.gms.wearable.DataMap.TAG;
  */
 public class Tab1_admin extends Fragment implements View.OnClickListener {
 
-    private ArrayList<Item> itemList;
+    //private ArrayList<Item> itemList;
     private DatabaseReference mDatabase;
     Button countdown, createlist;
     Intent intent;
@@ -68,28 +68,30 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         createlist = (Button)rootView.findViewById(R.id.createlist);
         Database database = new Database();
 
-        itemList = new ArrayList<>();
 
-        mDatabase.child("Items").addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        // Get Item data value
-                        for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
-                            Item item = tempSnapshot.getValue(Item.class);
-                            item.setCheckBox(new CheckBox(getContext()));
-                            itemList.add(item);
-                        }
-                       makeListView(listView);
-                    }
+        mDatabase.child("Items").addValueEventListener(new ValueEventListener(){
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                    }
+            ArrayList<Item> itemList = new ArrayList<>();
 
-                });
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                itemList.clear();
+                // Get Item data value
+                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                    Item item = tempSnapshot.getValue(Item.class);
+                    item.setCheckBox(new CheckBox(getContext()));
+                    itemList.add(item);
+                }
+                makeListView(listView,itemList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+            }
+
+        });
 
        /* ArrayList<Item>  choicedList = new ArrayList<>();
 
@@ -116,7 +118,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    public void makeListView(ListView listView){
+    public void makeListView(ListView listView,ArrayList<Item> itemList){
         CreateMissionListAdapter adapter = new CreateMissionListAdapter(this.getContext(),R.layout.objectitemview, itemList);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
