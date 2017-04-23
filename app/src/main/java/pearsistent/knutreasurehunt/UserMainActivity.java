@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 // last coder : seulki, 2017.03.28
 
-public class UserMainActivity extends Fragment {
+public class UserMainActivity extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -58,6 +58,7 @@ public class UserMainActivity extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tab1, container,false);
         ListView listView = (ListView) v.findViewById(R.id.itemList);
         Button addMember = (Button) v.findViewById(R.id.addmember);
+
 
         addMember.setOnClickListener(new View.OnClickListener() {
 
@@ -137,6 +138,7 @@ public class UserMainActivity extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

@@ -1,6 +1,6 @@
 package pearsistent.knutreasurehunt;
 
-import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,8 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 /**
  * Created by Chau Pham on 17.04.2017.
  */
@@ -31,8 +29,6 @@ public class AddItemActivity extends AppCompatActivity{
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference myRef;
-
-    ArrayList<Item> itemArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,16 +54,11 @@ public class AddItemActivity extends AppCompatActivity{
                 if(newItem != null) {
                     FirebaseUser user = mAuth.getCurrentUser();
                     String userId = user.getUid();
-                    myRef.child(userId).child("Items").push().setValue(newItem);
-                    itemArrayList.add(newItem);
+                    myRef.child(userId).child("Items").setValue(newItem);
 
                     itemName.setText("");
                     itemDescription.setText("");
                 }
-                Intent myIntent = new Intent(getBaseContext(), Tab1_admin.class);
-                myIntent.putParcelableArrayListExtra("objects", itemArrayList);
-                myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(myIntent);
                 finish();
 
             }

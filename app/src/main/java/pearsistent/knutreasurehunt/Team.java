@@ -17,6 +17,10 @@ public class Team {
         this.teamPoint = p;
     }
 
+    public Team(String teamname, String email, String pwd, Object o, int i) {
+
+    }
+
     public void addTeamMember(TeamMember newTeamMember) {
         this.teamMembers.add(newTeamMember);
     }

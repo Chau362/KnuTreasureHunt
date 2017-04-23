@@ -1,6 +1,7 @@
 package pearsistent.knutreasurehunt;
 
 //Edited by Bogyu 4.4
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 //last coder :seulki, 04.05
+//Edited by bogyu, 4.18 : distinguish success or failure
 
 public class RegisterAdminActivity extends BaseActivity {
     private static final String TAG = "EmailPassword";
@@ -69,9 +71,8 @@ public class RegisterAdminActivity extends BaseActivity {
                 Log.i("eeee","etest");
                 Log.i("why","id:"+id);
                 Log.i("pw","pass:"+pwd);
-                createAccount(id,pwd);
-
-                //Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                createAdmin(id,pwd);
+                //Intent i = new Intent(getApplicationContext(),LoginAdminActivity.class);
                 //startActivity(i);
             }
         });
@@ -91,8 +92,8 @@ public class RegisterAdminActivity extends BaseActivity {
         }
     }
 
-    private void createAccount(String email, String password) {
-        Log.d(id, "createAccount:" + email);
+    private void createAdmin(String email, String password) {
+        Log.d(id, "createAdminAccount:" + email);
         if (!validateForm()) {
             return;
         }
@@ -103,17 +104,24 @@ public class RegisterAdminActivity extends BaseActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                        hideProgressDialog();
+                        // [END_EXCLUDE]
+                        if(task.isSuccessful()) {
+                            Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                            Toast.makeText(RegisterAdminActivity.this, "Success!",
+                                    Toast.LENGTH_SHORT).show();
 
+                            //Bogyu, 04.18 : if admin sigup is successful, go to next step.
+                            Intent i = new Intent(RegisterAdminActivity.this,LoginAdminActivity.class);
+                            startActivity(i);
+
+                        }
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(RegisterAdminActivity.this, R.string.auth_failed,
-                                    Toast.LENGTH_SHORT).show();
+                        else if (!task.isSuccessful()) {
+                            Log.w(TAG, "signUpWithEmail:failed", task.getException());
                         }
-                        // [START_EXCLUDE]
-                        hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
     }

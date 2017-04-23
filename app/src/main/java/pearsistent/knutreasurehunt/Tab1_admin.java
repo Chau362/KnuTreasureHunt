@@ -22,9 +22,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
     Button countdown, createlist;
     Intent intent;
-    ListView objectListView;
-    ArrayList<Item> itemArrayList;
-    CheckBox checkBox;
+
 
     public Tab1_admin() {
         // Required empty public constructor
@@ -47,24 +45,36 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         final View rootView = inflater.inflate(R.layout.fragment_tab1_admin, container, false);
         intent = new Intent(getContext(), Timer.class);
         countdown = (Button)rootView.findViewById(R.id.countbutton);
         countdown.setOnClickListener(this);
 
-        objectListView = (ListView) rootView.findViewById(R.id.objectList);
+        ListView listView = (ListView) rootView.findViewById(R.id.objectList);
+
         createlist = (Button)rootView.findViewById(R.id.createlist);
 
+        ArrayList<Mission>  missionList = new ArrayList<>();
 
-        itemArrayList = this.intent.getParcelableArrayListExtra("objects");
+        Mission mission1 = new Mission("mission itme 1",new CheckBox(getContext()));
+        missionList.add(mission1);
 
-        //TODO: Create new Adapter and override getView method
-        ListAdapter adapter = new ListAdapter(this.getContext(), R.layout.objectitem, itemArrayList);
-        objectListView.setAdapter(adapter);
+        Mission mission2 = new Mission("mission itme 2",new CheckBox(getContext()));
+        missionList.add(mission2);
+
+        Mission mission3 = new Mission("mission itme 3",new CheckBox(getContext()));
+        missionList.add(mission3);
+
+        Mission mission4 = new Mission("mission itme 4",new CheckBox(getContext()));
+        missionList.add(mission4);
+
+        CreateMissionListAdapter adapter = new CreateMissionListAdapter(this.getContext(),R.layout.objectitemview, missionList);
+        listView.setAdapter(adapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
 
-
-/*        checkBox = (CheckBox)rootView.findViewById(R.id.option1);
+        /*        checkBox = (CheckBox)rootView.findViewById(R.id.option1);
         checkBox.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
