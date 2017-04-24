@@ -166,7 +166,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
     private String findAddress(double lat, double lng) {
         StringBuffer bf = new StringBuffer();
         String currentLocationAddress;
-        Geocoder geocoder = new Geocoder(this.getActivity(), Locale.KOREA);
+        Geocoder geocoder = new Geocoder(this.getActivity());
         List<Address> address;
         try {
             if (geocoder != null) {

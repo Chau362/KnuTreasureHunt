@@ -4,6 +4,9 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE'
     }
+    dexOptions {
+        jumboMode = true
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -23,15 +26,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
-
-
-
-
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:support-annotations:25.3.1'
@@ -48,5 +46,7 @@ dependencies {
     compile 'com.android.support:support-vector-drawable:25.3.1'
     compile 'com.google.firebase:firebase-database:10.0.1'
     testCompile 'junit:junit:4.12'
+    compile 'com.itextpdf:pdfa:7.0.2'
+    compile 'com.itextpdf:itextpdf:5.5.11'
 }
 apply plugin: 'com.google.gms.google-services'

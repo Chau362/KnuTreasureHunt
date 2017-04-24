@@ -109,11 +109,11 @@ public class LoginAdminActivity extends BaseActivity {
                             Toast.makeText(LoginAdminActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
 
-                            //seulki, 04.06 : if user login successful, go to next step.
-                            Intent i = new Intent(LoginAdminActivity.this,MainActivity_admin.class);
+//                            seulki, 04.06 : if user login successful, go to next step.
+//                                    Intent i = new Intent(LoginAdminActivity.this,MainActivity_admin.class);
+//                                    startActivity(i);
+                            Intent i = new Intent(LoginAdminActivity.this,createpdf.class);
                             startActivity(i);
-
-
                         }
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
