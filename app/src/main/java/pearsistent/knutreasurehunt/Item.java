@@ -37,8 +37,8 @@ public class Item {
 //        this.image_i = temp;
 //    }
 
-    public Item(String t, int i){
-        this.text = t;
+    public Item(String n, int i){
+        this.name = n;
         this.image_i = i;
     }
 
@@ -47,6 +47,10 @@ public class Item {
     }
 
     public boolean getChoice(){ return this.choice; }
+
+    public void setChoice(){
+        this.choice = true;
+    }
 
     public CheckBox getCheckBox(){ return this.checkBox;}
 

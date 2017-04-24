@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 /**
  * Created by Chau Pham on 17.04.2017.
  */
+//last coder : seulki, 2017.04.23
 
 public class AddItemActivity extends AppCompatActivity{
     private static final String TAG = "ADD_ITEM_TO_DATABASE";
@@ -57,7 +58,7 @@ public class AddItemActivity extends AppCompatActivity{
 
 
                 if(newItem != null) {
-                    FirebaseUser user = mAuth.getCurrentUser();
+                    //FirebaseUser user = mAuth.getCurrentUser();
                     //String userId = user.getUid();
 
                     Toast.makeText(AddItemActivity.this, newItem.getText()+" Item Upload Success!", Toast.LENGTH_SHORT).show();

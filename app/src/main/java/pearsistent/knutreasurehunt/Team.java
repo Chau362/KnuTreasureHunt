@@ -10,21 +10,24 @@ public class Team {
 
     private String teamName;
     private int teamPoint;
-    private ArrayList<TeamMember> teamMembers = new ArrayList<>();
+    private ArrayList<TeamMember> teamMembers;
 
+    public Team(){
+
+    }
 
     public Team(String n, int p){
+        teamMembers = new ArrayList<>();
         this.teamName = n;
         this.teamPoint = p;
     }
 
-    public Team(String teamname, ArrayList<TeamMember> teamMembers, int i) {
+    /*public Team(String teamname, ArrayList<TeamMember> teamMembers, int i) {
 
         this.teamName = teamname;
         this.teamMembers = teamMembers;
         this.teamPoint = i;
-
-    }
+    }*/
 
     public String getTeamName(){
         return this.teamName;

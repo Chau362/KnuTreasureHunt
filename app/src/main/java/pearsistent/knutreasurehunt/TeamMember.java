@@ -8,10 +8,14 @@ package pearsistent.knutreasurehunt;
 public class TeamMember {
 
     String memberName;
-    String userId;
+    String userId = null;
 
     public TeamMember(){
+    }
 
+    public TeamMember(String membername,String userid){
+        this.memberName = membername;
+        this.userId = userid;
     }
 
     public String getMemberName(){return this.memberName;}
@@ -20,6 +24,10 @@ public class TeamMember {
 
     public void setMemberName(String name){
         this.memberName = name;
+    }
+
+    public void setMemberUserId(String userid){
+        this.userId = userid;
     }
 
 

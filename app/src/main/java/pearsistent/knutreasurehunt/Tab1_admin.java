@@ -27,9 +27,11 @@ import static com.google.android.gms.wearable.DataMap.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
+
+//last coder : seulki, 2017.04.23
 public class Tab1_admin extends Fragment implements View.OnClickListener {
 
-    //private ArrayList<Item> itemList;
+
     private DatabaseReference mDatabase;
     Button countdown, createlist;
     Intent intent;
@@ -66,9 +68,6 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         final ListView listView = (ListView) rootView.findViewById(R.id.objectList);
 
         createlist = (Button)rootView.findViewById(R.id.createlist);
-        Database database = new Database();
-
-
 
         mDatabase.child("Items").addValueEventListener(new ValueEventListener(){
 
@@ -110,10 +109,6 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
         Item Item5 = new Item("mission itme 5",new CheckBox(getContext()));
         choicedList.add(Item5);*/
-
-//        for(int i=0; i<itemList.size();i++){
-//               Log.i("value1 " + i, itemList.get(i).getName());
-//        }
 
 
         return rootView;
