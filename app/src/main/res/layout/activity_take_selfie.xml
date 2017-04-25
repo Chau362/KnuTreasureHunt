@@ -34,14 +34,16 @@
         android:gravity="center"
         android:paddingRight="45dp"
         android:paddingLeft="45dp">
+
         <ImageView
             android:id="@+id/objectImage"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:layout_gravity="center"
-            android:src="@drawable/camera2"
+            android:background="@drawable/listborder"
             android:clickable="true"
-            android:background="@drawable/listborder"></ImageView>
+            android:src="@drawable/camera"
+            app:srcCompat="@android:drawable/ic_menu_camera"></ImageView>
     </LinearLayout>
 
     <LinearLayout
