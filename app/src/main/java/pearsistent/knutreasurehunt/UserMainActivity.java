@@ -56,7 +56,7 @@ public class UserMainActivity extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tab1, container,false);
-        ListView listView = (ListView) v.findViewById(R.id.itemList);
+        final ListView listView = (ListView) v.findViewById(R.id.itemList);
         Button addMember = (Button) v.findViewById(R.id.addmember);
 
 
@@ -103,11 +103,11 @@ public class UserMainActivity extends Fragment{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0)
-                {
-                    Intent i = new Intent(getContext(),ObjectDetailActivity.class);
-                    startActivity(i);
-                }
+                Item item = (Item) listView.getAdapter().getItem(position);
+
+                Intent i = new Intent(getContext(),ObjectDetailActivity.class);
+                i.putExtra("Item name",item.getName());
+                startActivity(i);
 
             }
         });

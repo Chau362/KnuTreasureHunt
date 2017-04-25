@@ -32,7 +32,6 @@ import java.io.File;
 
 // last coder : seulki, 2017.04.25
 
-//item name 받아오는거 생각해볼 것-> 아마 intent 할 때 값 넘겨받으면 될 듯(이미지 이름으로 사용하기 위해서)
 public class ObjectDetailActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
@@ -50,6 +49,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
     private String teamName;
     private FirebaseStorage storage;
     private StorageReference storageRef;
+    private String imageFileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +58,15 @@ public class ObjectDetailActivity extends AppCompatActivity {
         objectImage = (ImageView) findViewById(R.id.objectImage);
         objectText = (TextView) findViewById(R.id.objectText);
         submitBtn = (Button) findViewById(R.id.selfieSubmitButton);
+
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
 
-        mAuth = FirebaseAuth.getInstance();
+        //get item name from UserMainAcitivity
+        Intent intent = getIntent();
+        imageFileName= intent.getExtras().getString("Item name")+".jpg";
 
+        mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -144,11 +148,13 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
     //saving pictures on Storage
     private void savePictures(String teamname){
+
+
         //make a Folder
         StorageReference parentRef = storageRef.child(teamname);
 
         //can make a image file name
-        StorageReference childRef = storageRef.child(teamname+"/"+objectURI.getLastPathSegment());
+        StorageReference childRef = storageRef.child(teamname+"/"+this.getImageFileName());
 
         //upload task
         UploadTask uploadTask = childRef.putFile(objectURI);
@@ -168,6 +174,11 @@ public class ObjectDetailActivity extends AppCompatActivity {
         });
     }
 
+
+    private String getImageFileName(){
+        return this.imageFileName;
+    }
+
     private File getFile(){
 
         File folder = new File("sdcard/carmera_app");
@@ -176,10 +187,11 @@ public class ObjectDetailActivity extends AppCompatActivity {
             folder.mkdir();
         }
 
-        File imageFile = new File(folder,"cam_image.jpg");
+        //dynamically make a file name
+        File imageFile = new File(folder,this.getImageFileName());
         if(imageFile.exists()){
             imageFile.delete();
-            imageFile = new File(folder,"cam_image.jpg");
+            imageFile = new File(folder,this.getImageFileName());
         }
 
 
@@ -190,7 +202,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        String path = "sdcard/carmera_app/cam_image.jpg";
+        String path = "sdcard/carmera_app/"+this.getImageFileName();
 
         objectImage.setImageDrawable(Drawable.createFromPath(path));
 
