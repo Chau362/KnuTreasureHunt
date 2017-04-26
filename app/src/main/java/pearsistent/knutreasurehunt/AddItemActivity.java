@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 /**
  * Created by Chau Pham on 17.04.2017.
  */
-//last coder : seulki, 2017.04.23
+//last coder : seulki, 2017.04.26
 
 public class AddItemActivity extends AppCompatActivity{
     private static final String TAG = "ADD_ITEM_TO_DATABASE";
@@ -89,13 +89,11 @@ public class AddItemActivity extends AppCompatActivity{
 
 
         myRef.addValueEventListener(new ValueEventListener(){
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //get count of children
                 countOfItem = dataSnapshot.getChildrenCount();
             }
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {

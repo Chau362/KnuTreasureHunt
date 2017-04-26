@@ -3,6 +3,8 @@ package pearsistent.knutreasurehunt;
 
 import android.widget.CheckBox;
 
+import com.google.firebase.storage.StorageReference;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +16,7 @@ public class Item {
 
     private CheckBox checkBox;
     private boolean choice;
-    private int image_i;
+    private StorageReference imageReference;    //To use FirebaseUI, I need StorageReference
     private String text;
     private String name;
     //String location;
@@ -34,23 +36,17 @@ public class Item {
         this.choice = false;
     }
 
-//    public Item(String t, String n, int temp) {
-//        this.text = t;
-//        this.name = n;
-//        this.image_i = temp;
-//    }
-
-    public Item(String n, int i){
+    /*public Item(String n, int i){
         this.name = n;
         this.image_i = i;
+    }*/
+
+    public StorageReference getImageReference() {
+        return this.imageReference;
     }
 
-    public int getImage_i() {
-        return this.image_i;
-    }
-
-    public void setImage_i(int image){
-        this.image_i = image;
+    public void setImageReference(StorageReference imageReference){
+        this.imageReference = imageReference;
     }
 
     public boolean getChoice(){ return this.choice; }
@@ -77,7 +73,7 @@ public class Item {
 
         HashMap<String,Object> item = new HashMap<>();
         item.put("choice",choice);
-        item.put("image_i",image_i);
+        //item.put("image_i",image_i);
         item.put("name",name);
         item.put("text",text);
 

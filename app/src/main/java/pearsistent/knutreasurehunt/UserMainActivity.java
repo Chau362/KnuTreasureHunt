@@ -39,7 +39,7 @@ import static pearsistent.knutreasurehunt.R.id.itemList;
  * create an instance of this fragment.
  */
 
-// last coder : seulki, 2017.04.25
+// last coder : seulki, 2017.04.27
 
 public class UserMainActivity extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
@@ -62,6 +62,7 @@ public class UserMainActivity extends Fragment{
 
     public UserMainActivity() {
         // Required empty public constructor
+
     }
 
 
@@ -72,6 +73,8 @@ public class UserMainActivity extends Fragment{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        teamName = getArguments().getString("TEAM_NAME");
     }
 
     @Override
@@ -79,7 +82,6 @@ public class UserMainActivity extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tab1, container,false);
-
         final ListView listView = (ListView) v.findViewById(itemList);
         Button addMember = (Button) v.findViewById(R.id.addmember);
 
@@ -111,9 +113,8 @@ public class UserMainActivity extends Fragment{
                     Item item = tempSnapshot.getValue(Item.class);
 
                     if(item.getChoice()) {
-                        item.setImage_i(R.drawable.marker);
-
-                        //it will change
+                        //Set item image Reference
+                        item.setImageReference(findImageFile(item.getName()+".jpg"));
                         getList.add(item);
                     }
                 }
@@ -125,7 +126,6 @@ public class UserMainActivity extends Fragment{
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "getUser:onCancelled", databaseError.toException());
             }
-
         });
 
 
@@ -138,7 +138,6 @@ public class UserMainActivity extends Fragment{
 
             //can make a image file name
             StorageReference childRef = storageRef.child(teamName+"/"+imageFileName);
-
             return childRef;
         }
 
@@ -157,53 +156,37 @@ public class UserMainActivity extends Fragment{
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             //clicked item
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ArrayList<Item> temp = new ArrayList<Item>();
-                 item = (Item) listView.getAdapter().getItem(position);
+                item = (Item) listView.getAdapter().getItem(position);
 
                 Intent i = new Intent(getContext(),ObjectDetailActivity.class);
-                i.putExtra("Item name",item.getName());
+                i.putExtra("PATH_TO_SAVE",teamName+"/"+item.getName()+".jpg");
                 startActivityForResult(i,1);
-                //i.getex
 
                 imageview = (ImageView) view.findViewById(imageView);
-
-
             }
 
         });
     }
 
+    //if user take a selfie, imageview will be update. if not then it will not be change.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == 1){
-            if(resultCode == 1){
-                teamName = data.getStringExtra("TEAM_NAME");
-                //adapter.notifyDataSetChanged();
-
+        if(requestCode==1){
+            if(resultCode==1){
                 Glide.with(getContext())
                         .using(new FirebaseImageLoader())
                         .load(findImageFile(item.getName()+".jpg"))
-                        .into(imageview);
+                        .error(R.drawable.marker).into(imageview);
             }
         }
-
     }
 
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
 
     @Override
     public void onDetach() {

@@ -117,9 +117,9 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
                         //update database : choice flag change to true
                         Item updateItem = itemList.get(i);
                         Map<String,Object> postValues = updateItem.toMap();
-                        mDatabase.child("Items").child("Item"+i).updateChildren(postValues);
+                        //mDatabase.child("Items").child("Item"+i).updateChildren(postValues);
 
-                        if(mDatabase.child("Items").child("Item"+i).updateChildren(postValues).isSuccessful()){
+                        if(!mDatabase.child("Items").child("Item"+i).updateChildren(postValues).isSuccessful()){
                             Toast.makeText(getContext(),"Create List Success!",Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(getContext(),"Create List Fail..",Toast.LENGTH_SHORT).show();

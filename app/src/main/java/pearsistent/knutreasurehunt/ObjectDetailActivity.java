@@ -1,7 +1,6 @@
 package pearsistent.knutreasurehunt;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,18 +18,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
-// last coder : seulki, 2017.04.25
+// last coder : seulki, 2017.04.27
 
 public class ObjectDetailActivity extends AppCompatActivity {
 
@@ -43,13 +38,12 @@ public class ObjectDetailActivity extends AppCompatActivity {
     private StorageReference mStorageRef;
     public Button submitBtn;
     public File file;
-    public Uri objectURI;
+    public Uri objectURI = null;
     public Uri filePath;
-    public Bitmap bitmap;
-    private String teamName;
     private FirebaseStorage storage;
     private StorageReference storageRef;
-    private String imageFileName;
+    private String imagePath;
+    public String pathArray[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +56,9 @@ public class ObjectDetailActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
 
-        //get item name from UserMainAcitivity
+        //To save picture on Storage using team name and item name try to get path information from UserMainAcitivity
         Intent intent = getIntent();
-        imageFileName= intent.getExtras().getString("Item name")+".jpg";
+        imagePath= intent.getExtras().getString("PATH_TO_SAVE");
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -98,93 +92,50 @@ public class ObjectDetailActivity extends AppCompatActivity {
             }
         });
 
-        //check on android phone
         submitBtn.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
 
-                FirebaseUser user = mAuth.getCurrentUser();
-                String userProId = user.getProviderId();
-                final String userId = user.getUid();
+                //if user doesnt take a selfie, notice them
+                if(objectURI==null){
+                    Toast.makeText(ObjectDetailActivity.this, "Please submit with your selfie", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    //can make a image file name
+                    StorageReference childRef = storageRef.child(getImagePath());
+                    //upload task
+                    UploadTask uploadTask = childRef.putFile(objectURI);
 
-                mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
-
-                mDatabase.child("Team").addListenerForSingleValueEvent(new ValueEventListener(){
-
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get Item data value
-                        for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
-                            boolean check = false;
-                            Team team = new Team();
-                            team = tempSnapshot.getValue(Team.class);
-                            for(int i = 0 ; i < team.getTeamMembers().size() ; i++) {
+                    public void onFailure(@NonNull Exception exception) {
 
-                                //finding team name using member's userId
-                                if (team.getTeamMembers().get(i).getUserId().equals(userId)) {
-                                    teamName = team.getTeamName();
-                                    check = true;
-                                    break;
+                        Toast.makeText(ObjectDetailActivity.this, "Upload Fail", Toast.LENGTH_SHORT).show();
                                 }
-                            }
-                            if(check){
-                                savePictures(teamName);
-                                break;
-
-                            }
-                        }
-                    }
-
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                    }
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                });
+                        Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
+                        backToPage();
+                        }
+                });}
 
             }
         });
     }
 
-    private void backToPage(String teamName) {
+    private void backToPage() {
 
         Intent i = new Intent(this.getApplicationContext(),UserMainActivity.class);
-        i.putExtra("TEAM_NAME",teamName);
         setResult(1,i);
         finish();
     }
 
-    //saving pictures on Storage
-    private void savePictures(String teamname){
 
-
-        //make a Folder
-        StorageReference parentRef = storageRef.child(teamname);
-        //can make a image file name
-        StorageReference childRef = storageRef.child(teamname+"/"+this.getImageFileName());
-        //upload task
-        UploadTask uploadTask = childRef.putFile(objectURI);
-
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-
-                Toast.makeText(ObjectDetailActivity.this, "Upload Fail", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
-                backToPage(teamName);
-            }
-        });
-    }
-
-
-    private String getImageFileName(){
-        return this.imageFileName;
+    private String getImagePath(){
+        return this.imagePath;
     }
 
     private File getFile(){
@@ -195,13 +146,15 @@ public class ObjectDetailActivity extends AppCompatActivity {
             folder.mkdir();
         }
 
+        //Path format : TeamName/itemName.jpg
+        pathArray = getImagePath().split("/");
+
         //dynamically make a file name
-        File imageFile = new File(folder,this.getImageFileName());
+        File imageFile = new File(folder,pathArray[1]);
         if(imageFile.exists()){
             imageFile.delete();
-            imageFile = new File(folder,this.getImageFileName());
+            imageFile = new File(folder,pathArray[1]);
         }
-
 
         return imageFile;
     }
@@ -210,8 +163,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        String path = "sdcard/carmera_app/"+this.getImageFileName();
-
+        String path = "sdcard/carmera_app/"+pathArray[1];
         objectImage.setImageDrawable(Drawable.createFromPath(path));
 
     }

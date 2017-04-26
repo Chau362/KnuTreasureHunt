@@ -15,14 +15,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+//last coder : seulki, 2017.04.27
 public class LoginTeamActivity extends BaseActivity{
     private static final String TAG = "LOGIN_TEAM_USER";
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
+    private String teamName;
     //String userId;
     EditText userName;
     EditText userPwd;
@@ -82,6 +88,13 @@ public class LoginTeamActivity extends BaseActivity{
             }
         });
     }
+    public void goToNextPage(String name){
+
+        //2017.04.03 seulki : If you complete login function, you can use it.
+        Intent i = new Intent(getApplicationContext(),MainActivity.class);
+        i.putExtra("TEAM_NAME",name);
+        startActivity(i);
+    }
 
     @Override
     public void onStart() {
@@ -115,11 +128,7 @@ public class LoginTeamActivity extends BaseActivity{
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(LoginTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
-
-                            //2017.04.03 seulki : If you complete login function, you can use it.
-                            Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                            startActivity(i);
-
+                            getTeamName();
 
                         }
                         // If sign in fails, display a message to the user. If sign in succeeds
@@ -138,5 +147,50 @@ public class LoginTeamActivity extends BaseActivity{
                 });
         // [END sign_in_with_email]
     }
+
+    //To get team name information from DB
+    private void getTeamName() {
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userProId = user.getProviderId();
+        final String userId = user.getUid();
+
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        mDatabase.child("Team").addListenerForSingleValueEvent(new ValueEventListener(){
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // Get Item data value
+                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                    boolean check = false;
+                    Team team = new Team();
+                    team = tempSnapshot.getValue(Team.class);
+                    for(int i = 0 ; i < team.getTeamMembers().size() ; i++) {
+
+                        //finding team name using member's userId
+                        if (team.getTeamMembers().get(i).getUserId().equals(userId)) {
+
+                            //if find right team information
+                            goToNextPage(team.getTeamName());
+                            check = true;
+                            break;
+                        }
+                    }
+                    if(check){
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+
+
 }
 
