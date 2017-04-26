@@ -18,7 +18,7 @@ import static android.content.ContentValues.TAG;
 
 public class Database {
     private DatabaseReference mDatabase;
-    static private  ArrayList<Item> itemList;
+    static private ArrayList<Item> itemList;
     private ArrayList<Team> teamList;
 
 
@@ -26,7 +26,7 @@ public class Database {
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
     }
 
-    public void getItemListFromDB(){
+    public void getItemListFromDB() {
 
         final ArrayList<Item> tempList = new ArrayList<Item>();
 
@@ -35,7 +35,7 @@ public class Database {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get Item data value
-                        for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                        for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                             Item item = tempSnapshot.getValue(Item.class);
                             tempList.add(item);
                         }
@@ -57,18 +57,18 @@ public class Database {
                 });
     }
 
-    public void setItemList(ArrayList<Item> itemlist){
+    public void setItemList(ArrayList<Item> itemlist) {
         this.itemList = itemlist;
     }
 
-    public ArrayList<Item> getItemList(){
+    public ArrayList<Item> getItemList() {
 
         getItemListFromDB();
 
-        return  itemList;
+        return itemList;
     }
 
-    public ArrayList<Team> getTeamList(){
+    public ArrayList<Team> getTeamList() {
         //final String userId = getUid();
         mDatabase.child("Team").addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -78,7 +78,7 @@ public class Database {
                         teamList = new ArrayList<Team>();
 
                         // Get Item data value
-                        for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                        for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                             Team team = tempSnapshot.getValue(Team.class);
                             teamList.add(team);
                         }
@@ -93,7 +93,7 @@ public class Database {
                     }
                 });
 
-        return  teamList;
+        return teamList;
     }
 
 

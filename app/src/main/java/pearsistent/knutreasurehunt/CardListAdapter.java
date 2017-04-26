@@ -1,7 +1,5 @@
 package pearsistent.knutreasurehunt;
 
-import android.content.Intent;
-import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
-import static java.security.AccessController.getContext;
 
 /**
  * Created by Chau Pham on 25.04.2017.

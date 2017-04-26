@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by Zzeulki on 2017. 4. 21..
  */
 
-public class CreateMissionListAdapter extends BaseAdapter{
+public class CreateMissionListAdapter extends BaseAdapter {
     Context context;
     int layout;
     ArrayList<Item> choicedList;
@@ -24,7 +24,7 @@ public class CreateMissionListAdapter extends BaseAdapter{
         this.context = context;
         this.layout = layout;
         this.choicedList = choicedList;
-        this.inf = (LayoutInflater)context
+        this.inf = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 

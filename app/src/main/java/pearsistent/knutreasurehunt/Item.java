@@ -16,7 +16,6 @@ public class Item {
     private String name;
 
 
-
     private int points;
     //String location;
 
@@ -24,10 +23,11 @@ public class Item {
 
     }
 
-    public Item(String n, CheckBox c){
+    public Item(String n, CheckBox c) {
         this.name = n;
         this.checkBox = c;
     }
+
     public Item(String n, String t) {
 
         this.name = n;
@@ -45,7 +45,7 @@ public class Item {
         return points;
     }
 
-    public Item(String t, int i){
+    public Item(String t, int i) {
         this.text = t;
         this.image_i = i;
     }
@@ -54,11 +54,15 @@ public class Item {
         return this.image_i;
     }
 
-    public boolean getChoice(){ return this.choice; }
+    public boolean getChoice() {
+        return this.choice;
+    }
 
-    public CheckBox getCheckBox(){ return this.checkBox;}
+    public CheckBox getCheckBox() {
+        return this.checkBox;
+    }
 
-    public void setCheckBox(CheckBox c){
+    public void setCheckBox(CheckBox c) {
         this.checkBox = c;
     }
 

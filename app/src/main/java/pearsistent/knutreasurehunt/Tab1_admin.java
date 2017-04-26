@@ -69,8 +69,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         Database database = new Database();
 
 
-
-        mDatabase.child("Items").addValueEventListener(new ValueEventListener(){
+        mDatabase.child("Items").addValueEventListener(new ValueEventListener() {
 
             ArrayList<Item> itemList = new ArrayList<>();
 
@@ -78,12 +77,12 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 itemList.clear();
                 // Get Item data value
-                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                     Item item = tempSnapshot.getValue(Item.class);
                     item.setCheckBox(new CheckBox(getContext()));
                     itemList.add(item);
                 }
-                makeListView(listView,itemList);
+                makeListView(listView, itemList);
             }
 
             @Override
@@ -118,8 +117,8 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    public void makeListView(ListView listView,ArrayList<Item> itemList){
-        CreateMissionListAdapter adapter = new CreateMissionListAdapter(this.getContext(),R.layout.objectitemview, itemList);
+    public void makeListView(ListView listView, ArrayList<Item> itemList) {
+        CreateMissionListAdapter adapter = new CreateMissionListAdapter(this.getContext(), R.layout.objectitemview, itemList);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }

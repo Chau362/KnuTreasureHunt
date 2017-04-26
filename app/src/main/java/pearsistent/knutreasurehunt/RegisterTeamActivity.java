@@ -34,7 +34,7 @@ public class RegisterTeamActivity extends BaseActivity {
     //////For Register
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener; //////Add Firebase
-    private String auth_id,auth_pwd,rgstr_team,rgstr_user;
+    private String auth_id, auth_pwd, rgstr_team, rgstr_user;
     private boolean CheckRegister;
 
     @Override
@@ -77,7 +77,7 @@ public class RegisterTeamActivity extends BaseActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                     registerBtn.setOnClickListener(new View.OnClickListener() {
+                registerBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         auth_id = email.getText().toString();
@@ -85,17 +85,17 @@ public class RegisterTeamActivity extends BaseActivity {
                         rgstr_team = teamName.getText().toString();
                         rgstr_user = userName.getText().toString();
 
-                        Log.i("eeee","etest");
+                        Log.i("eeee", "etest");
 
-                        createTeam(auth_id,auth_pwd);
-                        addTeamToDB(rgstr_team,auth_id,auth_pwd,rgstr_user);
+                        createTeam(auth_id, auth_pwd);
+                        addTeamToDB(rgstr_team, auth_id, auth_pwd, rgstr_user);
                     }
                 });
             }
         });
     }
     ///////Register Account to Firebase
-    private void createTeam(String email, String pwd){
+    private void createTeam(String email, String pwd) {
         Log.d(auth_id, "createAdminAccount:" + email);
         if (!validateForm()) {
             return;
@@ -109,13 +109,13 @@ public class RegisterTeamActivity extends BaseActivity {
                         Log.d("CREATE", "createUserWithEmail:onComplete:" + task.isSuccessful());
                         hideProgressDialog();
                         // [END_EXCLUDE]
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             Log.d("CREATE", "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(RegisterTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
 
                             //if admin sign up is successful, go to Login.
-                            Intent i = new Intent(RegisterTeamActivity.this,LoginTeamActivity.class);
+                            Intent i = new Intent(RegisterTeamActivity.this, LoginTeamActivity.class);
                             startActivity(i);
                         }
                         // If sign up fails, display a message to the user. If sign in succeeds
@@ -129,7 +129,7 @@ public class RegisterTeamActivity extends BaseActivity {
     }
 
     /////Put team into DB
-    private void addTeamToDB(String teamname, String email, String pwd, String username){
+    private void addTeamToDB(String teamname, String email, String pwd, String username) {
         Team team = new Team(teamname, null, 0);
         TeamMember member = new TeamMember();
         member.setMemberName(username);
@@ -158,7 +158,6 @@ public class RegisterTeamActivity extends BaseActivity {
         } else {
             userPwd.setError(null);
         }
-
 
 
         return valid;

@@ -53,14 +53,14 @@ public class AddItemActivity extends AppCompatActivity{
                 Item newItem = new Item(name, description);
 
                 //if you have any question about this part ask to seulki
-                String itemKey = "Item"+countOfItem;    //make a item Key
+                String itemKey = "Item" + countOfItem;    //make a item Key
 
 
                 if(newItem != null) {
                     FirebaseUser user = mAuth.getCurrentUser();
                     //String userId = user.getUid();
 
-                    Toast.makeText(AddItemActivity.this, newItem.getText()+" Item Upload Success!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddItemActivity.this, newItem.getText() + " Item Upload Success!", Toast.LENGTH_SHORT).show();
                     myRef.child(itemKey).setValue(newItem);
 
                     itemName.setText("");
@@ -87,7 +87,7 @@ public class AddItemActivity extends AppCompatActivity{
         };
 
 
-        myRef.addValueEventListener(new ValueEventListener(){
+        myRef.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

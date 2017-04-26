@@ -14,9 +14,13 @@ public class TeamMember {
 
     }
 
-    public String getMemberName(){return this.memberName;}
+    public String getMemberName() {
+        return this.memberName;
+    }
 
-    public String getUserId(){return this.userId;}
+    public String getUserId() {
+        return this.userId;
+    }
 
     public void setMemberName(String name){
         this.memberName = name;
