@@ -18,6 +18,7 @@
         android:textAlignment="center"
         android:textSize="28dp" />
 
+
     <EditText
         android:id="@+id/itemNameEditText"
         android:layout_width="match_parent"

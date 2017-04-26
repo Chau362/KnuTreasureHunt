@@ -48,8 +48,8 @@ class TeamListAdapter extends BaseAdapter {
         TextView teamPoint = (TextView) convertView.findViewById(R.id.teamPoint);
         Team team = teamList.get(position);
 
-        teamName.setText(team.teamName);
-        teamPoint.setText(team.teamPoint+" pts");
+        teamName.setText(team.getTeamName());
+        teamPoint.setText(team.getTeamPoint()+" pts");
 
         return convertView;
     }

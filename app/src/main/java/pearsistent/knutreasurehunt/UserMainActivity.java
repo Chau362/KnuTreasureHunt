@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,10 @@ public class UserMainActivity extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -71,30 +76,6 @@ public class UserMainActivity extends Fragment {
         });
 
         ArrayList<Item> arr = new ArrayList<>();
-
-/*        Item item1 = new Item("Objective1",R.drawable.marker);
-        arr.add(item1);
-
-        Item item2 = new Item("Objective2",R.drawable.marker);
-        arr.add(item2);
-
-        Item item3 = new Item("Objective3",R.drawable.marker);
-        arr.add(item3);
-
-        Item item4 = new Item("Objective4",R.drawable.marker);
-        arr.add(item4);
-
-        Item item5 = new Item("Objective5",0);
-        arr.add(item5);
-
-        Item item6 = new Item("Objective6",0);
-        arr.add(item6);
-
-        Item item7 = new Item("Objective7",0);
-        arr.add(item7);
-
-        Item item8 = new Item("Objective8",0);
-        arr.add(item8);*/
 
         ListAdapter adapter = new ListAdapter(this.getContext(),R.layout.itemview,arr);
         listView.setAdapter(adapter);

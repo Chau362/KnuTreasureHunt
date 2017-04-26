@@ -55,7 +55,7 @@ class ListAdapter extends BaseAdapter {
         Item item = itemList.get(position);
 
         photo.setImageResource(item.getImage_i());
-        title.setText(item.getText());
+        title.setText(item.getName());
 
         return convertView;
     }

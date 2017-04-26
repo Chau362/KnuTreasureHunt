@@ -1,7 +1,6 @@
 package pearsistent.knutreasurehunt;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,28 +14,28 @@ import java.util.ArrayList;
  * Created by Zzeulki on 2017. 4. 21..
  */
 
-public class CreateMissionListAdapter extends BaseAdapter {
+public class CreateMissionListAdapter extends BaseAdapter{
     Context context;
     int layout;
-    ArrayList<Mission> missionList;
+    ArrayList<Item> choicedList;
     LayoutInflater inf;
 
-    public CreateMissionListAdapter(Context context, int layout, ArrayList<Mission> missionList) {
+    public CreateMissionListAdapter(Context context, int layout, ArrayList<Item> choicedList) {
         this.context = context;
         this.layout = layout;
-        this.missionList = missionList;
-        this.inf = (LayoutInflater) context
+        this.choicedList = choicedList;
+        this.inf = (LayoutInflater)context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() { // 총 데이터의 개수를 리턴
-        return missionList.size();
+        return choicedList.size();
     }
 
     @Override
     public Object getItem(int position) { // 해당번째의 데이터 값
-        return missionList.get(position);
+        return choicedList.get(position);
     }
 
     @Override
@@ -52,13 +51,12 @@ public class CreateMissionListAdapter extends BaseAdapter {
         TextView objectName = (TextView) convertView.findViewById(R.id.objectNameTextView);
         CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.objectCheckBox);
 
-        Mission mission = missionList.get(position);
+        Item item = choicedList.get(position);
 
 
-        Log.i("objectName", mission.getObjectName());
-        objectName.setText(mission.getObjectName());
-        checkBox = mission.getCheckBox();
-        checkBox.setChecked(true);
+        //Log.i("objectName",mission.getObjectName());
+        objectName.setText(item.getName());
+        checkBox = item.getCheckBox();
 
         return convertView;
     }

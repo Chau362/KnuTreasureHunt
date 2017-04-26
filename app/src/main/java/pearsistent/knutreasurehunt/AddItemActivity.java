@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +29,7 @@ public class AddItemActivity extends AppCompatActivity{
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference myRef;
+    private long countOfItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class AddItemActivity extends AppCompatActivity{
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        myRef = mFirebaseDatabase.getReference("Items");
 
 
         confirmBtn.setOnClickListener(new View.OnClickListener() {
@@ -50,10 +52,16 @@ public class AddItemActivity extends AppCompatActivity{
                 String description = itemDescription.getText().toString();
                 Item newItem = new Item(name, description);
 
+                //if you have any question about this part ask to seulki
+                String itemKey = "Item"+countOfItem;    //make a item Key
+
+
                 if(newItem != null) {
                     FirebaseUser user = mAuth.getCurrentUser();
-                    String userId = user.getUid();
-                    myRef.child(userId).child("Items").setValue(newItem);
+                    //String userId = user.getUid();
+
+                    Toast.makeText(AddItemActivity.this, newItem.getText()+" Item Upload Success!", Toast.LENGTH_SHORT).show();
+                    myRef.child(itemKey).setValue(newItem);
 
                     itemName.setText("");
                     itemDescription.setText("");
@@ -78,16 +86,21 @@ public class AddItemActivity extends AppCompatActivity{
             }
         };
 
-        myRef.addValueEventListener(new ValueEventListener() {
+
+        myRef.addValueEventListener(new ValueEventListener(){
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                //get count of children
+                countOfItem = dataSnapshot.getChildrenCount();
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
 
     }

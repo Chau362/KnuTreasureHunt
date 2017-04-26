@@ -34,7 +34,7 @@ public class RegisterTeamActivity extends BaseActivity {
     //////For Register
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener; //////Add Firebase
-    private String auth_id, auth_pwd, rgstr_team, rgstr_user;
+    private String auth_id,auth_pwd,rgstr_team,rgstr_user;
     private boolean CheckRegister;
 
     @Override
@@ -66,7 +66,7 @@ public class RegisterTeamActivity extends BaseActivity {
             }
         };
         ///////For DB
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team");
 
         /////////
 
@@ -77,7 +77,7 @@ public class RegisterTeamActivity extends BaseActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerBtn.setOnClickListener(new View.OnClickListener() {
+                     registerBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         auth_id = email.getText().toString();
@@ -85,18 +85,17 @@ public class RegisterTeamActivity extends BaseActivity {
                         rgstr_team = teamName.getText().toString();
                         rgstr_user = userName.getText().toString();
 
-                        Log.i("eeee", "etest");
+                        Log.i("eeee","etest");
 
-                        createTeam(auth_id, auth_pwd);
-                        addTeamToDB(rgstr_team, auth_id, auth_pwd, rgstr_user);
+                        createTeam(auth_id,auth_pwd);
+                        addTeamToDB(rgstr_team,auth_id,auth_pwd,rgstr_user);
                     }
                 });
             }
         });
     }
-
     ///////Register Account to Firebase
-    private void createTeam(String email, String pwd) {
+    private void createTeam(String email, String pwd){
         Log.d(auth_id, "createAdminAccount:" + email);
         if (!validateForm()) {
             return;
@@ -110,13 +109,13 @@ public class RegisterTeamActivity extends BaseActivity {
                         Log.d("CREATE", "createUserWithEmail:onComplete:" + task.isSuccessful());
                         hideProgressDialog();
                         // [END_EXCLUDE]
-                        if (task.isSuccessful()) {
+                        if(task.isSuccessful()) {
                             Log.d("CREATE", "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(RegisterTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
 
                             //if admin sign up is successful, go to Login.
-                            Intent i = new Intent(RegisterTeamActivity.this, LoginTeamActivity.class);
+                            Intent i = new Intent(RegisterTeamActivity.this,LoginTeamActivity.class);
                             startActivity(i);
                         }
                         // If sign up fails, display a message to the user. If sign in succeeds
@@ -130,18 +129,19 @@ public class RegisterTeamActivity extends BaseActivity {
     }
 
     /////Put team into DB
-    private void addTeamToDB(String teamname, String email, String pwd, String username) {
-        Team team = new Team(teamname, email, pwd, null, 0);
+    private void addTeamToDB(String teamname, String email, String pwd, String username){
+        Team team = new Team(teamname, null, 0);
         TeamMember member = new TeamMember();
         member.setMemberName(username);
-        //  team.addTeamMember(member);
+        //team.addTeamMember(member);
 
-        mDatabase.child("team").push();
-        mDatabase.child("team").setValue(team);
+        //Log.i("Team name",team.getTeamName());
+        //mDatabase.setValue("team");
+        mDatabase.child(team.getTeamName()).setValue(team);
+        //mDatabase.child("team").setValue(team);
 
 
     }
-
     private boolean validateForm() {
         boolean valid = true;
 
@@ -160,15 +160,14 @@ public class RegisterTeamActivity extends BaseActivity {
         }
 
 
+
         return valid;
     }
-
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
-
     @Override
     public void onStop() {
         super.onStop();
