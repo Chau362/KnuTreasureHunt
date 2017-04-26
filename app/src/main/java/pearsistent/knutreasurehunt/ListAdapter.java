@@ -52,10 +52,12 @@ class ListAdapter extends BaseAdapter {
         ImageView photo = (ImageView)convertView.findViewById(R.id.imageView);
         TextView title = (TextView) convertView.findViewById(R.id.textView);
 
-        Item item = itemList.get(position);
+        final Item item = itemList.get(position);
 
         photo.setImageResource(item.getImage_i());
+        //Glide.with(this.context).using(new FirebaseImageLoader()).load().into(photo);
         title.setText(item.getName());
+
 
         return convertView;
     }

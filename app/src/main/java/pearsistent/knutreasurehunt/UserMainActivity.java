@@ -4,14 +4,30 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
+
+import static com.google.android.gms.wearable.DataMap.TAG;
+import static pearsistent.knutreasurehunt.R.id.imageView;
+import static pearsistent.knutreasurehunt.R.id.itemList;
 
 
 /**
@@ -23,19 +39,26 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 
-// last coder : seulki, 2017.03.28
+// last coder : seulki, 2017.04.25
 
 public class UserMainActivity extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
+
+    private DatabaseReference mDatabase;
+    private String teamName=null;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private ListAdapter adapter;
+    ImageView imageview;
+    Item item;
+
 
     public UserMainActivity() {
         // Required empty public constructor
@@ -56,8 +79,15 @@ public class UserMainActivity extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tab1, container,false);
-        final ListView listView = (ListView) v.findViewById(R.id.itemList);
+
+        final ListView listView = (ListView) v.findViewById(itemList);
         Button addMember = (Button) v.findViewById(R.id.addmember);
+
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
+
+        final ArrayList<Item> getList = new ArrayList<>();
 
 
         addMember.setOnClickListener(new View.OnClickListener() {
@@ -70,49 +100,49 @@ public class UserMainActivity extends Fragment{
 
         });
 
-        ArrayList<Item> arr = new ArrayList<>();
 
-        Item item1 = new Item("Objective1",R.drawable.marker);
-        arr.add(item1);
+        mDatabase.child("Items").addListenerForSingleValueEvent(new ValueEventListener(){
 
-        Item item2 = new Item("Objective2",R.drawable.marker);
-        arr.add(item2);
-
-        Item item3 = new Item("Objective3",R.drawable.marker);
-        arr.add(item3);
-
-        Item item4 = new Item("Objective4",R.drawable.marker);
-        arr.add(item4);
-
-        Item item5 = new Item("Objective5",0);
-        arr.add(item5);
-
-        Item item6 = new Item("Objective6",0);
-        arr.add(item6);
-
-        Item item7 = new Item("Objective7",0);
-        arr.add(item7);
-
-        Item item8 = new Item("Objective8",0);
-        arr.add(item8);
-
-        ListAdapter adapter = new ListAdapter(this.getContext(),R.layout.itemview,arr);
-        listView.setAdapter(adapter);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Item item = (Item) listView.getAdapter().getItem(position);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                getList.clear();
+                // Get Item data value
+                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                    Item item = tempSnapshot.getValue(Item.class);
 
-                Intent i = new Intent(getContext(),ObjectDetailActivity.class);
-                i.putExtra("Item name",item.getName());
-                startActivity(i);
+                    if(item.getChoice()) {
+                        item.setImage_i(R.drawable.marker);
 
+                        //it will change
+                        getList.add(item);
+                    }
+                }
+                //Set Item listview
+                makeListView(listView,getList);
             }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+            }
+
         });
 
+
         return v;
+    }
+
+    private StorageReference findImageFile(String imageFileName) {
+
+        if(teamName!=null){
+
+            //can make a image file name
+            StorageReference childRef = storageRef.child(teamName+"/"+imageFileName);
+
+            return childRef;
+        }
+
+        return null;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -121,6 +151,48 @@ public class UserMainActivity extends Fragment{
             mListener.onFragmentInteraction(uri);
         }
     }
+
+    public void makeListView(final ListView listView, final ArrayList<Item> itemList){
+        adapter = new ListAdapter(this.getContext(),R.layout.itemview,itemList);
+        listView.setAdapter(adapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            //clicked item
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<Item> temp = new ArrayList<Item>();
+                 item = (Item) listView.getAdapter().getItem(position);
+
+                Intent i = new Intent(getContext(),ObjectDetailActivity.class);
+                i.putExtra("Item name",item.getName());
+                startActivityForResult(i,1);
+                //i.getex
+
+                imageview = (ImageView) view.findViewById(imageView);
+
+
+            }
+
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == 1){
+            if(resultCode == 1){
+                teamName = data.getStringExtra("TEAM_NAME");
+                //adapter.notifyDataSetChanged();
+
+                Glide.with(getContext())
+                        .using(new FirebaseImageLoader())
+                        .load(findImageFile(item.getName()+".jpg"))
+                        .into(imageview);
+            }
+        }
+
+    }
+
 
 //    @Override
 //    public void onAttach(Context context) {

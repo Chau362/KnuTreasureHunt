@@ -15,13 +15,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 public class LoginTeamActivity extends BaseActivity{
     private static final String TAG = "LOGIN_TEAM_USER";
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
+    private DatabaseReference mDatabase;
+    //String userId;
     EditText userName;
     EditText userPwd;
     Button loginBtn;
@@ -31,11 +33,13 @@ public class LoginTeamActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login__team);
+        //mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
 
         userName = (EditText) findViewById(R.id.login_team_usr);
         userPwd = (EditText) findViewById(R.id.login_team_pwd);
         loginBtn = (Button) findViewById(R.id.Btn_login_team_Login);
         registerBtn = (Button) findViewById(R.id.Btn_login_team_Register);
+
 
         //hide type password
         userPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -47,8 +51,11 @@ public class LoginTeamActivity extends BaseActivity{
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
+                    // userId = user.getUid();
+
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed__out");

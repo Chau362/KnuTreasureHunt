@@ -13,6 +13,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+
         LinearLayout teamRegistrationLayout = (LinearLayout) findViewById(R.id.teamRegistrationBlock);
         teamRegistrationLayout.setOnClickListener(new View.OnClickListener() {
             @Override

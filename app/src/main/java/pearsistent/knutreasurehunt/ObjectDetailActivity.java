@@ -131,6 +131,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
                             if(check){
                                 savePictures(teamName);
                                 break;
+
                             }
                         }
                     }
@@ -146,16 +147,22 @@ public class ObjectDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void backToPage(String teamName) {
+
+        Intent i = new Intent(this.getApplicationContext(),UserMainActivity.class);
+        i.putExtra("TEAM_NAME",teamName);
+        setResult(1,i);
+        finish();
+    }
+
     //saving pictures on Storage
     private void savePictures(String teamname){
 
 
         //make a Folder
         StorageReference parentRef = storageRef.child(teamname);
-
         //can make a image file name
         StorageReference childRef = storageRef.child(teamname+"/"+this.getImageFileName());
-
         //upload task
         UploadTask uploadTask = childRef.putFile(objectURI);
 
@@ -170,6 +177,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                 Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
+                backToPage(teamName);
             }
         });
     }
