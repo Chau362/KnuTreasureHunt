@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+
 import java.util.ArrayList;
 
 /**
@@ -20,6 +23,7 @@ class ListAdapter extends BaseAdapter {
     int layout;
     ArrayList<Item> itemList;
     LayoutInflater inf;
+    int check = 0;
 
     public ListAdapter(Context context, int layout, ArrayList<Item> itemList) {
         this.context = context;
@@ -52,9 +56,11 @@ class ListAdapter extends BaseAdapter {
         ImageView photo = (ImageView)convertView.findViewById(R.id.imageView);
         TextView title = (TextView) convertView.findViewById(R.id.textView);
 
-        Item item = itemList.get(position);
+        final Item item = itemList.get(position);
 
-        photo.setImageResource(item.getImage_i());
+        //Seulki : if loading has error then I will instead it to marker image in ImageView
+        Glide.with(this.context).using(new FirebaseImageLoader()).load(item.getImageReference()).error(R.drawable.marker).into(photo);
+
         title.setText(item.getName());
 
         return convertView;

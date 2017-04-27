@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static com.google.android.gms.wearable.DataMap.TAG;
 
@@ -27,12 +29,15 @@ import static com.google.android.gms.wearable.DataMap.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
+
+//last coder : seulki, 2017.04.23
 public class Tab1_admin extends Fragment implements View.OnClickListener {
 
-    //private ArrayList<Item> itemList;
+
     private DatabaseReference mDatabase;
-    Button countdown, createlist;
-    Intent intent;
+    private Button countdown, createlist;
+    private Intent intent;
+    private ArrayList<Item> choicedList;
 
 
     public Tab1_admin() {
@@ -44,6 +49,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         ImageButton addObjectiveBtn = (ImageButton) view.findViewById(R.id.addItemBtn);
+
         addObjectiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +57,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
                 startActivity(addItemIntent);
             }
         });
+
 
     }
 
@@ -63,16 +70,15 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         countdown = (Button)rootView.findViewById(R.id.countbutton);
         countdown.setOnClickListener(this);
 
+
+
         final ListView listView = (ListView) rootView.findViewById(R.id.objectList);
 
         createlist = (Button)rootView.findViewById(R.id.createlist);
-        Database database = new Database();
-
-
+        choicedList = new ArrayList<Item>();
+        final ArrayList<Item> itemList = new ArrayList<>();
 
         mDatabase.child("Items").addValueEventListener(new ValueEventListener(){
-
-            ArrayList<Item> itemList = new ArrayList<>();
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -83,6 +89,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
                     item.setCheckBox(new CheckBox(getContext()));
                     itemList.add(item);
                 }
+                //Set Item listview
                 makeListView(listView,itemList);
             }
 
@@ -93,35 +100,55 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
         });
 
-       /* ArrayList<Item>  choicedList = new ArrayList<>();
+        createlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        Item Item1 = new Item("mission itme 1",new CheckBox(getContext()));
-        choicedList.add(Item1);
+                for(int i = 0 ; i< itemList.size(); i ++){
+                    //before update database, item choice flag have to set to false
+                    Item initalItem = itemList.get(i);
+                    initalItem.setChoice(false);
+                    Map<String,Object> initalPostValues = initalItem.toMap();
+                    mDatabase.child("Items").child("Item"+i).updateChildren(initalPostValues);
 
-        Item Item2 = new Item("mission itme 2",new CheckBox(getContext()));
-        choicedList.add(Item2);
+                    if(itemList.get(i).getCheckBox().isChecked()){
+                        itemList.get(i).setChoice(true);
+                        Log.i("choice?",":"+itemList.get(i).getChoice());
+                        //update database : choice flag change to true
+                        Item updateItem = itemList.get(i);
+                        Map<String,Object> postValues = updateItem.toMap();
+                        //mDatabase.child("Items").child("Item"+i).updateChildren(postValues);
 
-        Item Item3 = new Item("mission itme 3",new CheckBox(getContext()));
-        choicedList.add(Item3);
+                        if(!mDatabase.child("Items").child("Item"+i).updateChildren(postValues).isSuccessful()){
+                            Toast.makeText(getContext(),"Create List Success!",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getContext(),"Create List Fail..",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
 
-        Item Item4 = new Item("mission itme 4",new CheckBox(getContext()));
-        choicedList.add(Item4);
-
-        Item Item5 = new Item("mission itme 5",new CheckBox(getContext()));
-        choicedList.add(Item5);*/
-
-//        for(int i=0; i<itemList.size();i++){
-//               Log.i("value1 " + i, itemList.get(i).getName());
-//        }
-
+        });
 
         return rootView;
     }
 
-    public void makeListView(ListView listView,ArrayList<Item> itemList){
+    public void makeListView(final ListView listView,ArrayList<Item> itemList){
         CreateMissionListAdapter adapter = new CreateMissionListAdapter(this.getContext(),R.layout.objectitemview, itemList);
+
+        //현재 리스트의 상태를 보여주고 싶다..ㅠ
+        /*for(int i = 0; i< adapter.getCount();i++){
+            Log.i("choice?",":"+itemList.get(i).getChoice());
+            if(itemList.get(i).getChoice())
+            adapter.checkBoxState[i] = true;
+
+        }*/
+
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+
+
     }
 
 

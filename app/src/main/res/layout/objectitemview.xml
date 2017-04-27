@@ -34,7 +34,10 @@
             android:buttonTint="#B5B5B5"
             android:gravity="center_horizontal"
             android:layout_gravity="center"
-            android:layout_height="30dp" />
+            android:layout_height="30dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:clickable = "true" />
 
     </LinearLayout>
 </LinearLayout>

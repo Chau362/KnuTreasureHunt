@@ -20,7 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-///////Edited by bogyu 4.18
+///////Edited by seulki 04.25
+
 public class RegisterTeamActivity extends BaseActivity {
     private EditText teamName;
     private EditText userName;
@@ -51,13 +52,22 @@ public class RegisterTeamActivity extends BaseActivity {
 
         ////For register
         mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
+            int count = 0;
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
                     Log.d("STATE", "onAuthStateChanged:signed_in:" + user.getUid());
+                    count++;
+
+                    //if user create new account then get a user Id from that new account and add team to DB
+                    if(count==2){
+                        String userId = user.getUid();
+                        addTeamToDB(rgstr_team,rgstr_user,userId);
+                    }
                 } else {
                     // User is signed out
                     Log.d("STATE", "onAuthStateChanged:signed_out");
@@ -88,14 +98,17 @@ public class RegisterTeamActivity extends BaseActivity {
                         Log.i("eeee","etest");
 
                         createTeam(auth_id,auth_pwd);
-                        addTeamToDB(rgstr_team,auth_id,auth_pwd,rgstr_user);
+
+                        //I have to get a new userid so, I wrote this.
+                        mAuth.signInWithEmailAndPassword(auth_id,auth_pwd).isSuccessful();
+
                     }
                 });
             }
         });
     }
     ///////Register Account to Firebase
-    private void createTeam(String email, String pwd){
+    private void createTeam(final String email, final String pwd){
         Log.d(auth_id, "createAdminAccount:" + email);
         if (!validateForm()) {
             return;
@@ -114,10 +127,9 @@ public class RegisterTeamActivity extends BaseActivity {
                             Toast.makeText(RegisterTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
 
-                            //if admin sign up is successful, go to Login.
-                            Intent i = new Intent(RegisterTeamActivity.this,LoginTeamActivity.class);
-                            startActivity(i);
                         }
+
+
                         // If sign up fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
@@ -128,18 +140,26 @@ public class RegisterTeamActivity extends BaseActivity {
                 });
     }
 
+    private void setUserId(){
+
+    }
+
     /////Put team into DB
-    private void addTeamToDB(String teamname, String email, String pwd, String username){
-        Team team = new Team(teamname, null, 0);
-        TeamMember member = new TeamMember();
-        member.setMemberName(username);
-        //team.addTeamMember(member);
+    private void addTeamToDB(String teamname, String username, String userid){
+        Team team = new Team(teamname, 0);
+        TeamMember member = new TeamMember(username, userid);
+        //member.setMemberName(username);
+
+        team.addTeamMember(member);
 
         //Log.i("Team name",team.getTeamName());
         //mDatabase.setValue("team");
         mDatabase.child(team.getTeamName()).setValue(team);
         //mDatabase.child("team").setValue(team);
 
+        mAuth.signOut();
+        Intent i = new Intent(RegisterTeamActivity.this,LoginTeamActivity.class);
+        startActivity(i);
 
     }
     private boolean validateForm() {

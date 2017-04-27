@@ -3,6 +3,11 @@ package pearsistent.knutreasurehunt;
 
 import android.widget.CheckBox;
 
+import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Zzeulki on 2017. 3. 28..
  */
@@ -11,12 +16,9 @@ public class Item {
 
     private CheckBox checkBox;
     private boolean choice;
-    private int image_i;
+    private StorageReference imageReference;    //To use FirebaseUI, I need StorageReference
     private String text;
     private String name;
-
-
-
     private int points;
     //String location;
 
@@ -35,26 +37,25 @@ public class Item {
         this.choice = false;
     }
 
-//    public Item(String t, String n, int temp) {
-//        this.text = t;
-//        this.name = n;
-//        this.image_i = temp;
-//    }
 
     public int getPoints() {
         return points;
     }
 
-    public Item(String t, int i){
-        this.text = t;
-        this.image_i = i;
+
+
+    public StorageReference getImageReference() {
+        return this.imageReference;
     }
 
-    public int getImage_i() {
-        return this.image_i;
+    public void setImageReference(StorageReference imageReference) {
+        this.imageReference = imageReference;
     }
-
     public boolean getChoice(){ return this.choice; }
+
+    public void setChoice(boolean value){
+        this.choice = value;
+    }
 
     public CheckBox getCheckBox(){ return this.checkBox;}
 
@@ -68,5 +69,16 @@ public class Item {
 
     public String getName() {
         return this.name;
+    }
+
+    public Map<String, Object> toMap(){
+
+        HashMap<String,Object> item = new HashMap<>();
+        item.put("choice",choice);
+        //item.put("image_i",image_i);
+        item.put("name",name);
+        item.put("text",text);
+
+        return item;
     }
 }
