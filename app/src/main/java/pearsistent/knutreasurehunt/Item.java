@@ -81,7 +81,6 @@ public class Item {
 
         HashMap<String,Object> item = new HashMap<>();
         item.put("choice",choice);
-        //item.put("image_i",image_i);
         item.put("name",name);
         item.put("text",text);
 

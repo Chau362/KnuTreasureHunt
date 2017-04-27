@@ -73,7 +73,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
         mDatabase.child("Items").addValueEventListener(new ValueEventListener(){
 
-            ArrayList<Item> itemList = new ArrayList<>();
+            //ArrayList<Item> itemList = new ArrayList<>();
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

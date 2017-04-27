@@ -22,7 +22,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
 
     ArrayList<Item> allItems = new ArrayList<>();
     private Context context;
-
+    private static String teamName;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -30,7 +30,6 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
         TextView cardTitle;
         TextView cardPoints;
         ImageView selfie;
-        Context context;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -43,16 +42,16 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-
                 }
             });
 
         }
+
     }
 
-    public CardListAdapter(ArrayList<Item> itemArrayList) {
+    public CardListAdapter(ArrayList<Item> itemArrayList, String teamName) {
         this.allItems = itemArrayList;
-        //Log.i("count","  "+allItems.size());
+        this.teamName = teamName;
     }
 
     @Override
@@ -67,10 +66,9 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
     public void onBindViewHolder(CardListAdapter.ViewHolder holder, int position) {
 
         holder.cardTitle.setText(allItems.get(position).getName());
-        holder.cardPoints.setText(allItems.get(position).getText());
+        holder.cardPoints.setText(allItems.get(position).getText()+"  ( " +String.valueOf(allItems.get(position).getPoints())+" pts )");
         //holder.cardPoints.setText(String.valueOf(10));
 
-        //holder.selfie.setImageResource(allItems.get(position).getImageReference());
 
         //Seulki : if loading has error then I will instead it to marker image in ImageView
         Glide.with(context).using(new FirebaseImageLoader()).load(allItems.get(position).getImageReference()).error(R.drawable.marker).into(holder.selfie);

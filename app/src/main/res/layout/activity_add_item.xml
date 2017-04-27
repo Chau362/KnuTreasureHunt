@@ -43,6 +43,18 @@
         android:hint="Item description"
         android:inputType="textMultiLine" />
 
+    <EditText
+        android:id="@+id/itemPointEditText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="13dp"
+        android:ems="10"
+        android:textColorHint="#B5B5B5"
+        android:backgroundTint="#B5B5B5"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:hint="Item description"
+        android:inputType="textMultiLine" />
+
     <ImageButton
         android:id="@+id/addItemToDatabaseBtn"
         android:layout_width="match_parent"

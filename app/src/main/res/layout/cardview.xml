@@ -31,7 +31,6 @@
                 android:layout_marginRight="16dp"
                 card_view:srcCompat="@drawable/marker" />
 
-
             <TextView
                 android:id="@+id/cardTitle"
                 android:layout_width="wrap_content"
@@ -49,7 +48,7 @@
 
             <TextView
                 android:id="@+id/cardSubtext"
-                android:layout_width="wrap_content"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/cardTitle"
                 android:layout_alignStart="@+id/cardTitle"

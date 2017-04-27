@@ -160,19 +160,24 @@ public class LoginTeamActivity extends BaseActivity{
                     boolean check = false;
                     Team team = new Team();
                     team = tempSnapshot.getValue(Team.class);
-                    for(int i = 0 ; i < team.getTeamMembers().size() ; i++) {
+                    if(team.getTeamMembers()!=null){
+                        for(int i = 0 ; i < team.getTeamMembers().size() ; i++) {
 
                         //finding team name using member's userId
-                        if (team.getTeamMembers().get(i).getUserId().equals(userId)) {
+                            if (team.getTeamMembers().get(i).getUserId().equals(userId)) {
 
                             //if find right team information
-                            goToNextPage(team.getTeamName());
-                            check = true;
+                                goToNextPage(team.getTeamName());
+                                check = true;
+                                break;
+                            }
+                    }
+                        if(check){
                             break;
                         }
-                    }
-                    if(check){
-                        break;
+                    }else{
+                        Toast.makeText(LoginTeamActivity.this, "No exist ID or Not team user",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             }

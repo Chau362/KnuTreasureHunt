@@ -8,12 +8,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
@@ -66,6 +68,7 @@ public class UserMainActivity extends Fragment {
     private ListAdapter adapter;
     ImageView imageview;
     Item item;
+    private String itemName;
 
 
     public UserMainActivity() {
@@ -123,7 +126,6 @@ public class UserMainActivity extends Fragment {
                         //Set item image Reference
                         item.setImageReference(findImageFile(item.getName()+".jpg"));
                         getList.add(item);
-
                         //Log.i("cheeee",item.getName());
                     }
                 }
@@ -163,34 +165,48 @@ public class UserMainActivity extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new CardListAdapter(itemList);
+        mAdapter = new CardListAdapter(itemList, teamName);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        /*mRecyclerView.setOnClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<Item> temp = new ArrayList<Item>();
-                item = (Item) mAdapter.getItem(position);
+       final GestureDetector gestureDetector = new GestureDetector(getContext(),new GestureDetector.SimpleOnGestureListener(){
+           @Override
+           public boolean onSingleTapUp(MotionEvent e)
+           {
+               return true;
+           }
+       });
 
-                Intent i = new Intent(getContext(),ObjectDetailActivity.class);
-                i.putExtra("PATH_TO_SAVE",teamName+"/"+item.getName()+".jpg");
-                startActivityForResult(i,1);
 
-                imageview = (ImageView) view.findViewById(imageView);
-            }
-        });*/
 
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                View childView = rv.findChildViewUnder(e.getX(),e.getY());
+
+                    if(childView !=null && gestureDetector.onTouchEvent(e)) {
+                        TextView textview = (TextView) childView.findViewById(R.id.cardTitle);
+
+
+                        itemName = textview.getText().toString();
+
+
+                        Intent i = new Intent(getContext(), ObjectDetailActivity.class);
+                        i.putExtra("PATH_TO_SAVE", teamName + "/" + itemName + ".jpg");
+                        startActivityForResult(i, 1);
+
+                        imageview = (ImageView) childView.findViewById(R.id.cardImage);
+                    }
+                //imageview = (ImageView) childView.findViewById(imageView);
+                 //   mAdapter.notifyDataSetChanged();
+
                 return false;
             }
 
             @Override
             public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-                Log.i("eee","1");
+
             }
 
             @Override
@@ -223,7 +239,7 @@ public class UserMainActivity extends Fragment {
             if(resultCode==1){
                 Glide.with(getContext())
                         .using(new FirebaseImageLoader())
-                        .load(findImageFile(item.getName()+".jpg"))
+                        .load(findImageFile(itemName+".jpg"))
                         .error(R.drawable.marker).into(imageview);
             }
         }

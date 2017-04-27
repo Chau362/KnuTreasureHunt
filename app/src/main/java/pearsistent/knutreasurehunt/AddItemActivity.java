@@ -38,6 +38,8 @@ public class AddItemActivity extends AppCompatActivity{
 
         final EditText itemName = (EditText) findViewById(R.id.itemNameEditText);
         final EditText itemDescription = (EditText) findViewById(R.id.itemDescriptionEditText);
+        final EditText itemPoint = (EditText) findViewById(R.id.itemPointEditText);
+
         ImageButton confirmBtn = (ImageButton) findViewById(R.id.addItemToDatabaseBtn);
 
         mAuth = FirebaseAuth.getInstance();
@@ -50,7 +52,9 @@ public class AddItemActivity extends AppCompatActivity{
             public void onClick(View v) {
                 String name = itemName.getText().toString();
                 String description = itemDescription.getText().toString();
-                Item newItem = new Item(name, description,0);
+                Log.i("eesss",itemPoint.getText().toString());
+                int point = Integer.parseInt(itemPoint.getText().toString());
+                Item newItem = new Item(name, description, point);
 
                 //if you have any question about this part ask to seulki
                 String itemKey = "Item"+countOfItem;    //make a item Key
@@ -60,7 +64,7 @@ public class AddItemActivity extends AppCompatActivity{
                     FirebaseUser user = mAuth.getCurrentUser();
                     //String userId = user.getUid();
 
-                    Toast.makeText(AddItemActivity.this, newItem.getText()+" Item Upload Success!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddItemActivity.this, newItem.getName()+" Item Upload Success!", Toast.LENGTH_SHORT).show();
                     myRef.child(itemKey).setValue(newItem);
 
                     itemName.setText("");
@@ -89,9 +93,10 @@ public class AddItemActivity extends AppCompatActivity{
 
         myRef.addValueEventListener(new ValueEventListener(){
 
+            int key=0;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //get count of children
+
                 countOfItem = dataSnapshot.getChildrenCount();
             }
 
