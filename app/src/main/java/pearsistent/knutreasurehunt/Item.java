@@ -12,12 +12,9 @@ public class Item {
     private CheckBox checkBox;
     private boolean choice;
     private int image_i;
-    private String text;
+    private String description;
     private String name;
-
-
     private int points;
-    //String location;
 
     public Item() {
 
@@ -31,8 +28,15 @@ public class Item {
     public Item(String n, String t) {
 
         this.name = n;
-        this.text = t;
+        this.description = t;
+    }
+
+    public Item(String n, String t, int p) {
+
+        this.name = n;
+        this.description = t;
         this.choice = false;
+        this.points = p;
     }
 
 //    public Item(String t, String n, int temp) {
@@ -41,13 +45,9 @@ public class Item {
 //        this.image_i = temp;
 //    }
 
+
     public int getPoints() {
         return points;
-    }
-
-    public Item(String t, int i) {
-        this.text = t;
-        this.image_i = i;
     }
 
     public int getImage_i() {
@@ -67,7 +67,7 @@ public class Item {
     }
 
     public String getText() {
-        return this.text;
+        return this.description;
     }
 
     public String getName() {

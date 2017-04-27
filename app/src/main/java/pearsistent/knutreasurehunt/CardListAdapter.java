@@ -1,5 +1,6 @@
 package pearsistent.knutreasurehunt;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +19,18 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
     ArrayList<Item> allItems = new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView cardTitle;
-        public TextView cardPoints;
-        public ImageView selfie;
+
+        CardView cardView;
+        TextView cardTitle;
+        TextView cardPoints;
+        ImageView selfie;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            this.cardView = (CardView) itemView.findViewById(R.id.cardView);
             this.cardTitle = (TextView) itemView.findViewById(R.id.cardTitle);
             this.cardPoints = (TextView) itemView.findViewById(R.id.cardSubtext);
-            this.selfie = (ImageView) itemView.findViewById(R.id.cardImage);
+            //this.selfie = (ImageView) itemView.findViewById(R.id.cardImage);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -36,6 +40,10 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
                 }
             });
         }
+    }
+
+    public CardListAdapter(ArrayList<Item> itemArrayList) {
+        this.allItems = itemArrayList;
     }
 
     @Override
@@ -49,7 +57,12 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
     public void onBindViewHolder(CardListAdapter.ViewHolder holder, int position) {
         holder.cardTitle.setText(allItems.get(position).getName());
         holder.cardPoints.setText(allItems.get(position).getPoints());
-        holder.selfie.setImageResource(allItems.get(position).getImage_i());
+        //holder.selfie.setImageResource(allItems.get(position).getImage_i());
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
     }
 
     @Override

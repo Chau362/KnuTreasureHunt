@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -33,8 +34,9 @@ public class UserMainActivity extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private CardListAdapter mAdapter;
+    private LinearLayoutManager mLayoutManager;
+    private ImageButton addMemberBtn;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -61,11 +63,12 @@ public class UserMainActivity extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tab1, container,false);
-        ListView listView = (ListView) v.findViewById(R.id.itemList);
-        Button addMember = (Button) v.findViewById(R.id.addmember);
+
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.userItemList);
+        addMemberBtn = (ImageButton) v.findViewById(R.id.addMember);
 
 
-        addMember.setOnClickListener(new View.OnClickListener() {
+        addMemberBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view){
@@ -77,18 +80,31 @@ public class UserMainActivity extends Fragment {
 
         ArrayList<Item> arr = new ArrayList<>();
 
-        ListAdapter adapter = new ListAdapter(this.getContext(),R.layout.itemview,arr);
-        listView.setAdapter(adapter);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        Item myfirstItem = new Item("Fountain", "Take a Selfie at the Fountain", 3);
+        arr.add(myfirstItem);
+        Item mysecondItem = new Item("Hyundai", "Take a Selfie with a black Hyundai", 3);
+        arr.add(mysecondItem);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new CardListAdapter(arr);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0)
-                {
-                    Intent i = new Intent(getContext(),ObjectDetailActivity.class);
-                    startActivity(i);
-                }
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
             }
         });
