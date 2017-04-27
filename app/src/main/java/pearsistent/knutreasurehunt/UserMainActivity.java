@@ -4,15 +4,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
@@ -27,7 +28,6 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 import static com.google.android.gms.wearable.DataMap.TAG;
-import static pearsistent.knutreasurehunt.R.id.imageView;
 //import static pearsistent.knutreasurehunt.R.id.itemList;
 
 
@@ -40,21 +40,23 @@ import static pearsistent.knutreasurehunt.R.id.imageView;
  * create an instance of this fragment.
  */
 
-// last coder : seulki, 2017.04.27
+// last coder : seulki, 2017.03.28
 
-public class UserMainActivity extends Fragment{
+public class UserMainActivity extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private CardListAdapter mAdapter;
+    private LinearLayoutManager mLayoutManager;
+    private ImageButton addMemberBtn;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
     private OnFragmentInteractionListener mListener;
 
     private DatabaseReference mDatabase;
@@ -68,7 +70,6 @@ public class UserMainActivity extends Fragment{
 
     public UserMainActivity() {
         // Required empty public constructor
-
     }
 
 
@@ -88,8 +89,10 @@ public class UserMainActivity extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tab1, container,false);
-        final RecyclerView listView = (RecyclerView) v.findViewById(itemList);
-        ImageButton addMember = (ImageButton) v.findViewById(R.id.imageButton3);
+
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.userItemList);
+        addMemberBtn = (ImageButton) v.findViewById(R.id.addMember);
+
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
         storage = FirebaseStorage.getInstance();
@@ -97,8 +100,7 @@ public class UserMainActivity extends Fragment{
 
         final ArrayList<Item> getList = new ArrayList<>();
 
-
-        addMember.setOnClickListener(new View.OnClickListener() {
+        addMemberBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view){
@@ -110,7 +112,6 @@ public class UserMainActivity extends Fragment{
 
 
         mDatabase.child("Items").addListenerForSingleValueEvent(new ValueEventListener(){
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 getList.clear();
@@ -122,10 +123,12 @@ public class UserMainActivity extends Fragment{
                         //Set item image Reference
                         item.setImageReference(findImageFile(item.getName()+".jpg"));
                         getList.add(item);
+
+                        //Log.i("cheeee",item.getName());
                     }
                 }
                 //Set Item listview
-                makeListView(listView,getList);
+                makeListView(getList);
             }
 
             @Override
@@ -133,7 +136,6 @@ public class UserMainActivity extends Fragment{
                 Log.w(TAG, "getUser:onCancelled", databaseError.toException());
             }
         });
-
 
         return v;
     }
@@ -152,19 +154,52 @@ public class UserMainActivity extends Fragment{
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
 
-    public void makeListView(final ListView listView, final ArrayList<Item> itemList){
-        adapter = new ListAdapter(this.getContext(),R.layout.itemview,itemList);
-        listView.setAdapter(adapter);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+    public void makeListView(final ArrayList<Item> itemList){
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new CardListAdapter(itemList);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*mRecyclerView.setOnClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<Item> temp = new ArrayList<Item>();
+                item = (Item) mAdapter.getItem(position);
+
+                Intent i = new Intent(getContext(),ObjectDetailActivity.class);
+                i.putExtra("PATH_TO_SAVE",teamName+"/"+item.getName()+".jpg");
+                startActivityForResult(i,1);
+
+                imageview = (ImageView) view.findViewById(imageView);
+            }
+        });*/
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+                Log.i("eee","1");
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
+
+        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             //clicked item
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -178,7 +213,7 @@ public class UserMainActivity extends Fragment{
                 imageview = (ImageView) view.findViewById(imageView);
             }
 
-        });
+        });*/
     }
 
     //if user take a selfie, imageview will be update. if not then it will not be change.

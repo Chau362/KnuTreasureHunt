@@ -17,27 +17,27 @@ import java.util.ArrayList;
 public class CreateMissionListAdapter extends BaseAdapter{
     Context context;
     int layout;
-    ArrayList<Item> itemList;
+    ArrayList<Item> choicedList;
     LayoutInflater inf;
     boolean[] checkBoxState;
 
-    public CreateMissionListAdapter(Context context, int layout, ArrayList<Item> itemList) {
+    public CreateMissionListAdapter(Context context, int layout, ArrayList<Item> choicedList) {
         this.context = context;
         this.layout = layout;
-        this.itemList = itemList;
+        this.choicedList = choicedList;
         this.inf = (LayoutInflater)context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        checkBoxState = new boolean[itemList.size()];
+        checkBoxState = new boolean[choicedList.size()];
     }
 
     @Override
     public int getCount() { // 총 데이터의 개수를 리턴
-        return itemList.size();
+        return choicedList.size();
     }
 
     @Override
     public Object getItem(int position) { // 해당번째의 데이터 값
-        return itemList.get(position);
+        return choicedList.get(position);
     }
 
     @Override
@@ -46,14 +46,14 @@ public class CreateMissionListAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null)
             convertView = inf.inflate(layout, null);
 
         TextView objectName = (TextView) convertView.findViewById(R.id.objectNameTextView);
         CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.objectCheckBox);
 
-        final Item item = itemList.get(position);
+        final Item item = choicedList.get(position);
 
 //        if(item.getChoice()){
 //            checkBoxState[position] = true;

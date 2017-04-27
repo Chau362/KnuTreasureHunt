@@ -29,15 +29,12 @@ import static com.google.android.gms.wearable.DataMap.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-
-//last coder : seulki, 2017.04.23
 public class Tab1_admin extends Fragment implements View.OnClickListener {
 
-
+    //private ArrayList<Item> itemList;
     private DatabaseReference mDatabase;
-    private Button countdown, createlist;
-    private Intent intent;
-    private ArrayList<Item> choicedList;
+    Button countdown, createlist;
+    Intent intent;
 
 
     public Tab1_admin() {
@@ -49,7 +46,6 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         ImageButton addObjectiveBtn = (ImageButton) view.findViewById(R.id.addItemBtn);
-
         addObjectiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +53,6 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
                 startActivity(addItemIntent);
             }
         });
-
 
     }
 
@@ -70,15 +65,15 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         countdown = (Button)rootView.findViewById(R.id.countbutton);
         countdown.setOnClickListener(this);
 
-
-
         final ListView listView = (ListView) rootView.findViewById(R.id.objectList);
 
         createlist = (Button)rootView.findViewById(R.id.createlist);
-        choicedList = new ArrayList<Item>();
+        ArrayList<Item> choicedList = new ArrayList<Item>();
         final ArrayList<Item> itemList = new ArrayList<>();
 
         mDatabase.child("Items").addValueEventListener(new ValueEventListener(){
+
+            ArrayList<Item> itemList = new ArrayList<>();
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -133,22 +128,10 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    public void makeListView(final ListView listView,ArrayList<Item> itemList){
+    public void makeListView(ListView listView,ArrayList<Item> itemList){
         CreateMissionListAdapter adapter = new CreateMissionListAdapter(this.getContext(),R.layout.objectitemview, itemList);
-
-        //현재 리스트의 상태를 보여주고 싶다..ㅠ
-        /*for(int i = 0; i< adapter.getCount();i++){
-            Log.i("choice?",":"+itemList.get(i).getChoice());
-            if(itemList.get(i).getChoice())
-            adapter.checkBoxState[i] = true;
-
-        }*/
-
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-
-
     }
 
 

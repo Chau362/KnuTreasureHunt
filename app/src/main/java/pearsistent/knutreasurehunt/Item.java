@@ -30,13 +30,19 @@ public class Item {
         this.name = n;
         this.checkBox = c;
     }
-    public Item(String n, String t) {
+    public Item(String n, String t, int point) {
 
         this.name = n;
         this.text = t;
+        this.points = point;
         this.choice = false;
     }
 
+//    public Item(String t, String n, int temp) {
+//        this.text = t;
+//        this.name = n;
+//        this.image_i = temp;
+//    }
 
     public int getPoints() {
         return points;
@@ -81,4 +87,6 @@ public class Item {
 
         return item;
     }
+
+
 }

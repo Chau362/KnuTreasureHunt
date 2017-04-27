@@ -20,8 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-///////Edited by seulki 04.25
-
+///////Edited by bogyu 4.18
 public class RegisterTeamActivity extends BaseActivity {
     private EditText teamName;
     private EditText userName;
@@ -108,7 +107,7 @@ public class RegisterTeamActivity extends BaseActivity {
         });
     }
     ///////Register Account to Firebase
-    private void createTeam(final String email, final String pwd){
+    private void createTeam(String email, String pwd){
         Log.d(auth_id, "createAdminAccount:" + email);
         if (!validateForm()) {
             return;
@@ -126,10 +125,7 @@ public class RegisterTeamActivity extends BaseActivity {
                             Log.d("CREATE", "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(RegisterTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
-
                         }
-
-
                         // If sign up fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
@@ -138,10 +134,6 @@ public class RegisterTeamActivity extends BaseActivity {
                         }
                     }
                 });
-    }
-
-    private void setUserId(){
-
     }
 
     /////Put team into DB

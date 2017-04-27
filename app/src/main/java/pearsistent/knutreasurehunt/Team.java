@@ -29,15 +29,15 @@ public class Team {
         this.teamPoint = i;
     }*/
 
-    public String getTeamName(){
+    public String getTeamName() {
         return this.teamName;
     }
 
-    public int getTeamPoint(){
+    public int getTeamPoint() {
         return this.teamPoint;
     }
 
-    public ArrayList<TeamMember> getTeamMembers(){
+    public ArrayList<TeamMember> getTeamMembers() {
         return this.teamMembers;
     }
 
