@@ -42,6 +42,7 @@ public class AddItemActivity extends AppCompatActivity{
 
         ImageButton confirmBtn = (ImageButton) findViewById(R.id.addItemToDatabaseBtn);
 
+
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference("Items");
@@ -57,7 +58,7 @@ public class AddItemActivity extends AppCompatActivity{
                 Item newItem = new Item(name, description, point);
 
                 //if you have any question about this part ask to seulki
-                String itemKey = "Item"+countOfItem;    //make a item Key
+                String itemKey = ""+countOfItem;    //make a item Key
 
 
                 if(newItem != null) {

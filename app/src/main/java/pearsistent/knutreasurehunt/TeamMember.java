@@ -1,5 +1,8 @@
 package pearsistent.knutreasurehunt;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Zzeulki on 2017. 3. 30..
  */
@@ -32,6 +35,15 @@ public class TeamMember {
 
     public void setMemberUserId(String userid){
         this.userId = userid;
+    }
+
+    public Map<String, Object> toMap(){
+
+        HashMap<String,Object> teamMember = new HashMap<>();
+        teamMember.put("memberName",memberName);
+        teamMember.put("userId",userId);
+
+        return teamMember;
     }
 
 

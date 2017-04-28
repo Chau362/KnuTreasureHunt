@@ -31,7 +31,7 @@ import static com.google.android.gms.wearable.DataMap.TAG;
  */
 public class Tab1_admin extends Fragment implements View.OnClickListener {
 
-    //private ArrayList<Item> itemList;
+    private ArrayList<Item> choicedList;
     private DatabaseReference mDatabase;
     Button countdown, createlist;
     Intent intent;
@@ -46,6 +46,8 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         ImageButton addObjectiveBtn = (ImageButton) view.findViewById(R.id.addItemBtn);
+
+
         addObjectiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,18 +65,18 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         final View rootView = inflater.inflate(R.layout.fragment_tab1_admin, container, false);
         intent = new Intent(getContext(), Timer.class);
         countdown = (Button)rootView.findViewById(R.id.countbutton);
+        ImageButton removeObjectBtn = (ImageButton) rootView.findViewById(R.id.removeItemBtn);
         countdown.setOnClickListener(this);
 
         final ListView listView = (ListView) rootView.findViewById(R.id.objectList);
 
         createlist = (Button)rootView.findViewById(R.id.createlist);
-        ArrayList<Item> choicedList = new ArrayList<Item>();
+        //ArrayList<Item> choicedList = new ArrayList<Item>();
         final ArrayList<Item> itemList = new ArrayList<>();
 
         mDatabase.child("Items").addValueEventListener(new ValueEventListener(){
 
             //ArrayList<Item> itemList = new ArrayList<>();
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 itemList.clear();
@@ -84,6 +86,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
                     item.setCheckBox(new CheckBox(getContext()));
                     itemList.add(item);
                 }
+                choicedList = itemList;
                 //Set Item listview
                 makeListView(listView,itemList);
             }
@@ -95,6 +98,26 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
         });
 
+        removeObjectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ArrayList<Item> updateItem = new ArrayList<Item>();
+                int itemKey = 0;
+                final DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com");
+
+                for(int i = 0 ; i< choicedList.size(); i ++){
+
+                    if(!choicedList.get(i).getCheckBox().isChecked()){
+                        updateItem.add(choicedList.get(i));
+                    }
+                }
+                updateDatabase.child("Items").setValue(updateItem);
+
+            }
+
+        });
+
+
         createlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +127,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
                     Item initalItem = itemList.get(i);
                     initalItem.setChoice(false);
                     Map<String,Object> initalPostValues = initalItem.toMap();
-                    mDatabase.child("Items").child("Item"+i).updateChildren(initalPostValues);
+                    mDatabase.child("Items").child(""+i).updateChildren(initalPostValues);
 
                     if(itemList.get(i).getCheckBox().isChecked()){
                         itemList.get(i).setChoice(true);
@@ -114,7 +137,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
                         Map<String,Object> postValues = updateItem.toMap();
                         //mDatabase.child("Items").child("Item"+i).updateChildren(postValues);
 
-                        if(!mDatabase.child("Items").child("Item"+i).updateChildren(postValues).isSuccessful()){
+                        if(!mDatabase.child("Items").child(""+i).updateChildren(postValues).isSuccessful()){
                             Toast.makeText(getContext(),"Create List Success!",Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(getContext(),"Create List Fail..",Toast.LENGTH_SHORT).show();

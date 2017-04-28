@@ -1,26 +1,68 @@
 package pearsistent.knutreasurehunt;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ListView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-// last coder : seulki, 2017.03.30
+// last coder : seulki, 2017.04.28
 
 public class AddMemberActivity extends AppCompatActivity {
+
+    private DatabaseReference mDatabase;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private ListAdapter adapter;
+    private String teamName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_member);
 
-        ListView listView = (ListView) this.findViewById(R.id.memberlist);
+        final ListView listView = (ListView) this.findViewById(R.id.memberlist);
+        final ArrayList<TeamMember> teamMembers = new ArrayList<>();
+        Intent intent = getIntent();
+        teamName = intent.getStringExtra("TEAM_NAME");
 
-        ArrayList<TeamMember> arr = new ArrayList<>();
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
 
 
-        TeamMember member1 = new TeamMember();
+        mDatabase.child("Team").child(teamName).child("teamMembers").addValueEventListener(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                teamMembers.clear();
+                // Get Item data value
+                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                    TeamMember teamMember = tempSnapshot.getValue(TeamMember.class);
+
+                    teamMembers.add(teamMember);
+                }
+                //Set Item listview
+                makeListView(listView,teamMembers);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.i("Error","Loading data from teamMember");
+            }
+        });
+
+
+        /*TeamMember member1 = new TeamMember();
         member1.setMemberName("Tim");
         arr.add(member1);
 
@@ -46,10 +88,14 @@ public class AddMemberActivity extends AppCompatActivity {
 
         TeamMember member7 = new TeamMember();
         member7.setMemberName("SeulKi");
-        arr.add(member7);
+        arr.add(member7);*/
 
 
-        MemberListAdapter adapter = new MemberListAdapter(this.getApplicationContext(),R.layout.memberview,arr);
+    }
+
+    public void makeListView(ListView listView, final ArrayList<TeamMember> teamList) {
+        MemberListAdapter adapter = new MemberListAdapter(this.getApplicationContext(),R.layout.memberview,teamList,teamName);
         listView.setAdapter(adapter);
     }
+
 }

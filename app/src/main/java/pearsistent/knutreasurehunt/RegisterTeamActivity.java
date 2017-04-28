@@ -94,8 +94,6 @@ public class RegisterTeamActivity extends BaseActivity {
                         rgstr_team = teamName.getText().toString();
                         rgstr_user = userName.getText().toString();
 
-                        Log.i("eeee","etest");
-
                         createTeam(auth_id,auth_pwd);
 
                         //I have to get a new userid so, I wrote this.

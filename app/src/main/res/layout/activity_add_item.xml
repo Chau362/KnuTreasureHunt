@@ -52,7 +52,7 @@
         android:textColorHint="#B5B5B5"
         android:backgroundTint="#B5B5B5"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:hint="Item description"
+        android:hint="Item point"
         android:inputType="textMultiLine" />
 
     <ImageButton

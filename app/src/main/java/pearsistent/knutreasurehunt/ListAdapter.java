@@ -23,7 +23,6 @@ class ListAdapter extends BaseAdapter {
     int layout;
     ArrayList<Item> itemList;
     LayoutInflater inf;
-    int check = 0;
 
     public ListAdapter(Context context, int layout, ArrayList<Item> itemList) {
         this.context = context;

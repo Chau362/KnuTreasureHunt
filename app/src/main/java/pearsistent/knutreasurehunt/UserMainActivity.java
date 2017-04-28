@@ -108,6 +108,7 @@ public class UserMainActivity extends Fragment {
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getContext(), AddMemberActivity.class);
+                intent.putExtra("TEAM_NAME",teamName);
                 startActivity(intent);
             }
 

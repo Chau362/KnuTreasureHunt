@@ -3,6 +3,7 @@ package pearsistent.knutreasurehunt;
 
 import android.widget.CheckBox;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
@@ -48,23 +49,26 @@ public class Item {
         return points;
     }
 
-
-
+    @Exclude
     public StorageReference getImageReference() {
         return this.imageReference;
     }
 
+    @Exclude
     public void setImageReference(StorageReference imageReference) {
         this.imageReference = imageReference;
     }
+
     public boolean getChoice(){ return this.choice; }
 
     public void setChoice(boolean value){
         this.choice = value;
     }
 
+    @Exclude
     public CheckBox getCheckBox(){ return this.checkBox;}
 
+    @Exclude
     public void setCheckBox(CheckBox c){
         this.checkBox = c;
     }

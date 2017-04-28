@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:weightSum="2"
+            android:weightSum="4"
             android:layout_marginTop="20dp">
 
             <Button
@@ -35,8 +35,16 @@
                 android:text="Set Countdown" />
 
             <ImageButton
+                android:id="@+id/removeItemBtn"
+                android:layout_width="35dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/ic_menu_delete" />
+
+
+            <ImageButton
                 android:id="@+id/addItemBtn"
-                android:layout_width="40dp"
+                android:layout_width="44dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 app:srcCompat="@android:drawable/ic_menu_add" />
