@@ -1,6 +1,7 @@
 package pearsistent.knutreasurehunt;
 
 //Edited by Bogyu 4.4
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -148,5 +149,15 @@ public class RegisterAdminActivity extends BaseActivity {
         }
 
         return valid;
+    }
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(RegisterAdminActivity.this, LoginTeamActivity.class));
+        finish();
+        overridePendingTransition(R.anim.righttoleft, R.anim.lefttoright);
+
+
     }
 }
