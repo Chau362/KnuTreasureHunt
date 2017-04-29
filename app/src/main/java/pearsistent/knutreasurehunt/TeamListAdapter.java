@@ -23,8 +23,7 @@ class TeamListAdapter extends BaseAdapter {
         this.context = context;
         this.layout = layout;
         this.teamList = teamList;
-        this.inf = (LayoutInflater)context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inf = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
     @Override

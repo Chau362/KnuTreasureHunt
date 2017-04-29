@@ -1,7 +1,6 @@
 package pearsistent.knutreasurehunt;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +18,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -44,6 +47,8 @@ public class ObjectDetailActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private String imagePath;
+    private String teamName;
+    private int itemPoint;
     public String pathArray[];
 
     @Override
@@ -59,7 +64,8 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
         //To save picture on Storage using team name and item name try to get path information from UserMainAcitivity
         Intent intent = getIntent();
-        imagePath= intent.getExtras().getString("PATH_TO_SAVE");
+        itemPoint = intent.getExtras().getInt("ITEM_POINT");
+        imagePath = intent.getExtras().getString("PATH_TO_SAVE");
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -104,27 +110,82 @@ public class ObjectDetailActivity extends AppCompatActivity {
                 }
                 else {
                     //can make a image file name
-                    StorageReference childRef = storageRef.child(getImagePath());
-                    //upload task
-                    UploadTask uploadTask = childRef.putFile(objectURI);
+                    final StorageReference childRef = storageRef.child(getImagePath());
 
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
 
-                        Toast.makeText(ObjectDetailActivity.this, "Upload Fail", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        //already exist file : already counted team point
+                        @Override
+                        public void onSuccess(Uri uri) {
 
-                        Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
-                        backToPage();
+                            UploadTask uploadTask = childRef.putFile(objectURI);
+
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+
+                                    Toast.makeText(ObjectDetailActivity.this, "Upload Fail", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
+                                    backToPage();
+                                }
+                            });
                         }
-                });}
+                        //not exist file : have to count team point
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            UploadTask uploadTask = childRef.putFile(objectURI);
+
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+
+                                    Toast.makeText(ObjectDetailActivity.this, "Upload Fail", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                    Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
+                                    updateTeamPoint();
+                                    backToPage();
+                                }
+                            });
+                        }
+
+                    });
+                }
+
 
             }
         });
+    }
+
+    private void updateTeamPoint() {
+
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team");
+
+        teamName = pathArray[0];
+        //Log.i("iiii",teamName);
+        mDatabase.child(teamName).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Team team = dataSnapshot.getValue(Team.class);
+                team.setTeamPoint(team.getTeamPoint() + itemPoint);
+
+                mDatabase.child(teamName).child("teamPoint").setValue(team.getTeamPoint());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     private void backToPage() {
@@ -133,6 +194,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
         setResult(1,i);
         finish();
     }
+
 
 
     private String getImagePath(){

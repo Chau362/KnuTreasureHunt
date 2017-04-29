@@ -6,7 +6,7 @@
     android:background="@android:color/white"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
-    tools:context="pearsistent.knutreasurehunt.Tab2">
+    tools:context="pearsistent.knutreasurehunt.Usermap">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView2"

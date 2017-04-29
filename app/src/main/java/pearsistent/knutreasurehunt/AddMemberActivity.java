@@ -11,8 +11,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -21,8 +19,6 @@ import java.util.ArrayList;
 public class AddMemberActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
-    private FirebaseStorage storage;
-    private StorageReference storageRef;
     private ListAdapter adapter;
     private String teamName;
 
@@ -37,9 +33,6 @@ public class AddMemberActivity extends AppCompatActivity {
         teamName = intent.getStringExtra("TEAM_NAME");
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
-
 
         mDatabase.child("Team").child(teamName).child("teamMembers").addValueEventListener(new ValueEventListener(){
             @Override

@@ -145,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
             if(position == 1){
                 fragment = new UserAdditionalActivity();
                 bundle = new Bundle();
+                /*bundle = new Bundle(1);
+                bundle.putString("TEAM_NAME",teamName);
+                fragment.setArguments(bundle);*/
             }
             if(position == 2){
                 fragment = new Usermap();

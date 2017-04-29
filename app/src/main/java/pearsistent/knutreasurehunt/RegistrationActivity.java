@@ -42,7 +42,6 @@ public class RegistrationActivity extends AppCompatActivity {
         File dir = getApplicationContext().getCacheDir();
         dir.delete();
         deleteDir(dir);
-
     }
 
     public boolean deleteDir(File dir) {

@@ -68,7 +68,9 @@ public class UserMainActivity extends Fragment {
     private ListAdapter adapter;
     ImageView imageview;
     Item item;
+    private boolean uploadFlag = false;
     private String itemName;
+    private int itemPoint;
 
 
     public UserMainActivity() {
@@ -179,29 +181,25 @@ public class UserMainActivity extends Fragment {
            }
        });
 
-
-
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
                 View childView = rv.findChildViewUnder(e.getX(),e.getY());
+                int position = rv.getChildAdapterPosition(childView);
 
                     if(childView !=null && gestureDetector.onTouchEvent(e)) {
-                        TextView textview = (TextView) childView.findViewById(R.id.cardTitle);
 
+                        TextView textview = (TextView) childView.findViewById(R.id.cardTitle);
+                        Item selectItem = (Item) mAdapter.getItem(position);
 
                         itemName = textview.getText().toString();
-
-
+                        imageview = (ImageView) childView.findViewById(R.id.cardImage);
                         Intent i = new Intent(getContext(), ObjectDetailActivity.class);
+                        i.putExtra("ITEM_POINT",selectItem.getPoints());
                         i.putExtra("PATH_TO_SAVE", teamName + "/" + itemName + ".jpg");
                         startActivityForResult(i, 1);
 
-                        imageview = (ImageView) childView.findViewById(R.id.cardImage);
                     }
-                //imageview = (ImageView) childView.findViewById(imageView);
-                 //   mAdapter.notifyDataSetChanged();
-
                 return false;
             }
 
@@ -216,21 +214,6 @@ public class UserMainActivity extends Fragment {
             }
         });
 
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            //clicked item
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<Item> temp = new ArrayList<Item>();
-                item = (Item) listView.getAdapter().getItem(position);
-
-                Intent i = new Intent(getContext(),ObjectDetailActivity.class);
-                i.putExtra("PATH_TO_SAVE",teamName+"/"+item.getName()+".jpg");
-                startActivityForResult(i,1);
-
-                imageview = (ImageView) view.findViewById(imageView);
-            }
-
-        });*/
     }
 
     //if user take a selfie, imageview will be update. if not then it will not be change.
@@ -238,6 +221,7 @@ public class UserMainActivity extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode==1){
             if(resultCode==1){
+
                 Glide.with(getContext())
                         .using(new FirebaseImageLoader())
                         .load(findImageFile(itemName+".jpg"))
@@ -245,6 +229,8 @@ public class UserMainActivity extends Fragment {
             }
         }
     }
+
+
 
 
     @Override
