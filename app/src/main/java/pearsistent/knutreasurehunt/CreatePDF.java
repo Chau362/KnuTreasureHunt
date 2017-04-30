@@ -1,28 +1,13 @@
 package pearsistent.knutreasurehunt;
 
-import android.annotation.TargetApi;
-import android.graphics.Rect;
-import android.graphics.pdf.PdfDocument;
-import android.graphics.pdf.PdfRenderer;
-import android.icu.util.Output;
-import android.os.Build;
-import android.graphics.Bitmap;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-
+import android.support.v4.content.FileProvider;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-
-import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 
 import com.itextpdf.text.Document;
@@ -30,13 +15,19 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class createpdf extends AppCompatActivity {
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
+public class CreatePDF extends AppCompatActivity {
 
     private OutputStream output;
     private String path;
     private  File pdfFolder;
     private EditText mSubjectEditText, mBodyEditText;
     private Button mSaveButton;
+    private File myFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +54,8 @@ public class createpdf extends AppCompatActivity {
                 try {
                     createPath();
                     createPDF();
+
+                    //viewPdf();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (DocumentException e) {
@@ -71,20 +64,29 @@ public class createpdf extends AppCompatActivity {
             }
         });
 
-
     }
+
+    private void viewPdf(){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+
+        Uri objectURI = FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName()+".provider",myFile);
+        intent.setDataAndType(objectURI, "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+    }
+
     public void createPath() throws FileNotFoundException{
-        pdfFolder = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), "pdfdemo");
+
+        pdfFolder = new File("sdcard/TreasureHunt_PDF");
         if (!pdfFolder.exists()) {
             pdfFolder.mkdir();
             Log.i("PDF directory", "Pdf Directory created");
         }
 
         //Create time stamp
-        Date date = new Date();
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
-        File myFile = new File(pdfFolder + timeStamp + ".pdf");
+        //Date date = new Date();
+        ///String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
+        myFile = new File(pdfFolder,"Doc1.pdf");
         output = new FileOutputStream(myFile);
 
     }

@@ -69,7 +69,7 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyA0ru7qCLCvxdqjymQXZgUZ-2dfBr6L3Qs" />
 
-        <activity android:name=".createpdf" />
+        <activity android:name=".CreatePDF" />
     </application>
 
 </manifest>

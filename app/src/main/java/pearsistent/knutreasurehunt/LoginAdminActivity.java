@@ -112,7 +112,7 @@ public class LoginAdminActivity extends BaseActivity {
 //                            seulki, 04.06 : if user login successful, go to next step.
 //                                    Intent i = new Intent(LoginAdminActivity.this,MainActivity_admin.class);
 //                                    startActivity(i);
-                            Intent i = new Intent(LoginAdminActivity.this,createpdf.class);
+                            Intent i = new Intent(LoginAdminActivity.this,CreatePDF.class);
                             startActivity(i);
                         }
                         // If sign in fails, display a message to the user. If sign in succeeds
