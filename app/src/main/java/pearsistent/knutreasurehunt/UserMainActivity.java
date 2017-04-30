@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -194,6 +195,7 @@ public class UserMainActivity extends Fragment {
 
                         itemName = textview.getText().toString();
                         imageview = (ImageView) childView.findViewById(R.id.cardImage);
+
                         Intent i = new Intent(getContext(), ObjectDetailActivity.class);
                         i.putExtra("ITEM_POINT",selectItem.getPoints());
                         i.putExtra("PATH_TO_SAVE", teamName + "/" + itemName + ".jpg");
@@ -222,10 +224,14 @@ public class UserMainActivity extends Fragment {
         if(requestCode==1){
             if(resultCode==1){
 
+                //update cache
                 Glide.with(getContext())
                         .using(new FirebaseImageLoader())
                         .load(findImageFile(itemName+".jpg"))
-                        .error(R.drawable.marker).into(imageview);
+                        .error(R.drawable.marker)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(imageview);
             }
         }
     }
