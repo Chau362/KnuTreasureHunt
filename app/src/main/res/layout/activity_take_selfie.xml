@@ -41,7 +41,7 @@
             android:layout_gravity="center"
             android:background="@drawable/listborder"
             android:clickable="true"
-            android:src="@drawable/camera"
+            android:src="@drawable/camera2"
             ></ImageView>
     </LinearLayout>
 
