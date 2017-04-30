@@ -52,9 +52,14 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
+        /*tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                tabLayout.setupWithViewPager(mViewPager);
+            }
+        });*/
 
     }
 
@@ -137,23 +142,23 @@ public class MainActivity extends AppCompatActivity {
 
             if(position == 0){
                 fragment = new UserMainActivity();
-                Log.i("MainActivitiy","1");
+                Log.i("MainActivity","1");
                 //SeulKi : To post teamName from this Activity I used it.
                 bundle = new Bundle(1);
                 bundle.putString("TEAM_NAME",teamName);
                 fragment.setArguments(bundle);
             }
 
-            if(position == 1){
+            else if(position == 1){
                 fragment = new UserAdditionalActivity();
-                Log.i("MainActivitiy","2");
+                Log.i("MainActivity","2");
                 bundle = new Bundle();
 
                 /*bundle = new Bundle(1);
                 bundle.putString("TEAM_NAME",teamName);
                 fragment.setArguments(bundle);*/
             }
-            if(position == 2){
+            else if(position == 2){
                 fragment = new Usermap();
                 Log.i("MainActivitiy","3");
                 bundle = new Bundle();
