@@ -47,13 +47,15 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginAdminActivity" />
         <activity android:name=".RegisterAdminActivity" />
-        <activity android:name=".LoginTeamActivity" />
+        <activity android:name=".LoginTeamActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".RegisterTeamActivity" />
         <activity android:name=".MainActivity_admin"/>
         <activity android:name=".Timer" />
         <activity android:name=".AddMemberActivity"/>
         <activity android:name=".Progress" />
         <activity android:name=".AddItemActivity" />
+
 
 
 

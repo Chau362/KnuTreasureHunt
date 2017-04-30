@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,7 +33,7 @@ public class LoginTeamActivity extends BaseActivity{
     EditText userName;
     EditText userPwd;
     Button loginBtn;
-    Button registerBtn;
+    TextView registerBtn;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class LoginTeamActivity extends BaseActivity{
         userName = (EditText) findViewById(R.id.login_team_usr);
         userPwd = (EditText) findViewById(R.id.login_team_pwd);
         loginBtn = (Button) findViewById(R.id.Btn_login_team_Login);
-        registerBtn = (Button) findViewById(R.id.Btn_login_team_Register);
+        registerBtn = (TextView) findViewById(R.id.Btn_login_team_Register);
 
         //hide type password
         userPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -79,6 +80,8 @@ public class LoginTeamActivity extends BaseActivity{
             public void onClick(View v) {
                 Intent i = new Intent(LoginTeamActivity.this, RegisterTeamActivity.class);
                 startActivity(i);
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
             }
         });
     }
@@ -173,6 +176,7 @@ public class LoginTeamActivity extends BaseActivity{
                             }
                     }
                         if(check){
+
                             break;
                         }
                     }else{
@@ -191,5 +195,14 @@ public class LoginTeamActivity extends BaseActivity{
 
 
 
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(LoginTeamActivity.this, RegistrationActivity.class));
+        finish();
+        overridePendingTransition(R.anim.lefttoright, R.anim.righttoleft);
+
+    }
 }
 

@@ -86,7 +86,6 @@ public class UserMainActivity extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
         teamName = getArguments().getString("TEAM_NAME");
     }
 
@@ -94,6 +93,7 @@ public class UserMainActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.i("UserMain","come");
         View v = inflater.inflate(R.layout.fragment_tab1, container,false);
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userItemList);

@@ -150,4 +150,14 @@ public class RegisterAdminActivity extends BaseActivity {
 
         return valid;
     }
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(RegisterAdminActivity.this, LoginTeamActivity.class));
+        finish();
+        overridePendingTransition(R.anim.righttoleft, R.anim.lefttoright);
+
+
+    }
 }

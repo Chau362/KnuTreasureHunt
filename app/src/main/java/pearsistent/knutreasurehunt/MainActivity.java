@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(position == 0){
                 fragment = new UserMainActivity();
+                Log.i("MainActivitiy","1");
                 //SeulKi : To post teamName from this Activity I used it.
                 bundle = new Bundle(1);
                 bundle.putString("TEAM_NAME",teamName);
@@ -144,13 +146,16 @@ public class MainActivity extends AppCompatActivity {
 
             if(position == 1){
                 fragment = new UserAdditionalActivity();
+                Log.i("MainActivitiy","2");
                 bundle = new Bundle();
+
                 /*bundle = new Bundle(1);
                 bundle.putString("TEAM_NAME",teamName);
                 fragment.setArguments(bundle);*/
             }
             if(position == 2){
                 fragment = new Usermap();
+                Log.i("MainActivitiy","3");
                 bundle = new Bundle();
             }
 

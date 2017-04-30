@@ -24,6 +24,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(RegistrationActivity.this, LoginTeamActivity.class);
                     startActivity(i);
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
 
@@ -33,6 +34,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(RegistrationActivity.this, LoginAdminActivity.class);
                 startActivity(i);
+                overridePendingTransition(R.anim.lefttoright, R.anim.righttoleft);
             }
         });
     }

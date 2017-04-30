@@ -186,4 +186,15 @@ public class RegisterTeamActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(RegisterTeamActivity.this, LoginTeamActivity.class));
+        finish();
+        overridePendingTransition(R.anim.lefttoright, R.anim.righttoleft);
+
+
+    }
+
 }
