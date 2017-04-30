@@ -106,6 +106,7 @@ public class UserAdditionalActivity extends Fragment implements OnMapReadyCallba
 
                     teamList.add(team);
                 }
+                //when Tab2 work make a list
                 if(getActivity()!=null) {
                     //Set Item listview
                     makeListView(listView, teamList);
@@ -117,37 +118,6 @@ public class UserAdditionalActivity extends Fragment implements OnMapReadyCallba
                 Log.i("Error","Loading data from teamMember");
             }
         });
-
-        /*Team team1 = new Team("Team 1",20);
-        teamList.add(team1);
-
-        Team team2 = new Team("Team 2",10);
-        teamList.add(team2);
-
-        Team team3 = new Team("Team 3",15);
-        teamList.add(team3);
-
-        Team team4 = new Team("Team 4",12);
-        teamList.add(team4);
-
-        Team team5 = new Team("Team 5",5);
-        teamList.add(team5);
-
-        Team team6 = new Team("Team 6",3);
-        teamList.add(team6);*/
-
-
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0)
-                {
-                    Intent i = new Intent(getContext(),TakeSelfie.class);
-                    startActivity(i);
-                }
-
-            }
-        });*/
 
         return v;
     }

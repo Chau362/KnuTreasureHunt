@@ -19,121 +19,45 @@
         android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TableLayout
-        android:background="@drawable/listborder"
-        android:layout_width="match_parent"
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:stretchColumns="*">
+        android:orientation="vertical"
+        android:background="@drawable/listborder"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp">
 
-        <TableRow>
-
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:background="#AABBCCDD"
-                android:padding="1dp"
-                android:textColor="#000"
-                android:text="Team Name"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:layout_marginRight="3dp"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:text="Team Name"/>
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#AABBCCDD"
-                android:padding="3dp"
-                android:textColor="#000"
-                android:text="Points"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="Team A"
-                android:textSize="15dp"
-                android:textColor="#000"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="10"
-                android:textSize="15dp"
-                android:textColor="#000"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="Team B"
-                android:textSize="15dp"
-                android:textColor="#000"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="3"
-                android:textSize="15dp"
-                android:textColor="#000"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:textColor="#000"
-                android:text="Team C"
-                android:textSize="15dp"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="7"
-                android:textSize="15dp"
-                android:textColor="#000"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:textSize="15dp"
-                android:text="Team D"
-                android:textColor="#000"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:textSize="15dp"
-                android:text="6"
-                android:textColor="#000"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </TableRow>
-
-
-    </TableLayout>
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@android:color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="Team Point"/>
+        </LinearLayout>
+        <ListView
+            android:id="@+id/teamListAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="161dp" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/changePoint"
