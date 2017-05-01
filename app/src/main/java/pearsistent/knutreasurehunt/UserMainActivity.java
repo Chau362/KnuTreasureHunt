@@ -73,6 +73,7 @@ public class UserMainActivity extends Fragment {
     private String itemName;
     private int itemPoint;
     private Item selectItem;
+    private Item initailItem;
     private String itemKey;
     private int checkItemNum = 0;
 
@@ -124,6 +125,8 @@ public class UserMainActivity extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 itemKey  = String.valueOf(dataSnapshot.getChildrenCount());
+                initailItem = dataSnapshot.child("0").getValue(Item.class);
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -238,9 +241,9 @@ public class UserMainActivity extends Fragment {
         if(requestCode==1){
             if(resultCode==1 && data.getExtras().getInt("State")==1){
 
-                if(itemKey.equals("1") && checkItemNum == 0){
+                if(itemKey.equals("1") && initailItem.getName()==null){
                     itemKey = "0";
-                    checkItemNum ++;
+                    //checkItemNum ++;
                 }
 
                 mDatabase.child("Team").child(teamName).child("itemList").child(itemKey).setValue(selectItem);
