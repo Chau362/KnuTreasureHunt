@@ -1,11 +1,16 @@
 package pearsistent.knutreasurehunt;
 
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -19,7 +24,8 @@ import java.io.OutputStream;
 public class CreatePDF extends AppCompatActivity {
 
     private OutputStream output;
-
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
     private File pdfFolder;
     private File myFile;
 
@@ -28,10 +34,13 @@ public class CreatePDF extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createpdf);
 
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
         Log.d("CreatePDF","success open");
         try {
             createPath();
             createPDF();
+            uploadFile();
             Toast.makeText(this, "Success!",
                     Toast.LENGTH_SHORT).show();
             //viewPdf();
@@ -40,6 +49,13 @@ public class CreatePDF extends AppCompatActivity {
         } catch (DocumentException e) {
             e.printStackTrace();
         }
+    }
+
+    //this version is static. so you have to change it to work dynamically
+    private void uploadFile() {
+        final StorageReference childRef = storageRef.child("TeamA/Doc1.pdf");
+        Uri objectURI = FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName()+".provider",myFile);
+        UploadTask uploadTask = childRef.putFile(objectURI);
     }
 
     public void createPath() throws FileNotFoundException {
