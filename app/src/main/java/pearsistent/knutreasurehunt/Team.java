@@ -1,32 +1,58 @@
 package pearsistent.knutreasurehunt;
 
-import java.lang.reflect.Member;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Zzeulki on 2017. 3. 28..
  */
 
 public class Team {
-    public String teamName;
-    private String teamAccount;
-    private String pwd;
-    public int teamPoint;
-    public List<TeamMember> teamMembers = new ArrayList<>();
 
+    private ArrayList<TeamMember> teamMembers;
+    private String teamName;
+    private int teamPoint;
+    private ArrayList<Item> itemList;
 
-    public Team(String name, String acc, String pwd, ArrayList<TeamMember> members, int p){
-        this.teamName = name;
-        this.teamAccount = acc;
-        this.pwd = pwd;
-        this.teamMembers = members;
-        this.teamPoint = p;
+    public Team(){
+
     }
-    public Team(String name, int p){
-        this.teamName = name;
+
+    public Team(String n, int p){
+
+        teamMembers = new ArrayList<>();
+        this.teamName = n;
         this.teamPoint = p;
+        itemList = new ArrayList<>();
     }
+
+    /*public Team(String teamname, ArrayList<TeamMember> teamMembers, int i) {
+
+        this.teamName = teamname;
+        this.teamMembers = teamMembers;
+        this.teamPoint = i;
+    }*/
+
+    public String getTeamName() {
+        return this.teamName;
+    }
+
+    public void setTeamPoint(int teamPoint){
+        this.teamPoint = teamPoint;
+    }
+
+    public int getTeamPoint() {
+        return this.teamPoint;
+    }
+
+    public ArrayList<TeamMember> getTeamMembers() {
+        return this.teamMembers;
+    }
+
+    public void addItem(Item newItem) {
+        this.itemList.add(newItem);
+    }
+
+    public ArrayList<Item> getItemList() {return this.itemList;}
 
     public void addTeamMember(TeamMember newTeamMember) {
         this.teamMembers.add(newTeamMember);
@@ -35,4 +61,6 @@ public class Team {
     public void removeTeamMember(TeamMember chosenTeamMember) {
         this.teamMembers.remove(chosenTeamMember);
     }
+
+
 }
