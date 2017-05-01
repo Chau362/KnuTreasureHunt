@@ -72,7 +72,9 @@ public class UserMainActivity extends Fragment {
     private boolean uploadFlag = false;
     private String itemName;
     private int itemPoint;
-
+    private Item selectItem;
+    private String itemKey;
+    private int checkItemNum = 0;
 
     public UserMainActivity() {
         // Required empty public constructor
@@ -96,6 +98,7 @@ public class UserMainActivity extends Fragment {
         Log.i("UserMain","come");
         View v = inflater.inflate(R.layout.fragment_tab1, container,false);
 
+
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userItemList);
         addMemberBtn = (ImageButton) v.findViewById(R.id.addMember);
 
@@ -115,6 +118,17 @@ public class UserMainActivity extends Fragment {
                 startActivity(intent);
             }
 
+        });
+
+        mDatabase.child("Team").child(teamName).child("itemList").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                itemKey  = String.valueOf(dataSnapshot.getChildrenCount());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
 
 
@@ -174,13 +188,13 @@ public class UserMainActivity extends Fragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-       final GestureDetector gestureDetector = new GestureDetector(getContext(),new GestureDetector.SimpleOnGestureListener(){
-           @Override
-           public boolean onSingleTapUp(MotionEvent e)
-           {
-               return true;
-           }
-       });
+        final GestureDetector gestureDetector = new GestureDetector(getContext(),new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public boolean onSingleTapUp(MotionEvent e)
+            {
+                return true;
+            }
+        });
 
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
@@ -188,20 +202,20 @@ public class UserMainActivity extends Fragment {
                 View childView = rv.findChildViewUnder(e.getX(),e.getY());
                 int position = rv.getChildAdapterPosition(childView);
 
-                    if(childView !=null && gestureDetector.onTouchEvent(e)) {
+                if(childView !=null && gestureDetector.onTouchEvent(e)) {
 
-                        TextView textview = (TextView) childView.findViewById(R.id.cardTitle);
-                        Item selectItem = (Item) mAdapter.getItem(position);
+                    TextView textview = (TextView) childView.findViewById(R.id.cardTitle);
+                    selectItem = (Item) mAdapter.getItem(position);
 
-                        itemName = textview.getText().toString();
-                        imageview = (ImageView) childView.findViewById(R.id.cardImage);
+                    itemName = textview.getText().toString();
+                    imageview = (ImageView) childView.findViewById(R.id.cardImage);
 
-                        Intent i = new Intent(getContext(), ObjectDetailActivity.class);
-                        i.putExtra("ITEM_POINT",selectItem.getPoints());
-                        i.putExtra("PATH_TO_SAVE", teamName + "/" + itemName + ".jpg");
-                        startActivityForResult(i, 1);
+                    Intent i = new Intent(getContext(), ObjectDetailActivity.class);
+                    i.putExtra("ITEM_POINT",selectItem.getPoints());
+                    i.putExtra("PATH_TO_SAVE", teamName + "/" + itemName + ".jpg");
+                    startActivityForResult(i, 1);
 
-                    }
+                }
                 return false;
             }
 
@@ -222,7 +236,24 @@ public class UserMainActivity extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode==1){
-            if(resultCode==1){
+            if(resultCode==1 && data.getExtras().getInt("State")==1){
+
+                if(itemKey.equals("1") && checkItemNum == 0){
+                    itemKey = "0";
+                    checkItemNum ++;
+                }
+
+                mDatabase.child("Team").child(teamName).child("itemList").child(itemKey).setValue(selectItem);
+                //update cache
+                Glide.with(getContext())
+                        .using(new FirebaseImageLoader())
+                        .load(findImageFile(itemName+".jpg"))
+                        .error(R.drawable.marker)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(imageview);
+            }
+            else if(resultCode==1 && data.getExtras().getInt("State")==0){
 
                 //update cache
                 Glide.with(getContext())
