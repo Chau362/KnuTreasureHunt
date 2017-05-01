@@ -1,6 +1,8 @@
 package pearsistent.knutreasurehunt;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -34,12 +38,13 @@ public class MemberListAdapter extends BaseAdapter{
     private String teamName;
 
 
+
     public MemberListAdapter(Context context, int layout, ArrayList<TeamMember> teamList, String teamName) {
         this.context = context;
         this.layout = layout;
         this.teamMemberList = teamList;
         this.teamName = teamName;
-        this.inf = (LayoutInflater) context
+        this.inf = (LayoutInflater) context.getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
     }
@@ -74,6 +79,7 @@ public class MemberListAdapter extends BaseAdapter{
         TeamMember teamMember = teamMemberList.get(position);
 
         memberName.setText(teamMember.getMemberName());
+        Log.i("MemberName",memberName.getText().toString());
 
         //memberName.setOnClickListener(this);
 
@@ -90,14 +96,26 @@ public class MemberListAdapter extends BaseAdapter{
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             Log.i("Team Children"," "+dataSnapshot.getChildrenCount());
 
-                            for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
-                                TeamMember temp = tempSnapshot.getValue(TeamMember.class);
-                                //Log.i("GetKey",tempSnapshot.getKey()+" 1 : "+memberName.getText() +" 2 :" + temp.getMemberName() );
+                            for (final DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                                final TeamMember temp = tempSnapshot.getValue(TeamMember.class);
                                 //delete teamMember
                                 if (memberName.getText().equals(temp.getMemberName())) {
-                                    //Log.i("GetKey",tempSnapshot.getKey()+" 1 : "+teamMember.getMemberName() +" 2 :" + temp.getMemberName() );
-                                    DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team" + "/" + teamName + "/teamMembers/" + tempSnapshot.getKey());
-                                    updateDatabase.removeValue();
+                                    //popup
+                                    new AlertDialog.Builder(context)
+                                            .setTitle("Delete Member")
+                                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            })
+                                            .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team" + "/" + teamName + "/teamMembers/" + tempSnapshot.getKey());
+                                                    updateDatabase.removeValue();
+                                                }
+                                            }).show();
                                     break;
                                 }
                             }
@@ -133,36 +151,44 @@ public class MemberListAdapter extends BaseAdapter{
                     });
 
                 }
-                //modify item maybe we need another layout.
+                //modify member
                 else if(position==2) {
                     Log.i("Spinner", "2");
 
-                    /*new AlertDialog.Builder(context)
-                            .setView(R.layout.popup)
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            }).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                                    EditText text = (EditText) tempView.findViewById(R.id.newMemberName);
-                                    final String newTeamName = text.getText().toString();
-*/
                             mDatabase.child("Team").child(teamName).child("teamMembers").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     // Get Item data value
                                     for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
-                                        TeamMember temp = tempSnapshot.getValue(TeamMember.class);
+                                        final TeamMember temp = tempSnapshot.getValue(TeamMember.class);
                                         //delete teamMember
                                         if (memberName.getText().equals(temp.getMemberName())) {
-                                            DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team" + "/" + teamName + "/teamMembers/" + tempSnapshot.getKey());
-                                            TeamMember updateMember = new TeamMember("ChangeName", temp.getUserId());
+                                            final LinearLayout popupLayout = (LinearLayout) tempView.inflate(context,R.layout.popup,null);
+                                            final DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team" + "/" + teamName + "/teamMembers/" + tempSnapshot.getKey());
 
-                                            Map<String, Object> updateValues = updateMember.toMap();
-                                            updateDatabase.updateChildren(updateValues);
+                                            //popup
+                                            new AlertDialog.Builder(context)
+                                                    .setTitle("Modify Name")
+                                                    .setView(popupLayout)
+                                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+
+                                                        }
+                                                    })
+                                                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            EditText changeName = (EditText) popupLayout.findViewById(R.id.newMemberName);
+
+                                                            //Log.i("inputName",changeName.getText().toString()+"  ");
+                                                            TeamMember updateMember = new TeamMember(changeName.getText().toString(), temp.getUserId());
+
+                                                            Map<String, Object> updateValues = updateMember.toMap();
+                                                            updateDatabase.updateChildren(updateValues);
+                                                        }
+                                                    }).show();
+
                                             break;
                                         }
                                     }

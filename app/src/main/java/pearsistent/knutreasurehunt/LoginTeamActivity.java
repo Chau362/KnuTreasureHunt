@@ -157,15 +157,12 @@ public class LoginTeamActivity extends BaseActivity{
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 // Get Item data value
                 for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                     boolean check = false;
-                    Team team = new Team();
-                    team = tempSnapshot.getValue(Team.class);
+                    Team team = tempSnapshot.getValue(Team.class);
                     if(team.getTeamMembers()!=null){
                         for(int i = 0 ; i < team.getTeamMembers().size() ; i++) {
-
                         //finding team name using member's userId
                             if (team.getTeamMembers().get(i).getUserId().equals(userId)) {
 
