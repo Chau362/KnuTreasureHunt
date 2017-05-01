@@ -1,6 +1,9 @@
 package pearsistent.knutreasurehunt;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,6 +34,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 import static com.google.android.gms.wearable.DataMap.TAG;
+import static pearsistent.knutreasurehunt.R.id.textView;
 //import static pearsistent.knutreasurehunt.R.id.itemList;
 
 
@@ -62,6 +66,7 @@ public class UserMainActivity extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private TextView timerView;
     private DatabaseReference mDatabase;
     private String teamName=null;
     private FirebaseStorage storage;
@@ -92,6 +97,15 @@ public class UserMainActivity extends Fragment {
         teamName = getArguments().getString("TEAM_NAME");
     }
 
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String realTime = intent.getStringExtra("TIME");
+            timerView.setText(realTime);
+
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -102,6 +116,9 @@ public class UserMainActivity extends Fragment {
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userItemList);
         addMemberBtn = (ImageButton) v.findViewById(R.id.addMember);
+        timerView = (TextView)v.findViewById(R.id.timerView);
+
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(TimerService.BROADCAST_ACTION));
 
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");

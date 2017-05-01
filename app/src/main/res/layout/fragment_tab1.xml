@@ -19,7 +19,7 @@
         android:weightSum="1">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/timerView"
             android:layout_width="220dp"
             android:layout_height="66dp"
 
