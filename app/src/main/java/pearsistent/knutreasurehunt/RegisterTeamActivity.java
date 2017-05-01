@@ -138,9 +138,10 @@ public class RegisterTeamActivity extends BaseActivity {
     private void addTeamToDB(String teamname, String username, String userid){
         Team team = new Team(teamname, 0);
         TeamMember member = new TeamMember(username, userid);
-        //member.setMemberName(username);
+        Item item = new Item();
 
         team.addTeamMember(member);
+        team.addItem(item);
 
         //Log.i("Team name",team.getTeamName());
         //mDatabase.setValue("team");

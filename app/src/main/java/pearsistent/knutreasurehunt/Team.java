@@ -11,15 +11,18 @@ public class Team {
     private ArrayList<TeamMember> teamMembers;
     private String teamName;
     private int teamPoint;
+    private ArrayList<Item> itemList;
 
     public Team(){
 
     }
 
     public Team(String n, int p){
+
         teamMembers = new ArrayList<>();
         this.teamName = n;
         this.teamPoint = p;
+        itemList = new ArrayList<>();
     }
 
     /*public Team(String teamname, ArrayList<TeamMember> teamMembers, int i) {
@@ -44,6 +47,12 @@ public class Team {
     public ArrayList<TeamMember> getTeamMembers() {
         return this.teamMembers;
     }
+
+    public void addItem(Item newItem) {
+        this.itemList.add(newItem);
+    }
+
+    public ArrayList<Item> getItemList() {return this.itemList;}
 
     public void addTeamMember(TeamMember newTeamMember) {
         this.teamMembers.add(newTeamMember);

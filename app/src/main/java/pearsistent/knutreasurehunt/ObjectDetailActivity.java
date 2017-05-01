@@ -130,7 +130,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
-                                    backToPage();
+                                    backToPage(0);
                                 }
                             });
                         }
@@ -152,7 +152,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
                                     Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
                                     updateTeamPoint();
-                                    backToPage();
+                                    backToPage(1);
                                 }
                             });
                         }
@@ -188,9 +188,10 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
     }
 
-    private void backToPage() {
+    private void backToPage(int state) {
 
         Intent i = new Intent(this.getApplicationContext(),UserMainActivity.class);
+        i.putExtra("State",state);
         setResult(1,i);
         finish();
     }
