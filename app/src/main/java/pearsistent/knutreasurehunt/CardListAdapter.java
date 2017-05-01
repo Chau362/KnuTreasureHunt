@@ -70,7 +70,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
         //holder.cardPoints.setText(String.valueOf(10));
 
 
-        //Seulki : if loading has error then I will instead it to marker image in ImageView
+        //Seulki : if loading has error then this  will be instead picture to marker image in ImageView
         Glide.with(context).using(new FirebaseImageLoader()).load(allItems.get(position).getImageReference()).error(R.drawable.marker).into(holder.selfie);
     }
 

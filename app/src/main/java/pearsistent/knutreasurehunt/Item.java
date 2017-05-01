@@ -43,11 +43,6 @@ public class Item {
         this.choice = false;
     }
 
-//    public Item(String t, String n, int temp) {
-//        this.text = t;
-//        this.name = n;
-//        this.image_i = temp;
-//    }
 
     public int getPoints() {
         return points;

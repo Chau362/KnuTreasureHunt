@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
+    android:padding="13dp"
     android:background="#ffff"
     tools:context="pearsistent.knutreasurehunt.Tab2_admin">
 
@@ -33,6 +33,18 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Rank"
+                android:textColor="@android:color/black"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

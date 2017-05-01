@@ -45,33 +45,33 @@ public class AddItemActivity extends AppCompatActivity{
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference("Items");
-
+        myRef = mFirebaseDatabase.getReference("Items");    //if you have a question, read firebase document
 
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = itemName.getText().toString();
                 String description = itemDescription.getText().toString();
-                Log.i("eesss",itemPoint.getText().toString());
                 int point = Integer.parseInt(itemPoint.getText().toString());
                 Item newItem = new Item(name, description, point);
 
-                //if you have any question about this part ask to seulki
                 String itemKey = ""+countOfItem;    //make a item Key
 
-
-                if(newItem != null) {
+                if(name!=null && description !=null && itemPoint.getText().toString() != null &&newItem != null) {
                     FirebaseUser user = mAuth.getCurrentUser();
-                    //String userId = user.getUid();
 
                     Toast.makeText(AddItemActivity.this, newItem.getName()+" Item Upload Success!", Toast.LENGTH_SHORT).show();
                     myRef.child(itemKey).setValue(newItem);
 
                     itemName.setText("");
                     itemDescription.setText("");
+                    itemPoint.setText("");
+
+                    finish();
+                }else{
+                    Toast.makeText(AddItemActivity.this, newItem.getName()+"Please fill Item information", Toast.LENGTH_SHORT).show();
                 }
-                finish();
+
 
             }
         });
@@ -92,12 +92,11 @@ public class AddItemActivity extends AppCompatActivity{
         };
 
 
+        //whenever itemlist changed this function will be call
         myRef.addValueEventListener(new ValueEventListener(){
-
             int key=0;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 countOfItem = dataSnapshot.getChildrenCount();
             }
 

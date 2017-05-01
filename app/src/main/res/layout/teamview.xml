@@ -5,6 +5,19 @@
     android:background="@android:color/white">
 
     <TextView
+        android:layout_marginTop="3dp"
+        android:id="@+id/rank"
+        android:layout_marginRight="3dp"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_weight="0.5"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#000"
+        android:background="@drawable/itemborder"/>
+
+    <TextView
         android:id="@+id/teamName"
         android:layout_width="0dp"
         android:textColor="@android:color/black"

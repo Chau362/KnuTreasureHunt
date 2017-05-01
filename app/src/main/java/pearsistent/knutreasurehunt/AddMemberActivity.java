@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-// last coder : seulki, 2017.04.28
+// last coder : seulki, 2017.05.01
 
 public class AddMemberActivity extends AppCompatActivity {
 
@@ -43,15 +44,16 @@ public class AddMemberActivity extends AppCompatActivity {
 
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+
+        //whenever teamMember list change, this function will be call
         mDatabase.child("Team").child(teamName).child("teamMembers").addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                teamMembers.clear();
-                // Get Item data value
+                teamMembers.clear(); //initialize teamMemberlist
+
+                // Get teamMember data value from DB
                 for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
-
                     TeamMember teamMember = tempSnapshot.getValue(TeamMember.class);
-
                     teamMembers.add(teamMember);
                 }
                 //Set Item listview
@@ -64,11 +66,13 @@ public class AddMemberActivity extends AppCompatActivity {
             }
         });
 
+        //user click addMemberBtn
         addMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //set up popupLayout
                 final LinearLayout popupLayout = (LinearLayout) v.inflate(AddMemberActivity.this,R.layout.popup,null);
+
                 //popup
                 new AlertDialog.Builder(AddMemberActivity.this)
                         .setTitle("Add Member Name")
@@ -82,17 +86,20 @@ public class AddMemberActivity extends AppCompatActivity {
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 EditText newMemberName = (EditText) popupLayout.findViewById(R.id.newMemberName);
 
-                                //Log.i("inputName",changeName.getText().toString()+"  ");
-                                TeamMember updateMember = new TeamMember(newMemberName.getText().toString(), teamMembers.get(0).getUserId());
-                                teamMembers.add(updateMember);
-                                mDatabase.child("Team").child(teamName).child("teamMembers").setValue(teamMembers);
+                                if(newMemberName.getText().toString()!=null) {
+                                    TeamMember updateMember = new TeamMember(newMemberName.getText().toString(), teamMembers.get(0).getUserId());
+                                    teamMembers.add(updateMember);
+                                    mDatabase.child("Team").child(teamName).child("teamMembers").setValue(teamMembers);
+                                }else{
+                                    Toast.makeText(AddMemberActivity.this,"Please write New Member Name", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }).show();
             }
         });
-
 
     }
 

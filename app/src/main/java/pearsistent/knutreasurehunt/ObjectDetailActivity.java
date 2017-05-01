@@ -66,7 +66,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
 
-        //To save picture on Storage using team name and item name try to get path information from UserMainAcitivity
+        //To save picture on Storage using team name and item name try to get path and something information from UserMainAcitivity
         Intent intent = getIntent();
         itemName = intent.getExtras().getString("ITEM_NAME");
         itemSubText = intent.getExtras().getString("ITEM_SUBTEXT");
@@ -140,7 +140,9 @@ public class ObjectDetailActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
-                                    backToPage(0);
+
+
+                                    backToPage(0);      //dont need to update itemlist in Team DB
                                 }
                             });
                         }
@@ -161,8 +163,10 @@ public class ObjectDetailActivity extends AppCompatActivity {
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                                     Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
-                                    updateTeamPoint();
-                                    backToPage(1);
+
+
+                                    updateTeamPoint(); //update point
+                                    backToPage(1);     //need to update itemlist in Team DB
                                 }
                             });
                         }
@@ -179,8 +183,9 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team");
 
+        //there is teamName in pathArray[0](it was splited at getFile() function)
         teamName = pathArray[0];
-        //Log.i("iiii",teamName);
+
         mDatabase.child(teamName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -194,10 +199,10 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
+    //if state 0 : dont have to update itemlist in Team DB
+    //if state 1 : have to update itemlist in Team DB
     private void backToPage(int state) {
 
         Intent i = new Intent(this.getApplicationContext(),UserMainActivity.class);
@@ -225,6 +230,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
         //dynamically make a file name
         File imageFile = new File(folder,pathArray[1]);
+
         if(imageFile.exists()){
             imageFile.delete();
             imageFile = new File(folder,pathArray[1]);
@@ -239,6 +245,8 @@ public class ObjectDetailActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         String path = "sdcard/carmera_app/"+pathArray[1];
+
+        //set Image on Imageview screen
         objectImage.setImageDrawable(Drawable.createFromPath(path));
 
     }

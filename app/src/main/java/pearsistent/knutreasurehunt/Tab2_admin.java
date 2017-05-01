@@ -48,7 +48,8 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
 
     mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
 
-        mDatabase.child("Team").addValueEventListener(new ValueEventListener(){
+        //get item data increase order
+        mDatabase.child("Team").orderByChild("teamPoint").addValueEventListener(new ValueEventListener(){
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             teamList.clear();
@@ -60,6 +61,7 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
             }
             //when Tab2 work make a list
             if(getActivity()!=null) {
+
                 //Set Item listview
                 makeListView(listView, teamList);
             }
