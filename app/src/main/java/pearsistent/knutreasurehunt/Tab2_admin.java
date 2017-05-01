@@ -43,9 +43,9 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
         Point = (Button)rootView.findViewById(R.id.changePoint);
         Point.setOnClickListener(this);
 
-        Selfie = (Button)rootView.findViewById(R.id.show_selfie);
+        /*Selfie = (Button)rootView.findViewById(R.id.show_selfie);
         Selfie.setOnClickListener(this);
-
+*/
         intent = new Intent(getContext(), Progress.class);
         // Inflate the layout for this fragment
 
@@ -92,11 +92,11 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if(view.getId() == R.id.changePoint)
             startActivity(intent);
-        else if(view.getId() == R.id.show_selfie){
+        /*else if(view.getId() == R.id.show_selfie){
             Fragment fragment = new CreatePDF();
             Log.i("PDF","1");
             Bundle bundle = new Bundle(1);
             fragment.setArguments(bundle);
-        }
+        }*/
     }
 }
