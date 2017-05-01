@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -26,7 +27,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 ///Edited by Bogyu 4.16
 
@@ -72,7 +72,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_usermap, container, false);
-        mapView = (MapView) rootView.findViewById(R.id.mapView);
+        mapView = (MapView) rootView.findViewById(R.id.mapView2);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
@@ -93,7 +93,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
     }
     @Override
     public void onLocationChanged(final Location location) {
-         //  getting location of user
+        //  getting location of user
         Log.d("Lat & Long", "" + latitude + "" + longitude);
         // do something with Latlng
     }
@@ -118,7 +118,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
         public void onLocationChanged(Location location) {
             String msg = "Latitude : " + latitude + "\nLongitude:" + longitude;
             Log.i("GPSLocationService", msg);
-            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
         }
 
         public void onProviderDisabled(String provider) {
@@ -161,7 +161,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
             Log.d("Permission", "You should acquire Permission");
             return;         //Check your permission
         }
-        Toast.makeText(getContext(), "Location Service started.\nyou can test using DDMS.", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "Location Service started.\nyou can test using DDMS.", Toast.LENGTH_SHORT).show();
     }
     private String findAddress(double lat, double lng) {
         StringBuffer bf = new StringBuffer();
@@ -192,10 +192,6 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
     }///
 
 }
-
-
-
-
 
 
 

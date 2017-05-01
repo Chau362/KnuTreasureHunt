@@ -3,7 +3,6 @@ package pearsistent.knutreasurehunt;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -19,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.lang.reflect.Member;
 
 
 ///////Edited by bogyu 4.18
@@ -54,13 +51,22 @@ public class RegisterTeamActivity extends BaseActivity {
 
         ////For register
         mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
+            int count = 0;
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
                     Log.d("STATE", "onAuthStateChanged:signed_in:" + user.getUid());
+                    count++;
+
+                    //if user create new account then get a user Id from that new account and add team to DB
+                    if(count==2){
+                        String userId = user.getUid();
+                        addTeamToDB(rgstr_team,rgstr_user,userId);
+                    }
                 } else {
                     // User is signed out
                     Log.d("STATE", "onAuthStateChanged:signed_out");
@@ -69,7 +75,7 @@ public class RegisterTeamActivity extends BaseActivity {
             }
         };
         ///////For DB
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team");
 
         /////////
 
@@ -88,10 +94,11 @@ public class RegisterTeamActivity extends BaseActivity {
                         rgstr_team = teamName.getText().toString();
                         rgstr_user = userName.getText().toString();
 
-                        Log.i("eeee","etest");
-
                         createTeam(auth_id,auth_pwd);
-                        addTeamToDB(rgstr_team,auth_id,auth_pwd,rgstr_user);
+
+                        //I have to get a new userid so, I wrote this.
+                        mAuth.signInWithEmailAndPassword(auth_id,auth_pwd).isSuccessful();
+
                     }
                 });
             }
@@ -116,10 +123,6 @@ public class RegisterTeamActivity extends BaseActivity {
                             Log.d("CREATE", "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(RegisterTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
-
-                            //if admin sign up is successful, go to Login.
-                            Intent i = new Intent(RegisterTeamActivity.this,LoginAdminActivity.class);
-                            startActivity(i);
                         }
                         // If sign up fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -132,14 +135,22 @@ public class RegisterTeamActivity extends BaseActivity {
     }
 
     /////Put team into DB
-    private void addTeamToDB(String teamname, String email, String pwd, String username){
-        Team team = new Team(teamname, email, pwd, null, 0);
-        TeamMember member = new TeamMember();
-        member.setMemberName(username);
-      //  team.addTeamMember(member);
+    private void addTeamToDB(String teamname, String username, String userid){
+        Team team = new Team(teamname, 0);
+        TeamMember member = new TeamMember(username, userid);
+        //member.setMemberName(username);
 
-        mDatabase.child("team").push();
-        mDatabase.child("team").setValue(team);
+        team.addTeamMember(member);
+
+        //Log.i("Team name",team.getTeamName());
+        //mDatabase.setValue("team");
+        mDatabase.child(team.getTeamName()).setValue(team);
+        //mDatabase.child("team").setValue(team);
+
+        mAuth.signOut();
+        Intent i = new Intent(RegisterTeamActivity.this,LoginTeamActivity.class);
+        startActivity(i);
+
     }
     private boolean validateForm() {
         boolean valid = true;
@@ -173,6 +184,17 @@ public class RegisterTeamActivity extends BaseActivity {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(RegisterTeamActivity.this, LoginTeamActivity.class));
+        finish();
+        overridePendingTransition(R.anim.lefttoright, R.anim.righttoleft);
+
+
     }
 
 }
