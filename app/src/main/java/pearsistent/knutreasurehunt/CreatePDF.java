@@ -68,6 +68,9 @@ public class CreatePDF extends AppCompatActivity {
 //        document.add(new Paragraph(mSubjectEditText.getText().toString()));
 //        document.add(new Paragraph(mBodyEditText.getText().toString()));
 
+        document.add(new Paragraph("test"));
+        document.add(new Paragraph("Testttt"));
+
         //Step 5: Close the document
         document.close();
     }

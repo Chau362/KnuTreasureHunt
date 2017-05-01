@@ -36,7 +36,6 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
     Button countdown, createlist;
     Intent intent;
 
-
     public Tab1_admin() {
         // Required empty public constructor
     }
