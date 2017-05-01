@@ -1,12 +1,23 @@
 package pearsistent.knutreasurehunt;
 
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -20,18 +31,23 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 
-// last coder : seulki, 2017.03.28
-public class UserAdditionalActivity extends Fragment {
+// last coder : seulki, 2017.04.29
+public class UserAdditionalActivity extends Fragment implements OnMapReadyCallback {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private MapView mapView;
+    private LocationManager locationManager;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private DatabaseReference mDatabase;
+
 
     public UserAdditionalActivity() {
         // Required empty public constructor
@@ -62,51 +78,54 @@ public class UserAdditionalActivity extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab2,container,false);
+        /*mapView = (MapView) v.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+        mapView.getMapAsync(this);*/
 
-        ListView listView = (ListView) v.findViewById(R.id.teamList);
-        ArrayList<Team> teamList = new ArrayList<>();
 
-        Team team1 = new Team("Team 1",20);
-        teamList.add(team1);
+        final ListView listView = (ListView) v.findViewById(R.id.teamList);
+        final ArrayList<Team> teamList = new ArrayList<>();
 
-        Team team2 = new Team("Team 2",10);
-        teamList.add(team2);
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
 
-        Team team3 = new Team("Team 3",15);
-        teamList.add(team3);
-
-        Team team4 = new Team("Team 4",12);
-        teamList.add(team4);
-
-        Team team5 = new Team("Team 5",5);
-        teamList.add(team5);
-
-        Team team6 = new Team("Team 6",3);
-        teamList.add(team6);
-
-        TeamListAdapter adapter = new TeamListAdapter(this.getContext(),R.layout.teamview, teamList);
-        listView.setAdapter(adapter);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mDatabase.child("Team").addValueEventListener(new ValueEventListener(){
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0)
-                {
-                    Intent i = new Intent(getContext(),TakeSelfie.class);
-                    startActivity(i);
-                }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                teamList.clear();
+                // Get Item data value
+                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                    Team team = tempSnapshot.getValue(Team.class);
 
+                    teamList.add(team);
+                }
+                //when Tab2 work make a list
+                if(getActivity()!=null) {
+                    //Set Item listview
+                    makeListView(listView, teamList);
+                }
             }
-        });*/
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.i("Error","Loading data from teamMember");
+            }
+        });
 
         return v;
+    }
+
+    public void makeListView(ListView listView, final ArrayList<Team> teamList) {
+        TeamListAdapter adapter = new TeamListAdapter(this.getActivity().getApplicationContext(),R.layout.teamview, teamList);
+        listView.setAdapter(adapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -116,21 +135,15 @@ public class UserAdditionalActivity extends Fragment {
         }
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 
     /**

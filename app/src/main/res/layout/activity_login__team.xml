@@ -1,84 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fff"
-    tools:context="pearsistent.knutreasurehunt.LoginTeamActivity"
-    android:orientation="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:windowSoftInputMode="adjustNothing"
+    android:fitsSystemWindows="true">
 
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="70dp" />
-
-        <TextView
-            android:id="@+id/textView6"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LOGIN"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:textAlignment="center"
-            android:textSize="28dp" />
+            android:paddingTop="56dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
 
-        <EditText
-            android:id="@+id/login_team_usr"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="10"
-            android:hint="Username"
-            android:textColorHint="#B5B5B5"
-            android:backgroundTint="#B5B5B5"
-            android:inputType="textPersonName"
-            android:textAlignment="center" />
+            android:weightSum="1">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="250dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/treasurehunt"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="24dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
 
-        <EditText
-            android:id="@+id/login_team_pwd"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="10"
-            android:textColorHint="#B5B5B5"
-            android:backgroundTint="#B5B5B5"
-            android:hint="Password"
-            android:inputType="textPersonName"
-            android:textAlignment="center" />
+                    android:layout_weight="0.19" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
+                <!--  Username Label -->
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:theme="@style/TextLabel"
+                    android:layout_marginBottom="8dp">
+                        <EditText android:id="@+id/login_team_usr"
+                            android:layout_width="match_parent"
+                            android:textColor="@android:color/black"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
+                            android:hint="Email" />
+                </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/Btn_login_team_Login"
-            android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:background="@drawable/buttonborder"
-            android:text="Login" />
+                <!--  Password Label -->
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:theme="@style/TextLabel2"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+                        <EditText android:id="@+id/login_team_pwd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:hint="Password"/>
+                </android.support.design.widget.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/Btn_login_team_Login"
+                    android:background="@android:color/black"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:padding="12dp"
+                    android:text="Login"/>
 
-        <Button
-            android:id="@+id/Btn_login_team_Register"
-            android:layout_width="150dp"
-            android:layout_height="44dp"
-            android:layout_gravity="center"
-            android:text="Register"
-            android:background="@drawable/registerbuttonborder"
-            />
-</LinearLayout>
+                <TextView android:id="@+id/Btn_login_team_Register"
+                    android:layout_width="fill_parent"
+                    android:textColor="@android:color/black"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:text="No account yet? Create one"
+                    android:gravity="center"
+                    android:textSize="16dip"/>
+
+        </LinearLayout>
+</ScrollView>

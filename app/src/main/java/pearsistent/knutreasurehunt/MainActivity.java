@@ -1,5 +1,6 @@
 package pearsistent.knutreasurehunt;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+//last coder : seulki, 2017.04.27
 public class MainActivity extends AppCompatActivity {
 
     /**
@@ -25,16 +28,21 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private String teamName;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
+    //edited by Bogyu 4.15, add page
     private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        teamName = intent.getStringExtra("TEAM_NAME");
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -44,8 +52,14 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        /*tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                tabLayout.setupWithViewPager(mViewPager);
+            }
+        });*/
 
     }
 
@@ -103,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+
             return rootView;
         }
     }
@@ -126,14 +142,26 @@ public class MainActivity extends AppCompatActivity {
 
             if(position == 0){
                 fragment = new UserMainActivity();
-                bundle = new Bundle();
-                //Log.i("eee","tab1");
+                Log.i("MainActivity","1");
+                //SeulKi : To post teamName from this Activity I used it.
+                bundle = new Bundle(1);
+                bundle.putString("TEAM_NAME",teamName);
+                fragment.setArguments(bundle);
             }
 
-            if(position == 1){
+            else if(position == 1){
                 fragment = new UserAdditionalActivity();
+                Log.i("MainActivity","2");
                 bundle = new Bundle();
-                //Log.i("eee","tab2");
+
+                /*bundle = new Bundle(1);
+                bundle.putString("TEAM_NAME",teamName);
+                fragment.setArguments(bundle);*/
+            }
+            else if(position == 2){
+                fragment = new Usermap();
+                Log.i("MainActivitiy","3");
+                bundle = new Bundle();
             }
 
             return fragment;
@@ -141,17 +169,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 2;
+            // Show 4 total pages.
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "TAB 1";
                 case 1:
-                    return "SECTION 2";
+                    return "TAB 2";
+                case 2:
+                    return "TAB 3";
             }
             return null;
         }

@@ -11,9 +11,10 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/itemborder"
-        android:layout_height="80dp" />
+        android:layout_height="81dp"
+        android:layout_weight="1.08"
+        android:background="@drawable/itemborder" />
+
     <FrameLayout
         android:layout_width="12dp"
         android:layout_height="match_parent"></FrameLayout>
