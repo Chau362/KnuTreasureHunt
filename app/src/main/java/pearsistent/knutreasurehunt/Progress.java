@@ -1,7 +1,8 @@
 package pearsistent.knutreasurehunt;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 //before
 public class Progress extends AppCompatActivity {
@@ -10,5 +11,13 @@ public class Progress extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if (bundle != null) {
+            String teamName = (String) bundle.get("Teamname");
+        }
+
     }
 }

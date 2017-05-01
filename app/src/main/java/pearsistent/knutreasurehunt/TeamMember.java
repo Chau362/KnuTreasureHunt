@@ -13,10 +13,10 @@ public class TeamMember {
     String memberName;
     String userId = null;
 
-    public TeamMember(){
+    public TeamMember() {
     }
 
-    public TeamMember(String membername,String userid) {
+    public TeamMember(String membername, String userid) {
         this.memberName = membername;
         this.userId = userid;
     }
@@ -33,7 +33,7 @@ public class TeamMember {
         this.memberName = name;
     }
 
-    public void setMemberUserId(String userid){
+    public void setMemberUserId(String userid) {
         this.userId = userid;
     }
 

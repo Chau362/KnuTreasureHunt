@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("MainActivity","1");
                 //SeulKi : To post argument of teamName from this Activity, I used it.
                 bundle = new Bundle(1);
-                bundle.putString("TEAM_NAME",teamName);
+                bundle.putString("TEAM_NAME", teamName);
                 fragment.setArguments(bundle);
             }
 

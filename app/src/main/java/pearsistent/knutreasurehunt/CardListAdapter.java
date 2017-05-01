@@ -66,7 +66,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
     public void onBindViewHolder(CardListAdapter.ViewHolder holder, int position) {
 
         holder.cardTitle.setText(allItems.get(position).getName());
-        holder.cardPoints.setText(allItems.get(position).getText()+"  ( " +String.valueOf(allItems.get(position).getPoints())+" pts )");
+        holder.cardPoints.setText(allItems.get(position).getText() + "  ( " + String.valueOf(allItems.get(position).getPoints()) + " pts )");
         //holder.cardPoints.setText(String.valueOf(10));
 
 
@@ -86,7 +86,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
     }
 
 
-    public Object getItem(int position){
+    public Object getItem(int position) {
         return allItems.get(position);
     }
 }
