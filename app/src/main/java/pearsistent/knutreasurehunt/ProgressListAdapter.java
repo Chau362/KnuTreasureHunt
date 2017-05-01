@@ -61,6 +61,11 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
     }
 
     @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
     public int getItemCount() {
         return 0;
     }
