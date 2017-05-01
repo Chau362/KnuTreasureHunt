@@ -68,4 +68,12 @@
         android:layout_height="wrap_content"
         android:background="@drawable/registerbuttonborder"/>
 
+    <Button
+        android:id="@+id/create_pdf"
+        android:layout_marginTop="20dp"
+        android:text="Create PDF"
+        android:layout_width="250dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:background="@drawable/registerbuttonborder"/>
 </LinearLayout>

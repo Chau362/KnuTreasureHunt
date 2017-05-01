@@ -72,6 +72,7 @@ public class LoginTeamActivity extends BaseActivity{
                 String pwd = userPwd.getText().toString();
 
                 signIn(user,pwd);
+                goToNextPage(user);
 
             }
         });
@@ -126,6 +127,7 @@ public class LoginTeamActivity extends BaseActivity{
                             Toast.makeText(LoginTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
                             getTeamName();
+
 
                         }
                         // If sign in fails, display a message to the user. If sign in succeeds
