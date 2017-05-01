@@ -74,8 +74,8 @@ public class LoginTeamActivity extends BaseActivity{
                 signIn(user,pwd);
                 goToNextPage(user);
 
-            }
-        });
+    }
+});
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
