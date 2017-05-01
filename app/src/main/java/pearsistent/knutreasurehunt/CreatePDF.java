@@ -3,12 +3,14 @@ package pearsistent.knutreasurehunt;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -20,83 +22,49 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-public class CreatePDF extends AppCompatActivity {
+public class CreatePDF extends Fragment {
 
     private OutputStream output;
-    private String path;
-    private  File pdfFolder;
+
+    private File pdfFolder;
     private EditText mSubjectEditText, mBodyEditText;
     private Button mSaveButton;
     private File myFile;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_createpdf);
-        mSubjectEditText = (EditText) this.findViewById(R.id.edit_text_subject);
-        mBodyEditText = (EditText) this.findViewById(R.id.edit_text_body);
-        mSaveButton = (Button) this.findViewById(R.id.button_save);
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mSubjectEditText.getText().toString().isEmpty()){
-                    mSubjectEditText.setError("Subject is empty");
-                    mSubjectEditText.requestFocus();
-                    return;
-                }
 
-                if (mBodyEditText.getText().toString().isEmpty()){
-                    mBodyEditText.setError("Body is empty");
-                    mBodyEditText.requestFocus();
-                    return;
-                }
-
-                try {
-                    createPath();
-                    createPDF();
-
-                    //viewPdf();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (DocumentException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }
-
-    private void viewPdf(){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-
-        Uri objectURI = FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName()+".provider",myFile);
-        intent.setDataAndType(objectURI, "application/pdf");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-    }
-
-    public void createPath() throws FileNotFoundException{
-
-        pdfFolder = new File("sdcard/TreasureHunt_PDF");
-        if (!pdfFolder.exists()) {
-            pdfFolder.mkdir();
-            Log.i("PDF directory", "Pdf Directory created");
+        try {
+            createPath();
+            createPDF();
+            Toast.makeText(this.getActivity(), "Success!",
+                    Toast.LENGTH_SHORT).show();
+                //viewPdf();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (DocumentException e) {
+                e.printStackTrace();
         }
+}
 
-        //Create time stamp
-        //Date date = new Date();
-        ///String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
-        myFile = new File(pdfFolder,"Doc1.pdf");
-        output = new FileOutputStream(myFile);
+public void createPath()throws FileNotFoundException{
 
-    }
-   // @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void createPDF() throws DocumentException {
+        pdfFolder=new File("sdcard/TreasureHunt_PDF");
+        if(!pdfFolder.exists()){
+            pdfFolder.mkdir();
+            Log.i("PDF directory","Pdf Directory created");
+        }
+        myFile=new File(pdfFolder,"Doc1.pdf");
+        output=new FileOutputStream(myFile);
+}
+// @TargetApi(Build.VERSION_CODES.KITKAT)
+public void createPDF()throws DocumentException{
         //Step 1
-        Document document = new Document();
+        Document document=new Document();
 
         //Step 2
-        PdfWriter.getInstance(document, output);
+        PdfWriter.getInstance(document,output);
 
         //Step 3
         document.open();
@@ -107,6 +75,6 @@ public class CreatePDF extends AppCompatActivity {
 
         //Step 5: Close the document
         document.close();
-    }
+        }
 
 }
