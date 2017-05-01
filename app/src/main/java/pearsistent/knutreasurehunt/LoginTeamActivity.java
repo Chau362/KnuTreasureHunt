@@ -72,8 +72,6 @@ public class LoginTeamActivity extends BaseActivity{
                 String pwd = userPwd.getText().toString();
 
                 signIn(user,pwd);
-                goToNextPage(user);
-
     }
 });
         registerBtn.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +168,6 @@ public class LoginTeamActivity extends BaseActivity{
 
                         //finding team name using member's userId
                             if (team.getTeamMembers().get(i).getUserId().equals(userId)) {
-
                             //if find right team information
                                 goToNextPage(team.getTeamName());
                                 check = true;
