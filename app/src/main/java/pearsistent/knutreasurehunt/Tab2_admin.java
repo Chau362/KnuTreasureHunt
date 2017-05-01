@@ -26,7 +26,7 @@ import java.util.ArrayList;
 //Edited by Bogyu 5.1
 
 public class Tab2_admin extends Fragment implements View.OnClickListener {
-    private Intent intent;
+    private Intent intent,intent2;
     private Button Point;
     private Button Selfie;
     private DatabaseReference mDatabase;
@@ -47,6 +47,7 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
         Selfie.setOnClickListener(this);
 
         intent = new Intent(getContext(), Progress.class);
+        intent2 = new Intent(getContext(),CreatePDF.class);
         // Inflate the layout for this fragment
 
 
@@ -93,10 +94,7 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
         if(view.getId() == R.id.changePoint)
             startActivity(intent);
         else if(view.getId() == R.id.create_pdf){
-            Fragment fragment = new CreatePDF();
-            Log.i("PDF","1");
-            Bundle bundle = new Bundle(1);
-            fragment.setArguments(bundle);
+            startActivity(intent2);
         }
     }
 }
