@@ -23,9 +23,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
+//Edited by Bogyu 5.1
+
 public class Tab2_admin extends Fragment implements View.OnClickListener {
-    Intent intent;
-    Button button;
+    private Intent intent;
+    private Button Point;
+    private Button Selfie;
     private DatabaseReference mDatabase;
 
     public Tab2_admin() {
@@ -37,8 +40,12 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tab2_admin, container, false);
-        button = (Button)rootView.findViewById(R.id.changePoint);
-        button.setOnClickListener(this);
+        Point = (Button)rootView.findViewById(R.id.changePoint);
+        Point.setOnClickListener(this);
+
+        Selfie = (Button)rootView.findViewById(R.id.show_selfie);
+        Selfie.setOnClickListener(this);
+
         intent = new Intent(getContext(), Progress.class);
         // Inflate the layout for this fragment
 
@@ -85,6 +92,11 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if(view.getId() == R.id.changePoint)
             startActivity(intent);
-
+        else if(view.getId() == R.id.show_selfie){
+            Fragment fragment = new CreatePDF();
+            Log.i("PDF","1");
+            Bundle bundle = new Bundle(1);
+            fragment.setArguments(bundle);
+        }
     }
 }
