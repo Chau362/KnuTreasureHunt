@@ -214,6 +214,8 @@ public class UserMainActivity extends Fragment {
                     imageview = (ImageView) childView.findViewById(R.id.cardImage);
 
                     Intent i = new Intent(getContext(), ObjectDetailActivity.class);
+                    i.putExtra("ITEM_NAME",selectItem.getName());
+                    i.putExtra("ITEM_SUBTEXT",selectItem.getText());
                     i.putExtra("ITEM_POINT",selectItem.getPoints());
                     i.putExtra("PATH_TO_SAVE", teamName + "/" + itemName + ".jpg");
                     startActivityForResult(i, 1);
