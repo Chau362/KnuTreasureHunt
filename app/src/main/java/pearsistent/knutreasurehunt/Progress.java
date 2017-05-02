@@ -3,6 +3,7 @@ package pearsistent.knutreasurehunt;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+//before
 public class Progress extends AppCompatActivity {
 
     @Override
