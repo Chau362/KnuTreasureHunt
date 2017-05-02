@@ -87,11 +87,11 @@ public class UserAdditionalActivity extends Fragment implements OnMapReadyCallba
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
 
-        mDatabase.child("Team").addValueEventListener(new ValueEventListener(){
+        mDatabase.child("Team").orderByChild("teamPoint").addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 teamList.clear();
-                // Get Item data value
+                // Get team data value
                 for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                     Team team = tempSnapshot.getValue(Team.class);
 
@@ -99,7 +99,7 @@ public class UserAdditionalActivity extends Fragment implements OnMapReadyCallba
                 }
                 //when Tab2 work make a list
                 if(getActivity()!=null) {
-                    //Set Item listview
+                    //Set team listview
                     makeListView(listView, teamList);
                 }
             }

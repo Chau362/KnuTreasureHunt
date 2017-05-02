@@ -1,10 +1,17 @@
 package pearsistent.knutreasurehunt;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,34 +21,39 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-// last coder : seulki, 2017.04.28
+// last coder : seulki, 2017.05.01
 
 public class AddMemberActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private ListAdapter adapter;
     private String teamName;
+    private ArrayList<TeamMember> teamMembers;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_member);
 
+        Button addMemberBtn = (Button) this.findViewById(R.id.addmemberbutton);
         final ListView listView = (ListView) this.findViewById(R.id.memberlist);
-        final ArrayList<TeamMember> teamMembers = new ArrayList<>();
+        teamMembers = new ArrayList<>();
         Intent intent = getIntent();
         teamName = intent.getStringExtra("TEAM_NAME");
 
+
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
 
+        //whenever teamMember list change, this function will be call
         mDatabase.child("Team").child(teamName).child("teamMembers").addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                teamMembers.clear();
-                // Get Item data value
+                teamMembers.clear(); //initialize teamMemberlist
+
+                // Get teamMember data value from DB
                 for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                     TeamMember teamMember = tempSnapshot.getValue(TeamMember.class);
-
                     teamMembers.add(teamMember);
                 }
                 //Set Item listview
@@ -54,40 +66,45 @@ public class AddMemberActivity extends AppCompatActivity {
             }
         });
 
+        //user click addMemberBtn
+        addMemberBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set up popupLayout
+                final LinearLayout popupLayout = (LinearLayout) v.inflate(AddMemberActivity.this,R.layout.popup,null);
 
-        /*TeamMember member1 = new TeamMember();
-        member1.setMemberName("Tim");
-        arr.add(member1);
+                //popup
+                new AlertDialog.Builder(AddMemberActivity.this)
+                        .setTitle("Add Member Name")
+                        .setView(popupLayout)
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-        TeamMember member2 = new TeamMember();
-        member2.setMemberName("Henna");
-        arr.add(member2);
+                            }
+                        })
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-        TeamMember member3 = new TeamMember();
-        member3.setMemberName("David");
-        arr.add(member3);
+                                EditText newMemberName = (EditText) popupLayout.findViewById(R.id.newMemberName);
 
-        TeamMember member4 = new TeamMember();
-        member4.setMemberName("Bogyu");
-        arr.add(member4);
-
-        TeamMember member5 = new TeamMember();
-        member5.setMemberName("Chau");
-        arr.add(member5);
-
-        TeamMember member6 = new TeamMember();
-        member6.setMemberName("Song");
-        arr.add(member6);
-
-        TeamMember member7 = new TeamMember();
-        member7.setMemberName("SeulKi");
-        arr.add(member7);*/
-
+                                if(newMemberName.getText().toString()!=null) {
+                                    TeamMember updateMember = new TeamMember(newMemberName.getText().toString(), teamMembers.get(0).getUserId());
+                                    teamMembers.add(updateMember);
+                                    mDatabase.child("Team").child(teamName).child("teamMembers").setValue(teamMembers);
+                                }else{
+                                    Toast.makeText(AddMemberActivity.this,"Please write New Member Name", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }).show();
+            }
+        });
 
     }
 
     public void makeListView(ListView listView, final ArrayList<TeamMember> teamList) {
-        MemberListAdapter adapter = new MemberListAdapter(this.getApplicationContext(),R.layout.memberview,teamList,teamName);
+        MemberListAdapter adapter = new MemberListAdapter(this,R.layout.memberview,teamList,teamName);
         listView.setAdapter(adapter);
     }
 

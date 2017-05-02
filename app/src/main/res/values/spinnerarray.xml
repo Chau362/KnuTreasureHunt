@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="data_spinner">
-        <item> --Choice-- </item>
+        <item> *Choice* </item>
         <item>Delete</item>
         <item>Modify</item>
     </string-array>

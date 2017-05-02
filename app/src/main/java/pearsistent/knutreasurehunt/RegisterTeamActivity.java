@@ -95,10 +95,6 @@ public class RegisterTeamActivity extends BaseActivity {
                         rgstr_user = userName.getText().toString();
 
                         createTeam(auth_id,auth_pwd);
-
-                        //I have to get a new userid so, I wrote this.
-                        mAuth.signInWithEmailAndPassword(auth_id,auth_pwd).isSuccessful();
-
                     }
                 });
             }
@@ -123,6 +119,8 @@ public class RegisterTeamActivity extends BaseActivity {
                             Log.d("CREATE", "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(RegisterTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
+                            //I have to get a new userid so, I wrote this.
+                            mAuth.signInWithEmailAndPassword(auth_id,auth_pwd).isSuccessful();
                         }
                         // If sign up fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -169,8 +167,6 @@ public class RegisterTeamActivity extends BaseActivity {
         } else {
             userPwd.setError(null);
         }
-
-
 
         return valid;
     }

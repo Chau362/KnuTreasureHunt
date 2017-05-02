@@ -31,7 +31,7 @@ public class Item {
 
     }
 
-    public Item(String n, CheckBox c){
+    public Item(String n, CheckBox c) {
         this.name = n;
         this.checkBox = c;
     }
@@ -43,11 +43,6 @@ public class Item {
         this.choice = false;
     }
 
-//    public Item(String t, String n, int temp) {
-//        this.text = t;
-//        this.name = n;
-//        this.image_i = temp;
-//    }
 
     public int getPoints() {
         return points;
@@ -63,17 +58,21 @@ public class Item {
         this.imageReference = imageReference;
     }
 
-    public boolean getChoice(){ return this.choice; }
+    public boolean getChoice() {
+        return this.choice;
+    }
 
-    public void setChoice(boolean value){
+    public void setChoice(boolean value) {
         this.choice = value;
     }
 
     @Exclude
-    public CheckBox getCheckBox(){ return this.checkBox;}
+    public CheckBox getCheckBox() {
+        return this.checkBox;
+    }
 
     @Exclude
-    public void setCheckBox(CheckBox c){
+    public void setCheckBox(CheckBox c) {
         this.checkBox = c;
     }
 
@@ -85,12 +84,12 @@ public class Item {
         return this.name;
     }
 
-    public Map<String, Object> toMap(){
+    public Map<String, Object> toMap() {
 
-        HashMap<String,Object> item = new HashMap<>();
-        item.put("choice",choice);
-        item.put("name",name);
-        item.put("text",text);
+        HashMap<String, Object> item = new HashMap<>();
+        item.put("choice", choice);
+        item.put("name", name);
+        item.put("text", text);
 
         return item;
     }

@@ -55,10 +55,7 @@ public class CreateMissionListAdapter extends BaseAdapter{
 
         final Item item = choicedList.get(position);
 
-//        if(item.getChoice()){
-//            checkBoxState[position] = true;
-//        }
-
+        //checkBox listener in Listview
         checkBox.setOnClickListener(new View.OnClickListener(){
            public void onClick(View v){
                if(((CheckBox)v).isChecked()) {
@@ -67,7 +64,6 @@ public class CreateMissionListAdapter extends BaseAdapter{
            }
         });
 
-        //Log.i("objectName",mission.getObjectName());
         objectName.setText(item.getName());
         checkBox = item.getCheckBox();
 

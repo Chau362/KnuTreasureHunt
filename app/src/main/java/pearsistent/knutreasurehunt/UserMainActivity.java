@@ -69,13 +69,10 @@ public class UserMainActivity extends Fragment {
     private ListAdapter adapter;
     ImageView imageview;
     Item item;
-    private boolean uploadFlag = false;
     private String itemName;
-    private int itemPoint;
     private Item selectItem;
     private Item initailItem;
     private String itemKey;
-    private int checkItemNum = 0;
 
     public UserMainActivity() {
         // Required empty public constructor
@@ -124,8 +121,7 @@ public class UserMainActivity extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 itemKey  = String.valueOf(dataSnapshot.getChildrenCount());
-                initailItem = dataSnapshot.child("0").getValue(Item.class);
-
+                initailItem = dataSnapshot.child("0").getValue(Item.class); //check index 0 on itemlist
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -146,7 +142,6 @@ public class UserMainActivity extends Fragment {
                         //Set item image Reference
                         item.setImageReference(findImageFile(item.getName()+".jpg"));
                         getList.add(item);
-                        //Log.i("cheeee",item.getName());
                     }
                 }
                 //Set Item listview
@@ -213,6 +208,8 @@ public class UserMainActivity extends Fragment {
                     imageview = (ImageView) childView.findViewById(R.id.cardImage);
 
                     Intent i = new Intent(getContext(), ObjectDetailActivity.class);
+                    i.putExtra("ITEM_NAME",selectItem.getName());
+                    i.putExtra("ITEM_SUBTEXT",selectItem.getText());
                     i.putExtra("ITEM_POINT",selectItem.getPoints());
                     i.putExtra("PATH_TO_SAVE", teamName + "/" + itemName + ".jpg");
                     startActivityForResult(i, 1);
@@ -238,14 +235,17 @@ public class UserMainActivity extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode==1){
+
+            //state 1 : have to update itemlist and reload picture
             if(resultCode==1 && data.getExtras().getInt("State")==1){
 
+                //if initailItem.getName() == null : it was initail Item.(not real Item)
                 if(itemKey.equals("1") && initailItem.getName()==null){
                     itemKey = "0";
-                    //checkItemNum ++;
                 }
 
                 mDatabase.child("Team").child(teamName).child("itemList").child(itemKey).setValue(selectItem);
+
                 //update cache
                 Glide.with(getContext())
                         .using(new FirebaseImageLoader())
@@ -255,6 +255,7 @@ public class UserMainActivity extends Fragment {
                         .skipMemoryCache(true)
                         .into(imageview);
             }
+            //state 0 : dont have to update itemlist but relaod picture
             else if(resultCode==1 && data.getExtras().getInt("State")==0){
 
                 //update cache
