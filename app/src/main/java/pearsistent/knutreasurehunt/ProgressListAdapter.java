@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 
 import java.util.ArrayList;
@@ -66,8 +67,10 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
     public void onBindViewHolder(ProgressListAdapter.ViewHolder holder, int position) {
         holder.selfieTitle.setText(allItems.get(position).getName());
         holder.selfiePoints.setText(allItems.get(position).getText() + "  ( " + String.valueOf(allItems.get(position).getPoints()) + " pts )");
-        Glide.with(context).using(new FirebaseImageLoader()).load(allItems.get(position).getImageReference()).error(R.drawable.marker).into(holder.selfieImage);
+        Glide.with(context).using(new FirebaseImageLoader()).load(allItems.get(position).getImageReference()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true).error(R.drawable.marker).into(holder.selfieImage);
     }
+
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

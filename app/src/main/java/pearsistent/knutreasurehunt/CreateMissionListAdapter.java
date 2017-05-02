@@ -60,6 +60,8 @@ public class CreateMissionListAdapter extends BaseAdapter{
            public void onClick(View v){
                if(((CheckBox)v).isChecked()) {
                    item.getCheckBox().setChecked(true);
+               }else{
+                   item.getCheckBox().setChecked(false);
                }
            }
         });

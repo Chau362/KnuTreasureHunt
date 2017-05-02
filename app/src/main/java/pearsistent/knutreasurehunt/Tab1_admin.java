@@ -72,23 +72,23 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
         createlist = (Button)rootView.findViewById(R.id.createlist);
         //ArrayList<Item> choicedList = new ArrayList<Item>();
-        final ArrayList<Item> itemList = new ArrayList<>();
+        final ArrayList<Item> createItemList = new ArrayList<>();
 
         mDatabase.child("Items").addValueEventListener(new ValueEventListener() {
 
             //ArrayList<Item> itemList = new ArrayList<>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                itemList.clear();
+                createItemList.clear();
                 // Get Item data value
                 for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                     Item item = tempSnapshot.getValue(Item.class);
                     item.setCheckBox(new CheckBox(getContext()));
-                    itemList.add(item);
+                    createItemList.add(item);
                 }
-                choicedList = itemList;
+                choicedList = createItemList;
                 //Set Item listview
-                makeListView(listView, itemList);
+                makeListView(listView, createItemList);
             }
 
             @Override
@@ -124,21 +124,20 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
 
-                for (int i = 0; i < itemList.size(); i++) {
+                for (int i = 0; i < createItemList.size(); i++) {
                     //before update database, item choice flag have to set to false
-                    Item initalItem = itemList.get(i);
+                    Item initalItem = createItemList.get(i);
                     initalItem.setChoice(false);
                     Map<String, Object> initalPostValues = initalItem.toMap();
                     mDatabase.child("Items").child("" + i).updateChildren(initalPostValues);
 
-                    if (itemList.get(i).getCheckBox().isChecked()) {
-                        itemList.get(i).setChoice(true);
-                        Log.i("choice?", ":" + itemList.get(i).getChoice());
+                    if (createItemList.get(i).getCheckBox().isChecked()) {
+                        createItemList.get(i).setChoice(true);
+                        Log.i("choice?", ":" + createItemList.get(i).getChoice());
                         //update database : choice flag change to true
-                        Item updateItem = itemList.get(i);
+                        Item updateItem = createItemList.get(i);
                         Map<String, Object> postValues = updateItem.toMap();
                         //mDatabase.child("Items").child("Item"+i).updateChildren(postValues);
-
                         if (!mDatabase.child("Items").child("" + i).updateChildren(postValues).isSuccessful()) {
                             Toast.makeText(getContext(), "Create List Success!", Toast.LENGTH_SHORT).show();
                         } else {
