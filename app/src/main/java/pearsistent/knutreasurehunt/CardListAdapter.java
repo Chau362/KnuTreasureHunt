@@ -44,9 +44,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
                     int position = getAdapterPosition();
                 }
             });
-
         }
-
     }
 
     public CardListAdapter(ArrayList<Item> itemArrayList, String teamName) {
@@ -64,16 +62,12 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(CardListAdapter.ViewHolder holder, int position) {
-
         holder.cardTitle.setText(allItems.get(position).getName());
         holder.cardPoints.setText(allItems.get(position).getText() + "  ( " + String.valueOf(allItems.get(position).getPoints()) + " pts )");
-        //holder.cardPoints.setText(String.valueOf(10));
-
 
         //Seulki : if loading has error then this  will be instead picture to marker image in ImageView
         Glide.with(context).using(new FirebaseImageLoader()).load(allItems.get(position).getImageReference()).error(R.drawable.marker).into(holder.selfie);
     }
-
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

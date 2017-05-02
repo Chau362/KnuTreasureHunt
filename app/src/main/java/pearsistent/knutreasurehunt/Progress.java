@@ -11,34 +11,86 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 
-//before
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
+
 public class Progress extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ProgressListAdapter progressListAdapter;
+    private ArrayList<Item> teamItemListNames;
+    private DatabaseReference mDatabase;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    String teamName = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
 
-        recyclerView = (RecyclerView) findViewById(R.id.progressRecyclerView);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        progressListAdapter = new ProgressListAdapter();
-        recyclerView.setAdapter(progressListAdapter);
-
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
         if (bundle != null) {
-            String teamName = (String) bundle.get("Teamname");
+            teamName = (String) bundle.get("Teamname");
+
+            mDatabase.child("Team").child(teamName).child("itemList").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    teamItemListNames.clear();
+
+                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                        Item currentItem = itemSnapshot.getValue(Item.class);
+                        teamItemListNames.add(currentItem);
+                    }
+
+                    makeListView(teamItemListNames);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
+
+    }
+
+    private void makeListView(ArrayList<Item> ar) {
+        recyclerView = (RecyclerView) findViewById(R.id.progressRecyclerView);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        progressListAdapter = new ProgressListAdapter(ar);
+        recyclerView.setAdapter(progressListAdapter);
+    }
+
+    private StorageReference findImageFile(String imageFileName) {
+
+        if (teamName != null) {
+
+            //can make a image file name
+            StorageReference childRef = storageRef.child(teamName + "/" + imageFileName);
+            return childRef;
+        }
+
+        return null;
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

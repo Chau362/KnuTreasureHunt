@@ -7,7 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 
 import java.util.ArrayList;
 
@@ -20,20 +24,21 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
     ArrayList<Item> allItems = new ArrayList<>();
     private Context context;
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView selfieCardView;
         TextView selfieTitle;
         TextView selfiePoints;
+        ImageView selfieImage;
         ImageButton selfieTrashBtn;
 
-
         public ViewHolder(View itemView) {
+
             super(itemView);
             this.selfieCardView = (CardView) itemView.findViewById(R.id.selfieCardView);
             this.selfieTitle = (TextView) itemView.findViewById(R.id.selfieTitle);
             this.selfiePoints = (TextView) itemView.findViewById(R.id.selfiePoints);
+            this.selfieImage = (ImageView) itemView.findViewById(R.id.selfieImage);
             this.selfieTrashBtn = (ImageButton) itemView.findViewById(R.id.selfieTrashBtn);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -42,9 +47,11 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
                     int position = getAdapterPosition();
                 }
             });
-
         }
+    }
 
+    public ProgressListAdapter(ArrayList<Item> itemArrayList) {
+        this.allItems = itemArrayList;
     }
 
     @Override
@@ -57,7 +64,9 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
 
     @Override
     public void onBindViewHolder(ProgressListAdapter.ViewHolder holder, int position) {
-
+        holder.selfieTitle.setText(allItems.get(position).getName());
+        holder.selfiePoints.setText(allItems.get(position).getText() + "  ( " + String.valueOf(allItems.get(position).getPoints()) + " pts )");
+        Glide.with(context).using(new FirebaseImageLoader()).load(allItems.get(position).getImageReference()).error(R.drawable.marker).into(holder.selfieImage);
     }
 
     @Override
@@ -67,6 +76,6 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
 
     @Override
     public int getItemCount() {
-        return 0;
+        return allItems.size();
     }
 }
