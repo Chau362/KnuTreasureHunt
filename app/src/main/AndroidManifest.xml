@@ -55,6 +55,7 @@
         <activity android:name=".AddMemberActivity"/>
         <activity android:name=".Progress" />
         <activity android:name=".AddItemActivity" />
+        <activity android:name=".CreatePDF" />
 
 
         <provider
