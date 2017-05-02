@@ -36,12 +36,17 @@ public class Progress extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
 
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
 
         Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
+        //Bundle bundle = intent.getExtras();
+        teamName = intent.getStringExtra("Teamname");
 
-        if (bundle != null) {
-            teamName = (String) bundle.get("Teamname");
+        if (teamName != null) {
+            //teamName = (String) bundle.get("Teamname");
+            teamItemListNames = new ArrayList<Item>();
 
             mDatabase.child("Team").child(teamName).child("itemList").addValueEventListener(new ValueEventListener() {
                 @Override
@@ -50,6 +55,8 @@ public class Progress extends AppCompatActivity {
 
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         Item currentItem = itemSnapshot.getValue(Item.class);
+                        currentItem.setImageReference(findImageFile(currentItem.getName() + ".jpg"));
+
                         teamItemListNames.add(currentItem);
                     }
 
@@ -62,10 +69,6 @@ public class Progress extends AppCompatActivity {
                 }
             });
         }
-
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
 
     }
 
