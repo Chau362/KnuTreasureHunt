@@ -85,10 +85,6 @@ public class UserAdditionalActivity extends Fragment implements OnMapReadyCallba
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab2,container,false);
-        /*mapView = (MapView) v.findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
-        mapView.onResume();
-        mapView.getMapAsync(this);*/
 
 
         final ListView listView = (ListView) v.findViewById(R.id.teamList);

@@ -26,9 +26,9 @@
 
 
     <application
-
         android:networkSecurityConfig="@xml/network_security_config"
         android:name="android.support.multidex.MultiDexApplication"
+        android:label="Treasure Hunt"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
