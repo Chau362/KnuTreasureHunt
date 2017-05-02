@@ -49,6 +49,7 @@ public class LoginAdminActivity extends BaseActivity {
 
 
         mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -112,19 +113,8 @@ public class LoginAdminActivity extends BaseActivity {
 
                         if(task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                            if(checkAdmin()){
-                            Toast.makeText(LoginAdminActivity.this, "Success!",
-                                    Toast.LENGTH_SHORT).show();
 
-                            //seulki, 04.06 : if user login successful, go to next step.
-                            Intent i = new Intent(LoginAdminActivity.this,MainActivity_admin.class);
-                            startActivity(i);
-                            }else{
-                                Toast.makeText(LoginAdminActivity.this, "No Exist ID or Not Admin",
-                                        Toast.LENGTH_SHORT).show();
-
-                            }
-
+                           checkAdmin();
 
                         }
                         // If sign in fails, display a message to the user. If sign in succeeds
@@ -145,7 +135,7 @@ public class LoginAdminActivity extends BaseActivity {
     }
 
     //check Admin ID
-    private boolean checkAdmin() {
+    private void checkAdmin() {
         FirebaseUser user = mAuth.getCurrentUser();
         String userProId = user.getProviderId();
         final String userId = user.getUid();
@@ -168,8 +158,17 @@ public class LoginAdminActivity extends BaseActivity {
                     }
                     count++;
                 }
+                Log.i("How many",""+dataSnapshot.getChildrenCount()+"   "+count);
                 if(count==dataSnapshot.getChildrenCount()){
-                    result = true;
+                    Toast.makeText(LoginAdminActivity.this, "Success!",
+                            Toast.LENGTH_SHORT).show();
+
+                    //seulki, 04.06 : if user login successful, go to next step.
+                    Intent i = new Intent(LoginAdminActivity.this,MainActivity_admin.class);
+                    startActivity(i);
+                }else{
+                    Toast.makeText(LoginAdminActivity.this, "No Exist ID or Not Admin",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -178,6 +177,5 @@ public class LoginAdminActivity extends BaseActivity {
                 //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
             }
         });
-        return result;
     }
 }

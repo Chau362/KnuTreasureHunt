@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -43,7 +44,7 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
 
 
-    final ListView listView = (ListView) rootView.findViewById(R.id.teamListAdmin);
+    final ListView teamListView = (ListView) rootView.findViewById(R.id.teamListAdmin);
     final ArrayList<Team> teamList = new ArrayList<>();
 
     mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
@@ -63,7 +64,7 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
             if(getActivity()!=null) {
 
                 //Set Item listview
-                makeListView(listView, teamList);
+                makeListView(teamListView, teamList);
             }
         }
 
@@ -72,6 +73,17 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
             Log.i("Error","Loading data from teamMember");
         }
     });
+        teamListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), Progress.class);
+                Team currentTeam = (Team) parent.getItemAtPosition(teamList.size() - 1 - position);
+                String teamName = currentTeam.getTeamName();
+                intent.putExtra("Teamname", teamName);
+                startActivity(intent);
+            }
+        });
+
 
         return rootView;
     }
