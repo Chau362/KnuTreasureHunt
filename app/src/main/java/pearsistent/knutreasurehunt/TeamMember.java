@@ -37,11 +37,11 @@ public class TeamMember {
         this.userId = userid;
     }
 
-    public Map<String, Object> toMap(){
+    public Map<String, Object> toMap() {
 
-        HashMap<String,Object> teamMember = new HashMap<>();
-        teamMember.put("memberName",memberName);
-        teamMember.put("userId",userId);
+        HashMap<String, Object> teamMember = new HashMap<>();
+        teamMember.put("memberName", memberName);
+        teamMember.put("userId", userId);
 
         return teamMember;
     }

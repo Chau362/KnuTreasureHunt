@@ -32,7 +32,8 @@ import java.util.List;
 
 public class Usermap extends Fragment implements OnMapReadyCallback, LocationListener {
     private MapView mapView;
-    private LocationManager locationManager;;
+    private LocationManager locationManager;
+    ;
     private List<Address> list = null;
 
     private double latitude;
@@ -83,14 +84,15 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
     public void onMapReady(GoogleMap googleMap) {
         // Make map’s setting here.
         startLocationService();
-        String find = findAddress(latitude,longitude);
-        Log.d("주소",""+find);
+        String find = findAddress(latitude, longitude);
+        Log.d("주소", "" + find);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new
                 LatLng(latitude, longitude), 16));
         googleMap.addMarker(new MarkerOptions().position(
-                new LatLng(latitude, longitude)).title(""+find));
+                new LatLng(latitude, longitude)).title("" + find));
 
     }
+
     @Override
     public void onLocationChanged(final Location location) {
         //  getting location of user
@@ -131,6 +133,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
         }
 
     }
+
     private void startLocationService() {
         // set listener
         GPSListener gpsListener = new GPSListener();
@@ -163,6 +166,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
         }
         //Toast.makeText(getContext(), "Location Service started.\nyou can test using DDMS.", Toast.LENGTH_SHORT).show();
     }
+
     private String findAddress(double lat, double lng) {
         StringBuffer bf = new StringBuffer();
         String currentLocationAddress;

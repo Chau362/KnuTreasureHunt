@@ -74,21 +74,21 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         //ArrayList<Item> choicedList = new ArrayList<Item>();
         final ArrayList<Item> itemList = new ArrayList<>();
 
-        mDatabase.child("Items").addValueEventListener(new ValueEventListener(){
+        mDatabase.child("Items").addValueEventListener(new ValueEventListener() {
 
             //ArrayList<Item> itemList = new ArrayList<>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 itemList.clear();
                 // Get Item data value
-                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                     Item item = tempSnapshot.getValue(Item.class);
                     item.setCheckBox(new CheckBox(getContext()));
                     itemList.add(item);
                 }
                 choicedList = itemList;
                 //Set Item listview
-                makeListView(listView,itemList);
+                makeListView(listView, itemList);
             }
 
             @Override
@@ -106,9 +106,9 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
                 int itemKey = 0;
                 final DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com");
 
-                for(int i = 0 ; i< choicedList.size(); i ++){
+                for (int i = 0; i < choicedList.size(); i++) {
 
-                    if(!choicedList.get(i).getCheckBox().isChecked()){
+                    if (!choicedList.get(i).getCheckBox().isChecked()) {
                         updateItem.add(choicedList.get(i));
                     }
                 }
@@ -124,25 +124,25 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
 
-                for(int i = 0 ; i< itemList.size(); i ++){
+                for (int i = 0; i < itemList.size(); i++) {
                     //before update database, item choice flag have to set to false
                     Item initalItem = itemList.get(i);
                     initalItem.setChoice(false);
-                    Map<String,Object> initalPostValues = initalItem.toMap();
-                    mDatabase.child("Items").child(""+i).updateChildren(initalPostValues);
+                    Map<String, Object> initalPostValues = initalItem.toMap();
+                    mDatabase.child("Items").child("" + i).updateChildren(initalPostValues);
 
-                    if(itemList.get(i).getCheckBox().isChecked()){
+                    if (itemList.get(i).getCheckBox().isChecked()) {
                         itemList.get(i).setChoice(true);
-                        Log.i("choice?",":"+itemList.get(i).getChoice());
+                        Log.i("choice?", ":" + itemList.get(i).getChoice());
                         //update database : choice flag change to true
                         Item updateItem = itemList.get(i);
-                        Map<String,Object> postValues = updateItem.toMap();
+                        Map<String, Object> postValues = updateItem.toMap();
                         //mDatabase.child("Items").child("Item"+i).updateChildren(postValues);
 
-                        if(!mDatabase.child("Items").child(""+i).updateChildren(postValues).isSuccessful()){
-                            Toast.makeText(getContext(),"Create List Success!",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getContext(),"Create List Fail..",Toast.LENGTH_SHORT).show();
+                        if (!mDatabase.child("Items").child("" + i).updateChildren(postValues).isSuccessful()) {
+                            Toast.makeText(getContext(), "Create List Success!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Create List Fail..", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -153,8 +153,8 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    public void makeListView(ListView listView,ArrayList<Item> itemList){
-        CreateMissionListAdapter adapter = new CreateMissionListAdapter(this.getContext(),R.layout.objectitemview, itemList);
+    public void makeListView(ListView listView, ArrayList<Item> itemList) {
+        CreateMissionListAdapter adapter = new CreateMissionListAdapter(this.getContext(), R.layout.objectitemview, itemList);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
