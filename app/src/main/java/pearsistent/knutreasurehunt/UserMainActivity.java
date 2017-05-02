@@ -43,7 +43,7 @@ import static com.google.android.gms.wearable.DataMap.TAG;
  * create an instance of this fragment.
  */
 
-// last coder : seulki, 2017.03.28
+// last coder : seulki, 2017.05.02
 
 public class UserMainActivity extends Fragment {
     // TODO: Rename parameter arguments, choose names that match

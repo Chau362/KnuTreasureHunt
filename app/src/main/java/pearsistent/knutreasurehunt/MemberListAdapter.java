@@ -48,7 +48,6 @@ public class MemberListAdapter extends BaseAdapter{
         this.teamName = teamName;
         this.inf = (LayoutInflater) context.getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
     }
 
     @Override
@@ -88,13 +87,14 @@ public class MemberListAdapter extends BaseAdapter{
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+            public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
+                mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
                 //Delete team member
                 if(position==1){
                     Log.i("Spinner","1");
-                    mDatabase.child("Team").child(teamName).addChildEventListener(new ChildEventListener() {
 
+
+                    ChildEventListener temp = new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             Log.i("Team Children"," "+dataSnapshot.getChildrenCount());
@@ -117,15 +117,17 @@ public class MemberListAdapter extends BaseAdapter{
                                             .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    if(memberCount!=1) {
+                                                    if(memberCount!=1 && context!=null) {
                                                         DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team" + "/" + teamName + "/teamMembers/" + tempSnapshot.getKey());
                                                         updateDatabase.removeValue();
+
                                                     }else{
-                                                         Toast.makeText(context, "Member must have one more", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(context, "Member must have one more", Toast.LENGTH_SHORT).show();
                                                     }
                                                 }
                                             }).show();
                                     break;
+
                                 }
                             }
                         }
@@ -141,6 +143,9 @@ public class MemberListAdapter extends BaseAdapter{
                             }
                             DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team" + "/" + teamName + "/teamMembers");
                             updateDatabase.setValue(teamMembers);
+
+                            //removeListener because it can cause duplicate : 존나 중요함. 진짜 개 중요함.
+                            mDatabase.child("Team").child(teamName).removeEventListener(this);
                         }
 
                         @Override
@@ -157,7 +162,10 @@ public class MemberListAdapter extends BaseAdapter{
                         public void onCancelled(DatabaseError databaseError) {
 
                         }
-                    });
+                    };
+
+                    mDatabase.child("Team").child(teamName).addChildEventListener(temp);
+
 
                 }
 

@@ -80,15 +80,21 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 createItemList.clear();
-                // Get Item data value
-                for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
-                    Item item = tempSnapshot.getValue(Item.class);
-                    item.setCheckBox(new CheckBox(getContext()));
-                    createItemList.add(item);
+
+                if(getContext()!=null) {
+                    // Get Item data value
+                    for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                        Item item = tempSnapshot.getValue(Item.class);
+
+                        item.setCheckBox(new CheckBox(Tab1_admin.this.getContext()));
+                        createItemList.add(item);
+
+                    }
+                    choicedList = createItemList;
+                    //Set Item listview
+                    makeListView(listView, createItemList);
                 }
-                choicedList = createItemList;
-                //Set Item listview
-                makeListView(listView, createItemList);
+
             }
 
             @Override
@@ -137,14 +143,15 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
                         //update database : choice flag change to true
                         Item updateItem = createItemList.get(i);
                         Map<String, Object> postValues = updateItem.toMap();
-                        //mDatabase.child("Items").child("Item"+i).updateChildren(postValues);
-                        if (!mDatabase.child("Items").child("" + i).updateChildren(postValues).isSuccessful()) {
+                        mDatabase.child("Items").child(""+i).updateChildren(postValues);
+                        /*if (!mDatabase.child("Items").child("" + i).updateChildren(postValues).isSuccessful()) {
                             Toast.makeText(getContext(), "Create List Success!", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getContext(), "Create List Fail..", Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
                     }
                 }
+                Toast.makeText(getContext(), "Create List Success!", Toast.LENGTH_SHORT).show();
             }
 
         });
