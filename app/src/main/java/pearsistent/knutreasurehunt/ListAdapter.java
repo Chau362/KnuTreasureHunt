@@ -62,8 +62,8 @@ class ListAdapter extends BaseAdapter {
         Glide.with(this.context)
                 .using(new FirebaseImageLoader())
                 .load(item.getImageReference())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)  //reload on cache
-                .skipMemoryCache(true)                      //reload on cache
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .error(R.drawable.marker)
                 .into(photo);
 

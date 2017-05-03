@@ -24,8 +24,6 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-//Edited by Bogyu 5.1
-
 public class Tab2_admin extends Fragment implements View.OnClickListener {
     private Intent intent,intent2;
     private Button Point;
