@@ -55,13 +55,13 @@
         <FrameLayout
             android:layout_width="30dp"
             android:layout_height="match_parent" 
-            android:layout_weight="0.22">
+            android:layout_weight="0.82">
         </FrameLayout>
         
         <Button
-            android:id="@+id/modifybutton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:id="@+id/addmemberbutton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/addmember" />
         <FrameLayout
             android:layout_width="30dp"
@@ -69,11 +69,6 @@
             android:layout_weight="0.37">
         </FrameLayout>
 
-        <Button
-            android:id="@+id/createteambutton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@drawable/addmember" />
 
     </LinearLayout>
 

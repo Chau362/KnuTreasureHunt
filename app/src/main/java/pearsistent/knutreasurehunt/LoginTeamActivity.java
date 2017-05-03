@@ -123,10 +123,8 @@ public class LoginTeamActivity extends BaseActivity{
 
                         if(task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                            Toast.makeText(LoginTeamActivity.this, "Success!",
-                                    Toast.LENGTH_SHORT).show();
-                            getTeamName();
 
+                            checkTeam();
                         }
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -145,8 +143,8 @@ public class LoginTeamActivity extends BaseActivity{
         // [END sign_in_with_email]
     }
 
-    //To get team name information from DB
-    private void getTeamName() {
+    //check team account
+    private void checkTeam() {
 
         FirebaseUser user = mAuth.getCurrentUser();
         String userProId = user.getProviderId();
@@ -157,32 +155,24 @@ public class LoginTeamActivity extends BaseActivity{
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                int count = 0;
                 // Get Item data value
                 for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
-                    boolean check = false;
-                    Team team = new Team();
-                    team = tempSnapshot.getValue(Team.class);
+                    Team team = tempSnapshot.getValue(Team.class);
                     if(team.getTeamMembers()!=null){
-                        for(int i = 0 ; i < team.getTeamMembers().size() ; i++) {
-
                         //finding team name using member's userId
-                            if (team.getTeamMembers().get(i).getUserId().equals(userId)) {
+                        if (team.getTeamMembers().get(0).getUserId().equals(userId)) {
+                            Toast.makeText(LoginTeamActivity.this, "Success!", Toast.LENGTH_SHORT).show();
 
-                            //if find right team information
-                                goToNextPage(team.getTeamName());
-                                check = true;
-                                break;
-                            }
-                    }
-                        if(check){
-
+                            //if find right team information and it is team account
+                            goToNextPage(team.getTeamName());
                             break;
                         }
-                    }else{
-                        Toast.makeText(LoginTeamActivity.this, "No exist ID or Not team user",
-                                Toast.LENGTH_SHORT).show();
                     }
+                    count++;
+                }
+                if(count==dataSnapshot.getChildrenCount()){
+                    Toast.makeText(LoginTeamActivity.this, "No exist ID or Not team user",Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -192,8 +182,6 @@ public class LoginTeamActivity extends BaseActivity{
             }
         });
     }
-
-
 
     @Override
     public void onBackPressed()

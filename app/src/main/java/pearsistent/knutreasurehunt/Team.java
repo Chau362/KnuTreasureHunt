@@ -13,7 +13,7 @@ public class Team {
     private int teamPoint;
     private ArrayList<Item> itemList;
 
-    public Team(){
+    public Team() {
 
     }
 
@@ -25,18 +25,12 @@ public class Team {
         itemList = new ArrayList<>();
     }
 
-    /*public Team(String teamname, ArrayList<TeamMember> teamMembers, int i) {
-
-        this.teamName = teamname;
-        this.teamMembers = teamMembers;
-        this.teamPoint = i;
-    }*/
 
     public String getTeamName() {
         return this.teamName;
     }
 
-    public void setTeamPoint(int teamPoint){
+    public void setTeamPoint(int teamPoint) {
         this.teamPoint = teamPoint;
     }
 
@@ -52,7 +46,9 @@ public class Team {
         this.itemList.add(newItem);
     }
 
-    public ArrayList<Item> getItemList() {return this.itemList;}
+    public ArrayList<Item> getItemList() {
+        return this.itemList;
+    }
 
     public void addTeamMember(TeamMember newTeamMember) {
         this.teamMembers.add(newTeamMember);
