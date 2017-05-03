@@ -27,6 +27,9 @@ import com.google.firebase.storage.UploadTask;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.File;
@@ -34,24 +37,24 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
+
+import static android.media.CamcorderProfile.get;
 
 public class CreatePDF extends AppCompatActivity {
 
     private OutputStream output;
     private FirebaseStorage storage;
-    private StorageReference storageRef,pathRef;
+    private StorageReference storageRef;
     private DatabaseReference mDatabase;
 
     private File pdfFolder;
     private File myFile;
 
     private String imagePath;
-    private ArrayList<Team> teamList=null;
+    private ArrayList<Team> teamList = null;
     private String teamName;
-
-    private int itemPoint;
-    private  ArrayList<Item> teamItemListNames;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,13 +71,53 @@ public class CreatePDF extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ///팀을 받아와야 한다..
                 teamList = new ArrayList<Team>();
-                Log.d("DB", "Cheer up " );
+                Log.d("DB", "Cheer up ");
 
                 for (DataSnapshot teamSnapshot : dataSnapshot.getChildren()) {
                     Team currentTeam = teamSnapshot.getValue(Team.class);
-
                     teamList.add(currentTeam);
-                    Log.d("TeamList",""+currentTeam.getTeamName());
+                    Log.d("TeamList", "" + currentTeam.getTeamName());
+                }
+                ArrayList<Document> docList = new ArrayList<Document>();
+                //You should create pdf in listener
+                try {
+                    //Create pdf and upload for each team
+                    for (int i = 0; i < teamList.size(); i++) {
+                        //add data in here
+                        //Step 1
+                        Document document = new Document();
+                        docList.add(document);
+                        //Step 2
+                        PdfWriter.getInstance(docList.get(i), output);
+                        //Step 3
+                        docList.get(i).open();
+                        //Step 4 add data to document
+                        PdfPTable table = new PdfPTable(2);
+                        //Convert int to string
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("");
+                        sb.append(teamList.get(i).getTeamPoint());
+                        String point = sb.toString();
+
+                        table.addCell(teamList.get(i).getTeamName());
+                        table.addCell("score : "+point);
+                        //point, 멤버 더하기
+                        docList.get(i).add(table);
+//                      document.add(new Paragraph("5.3"));
+//                      document.add(new Paragraph("good day"));
+
+
+                        //////Upload File to Firebase
+                        String name = teamList.get(i).getTeamName();
+                        StorageReference ref = storageRef.child(name + "/" + name + ".pdf");
+                        uploadFile(ref);
+                    }
+                } catch (DocumentException e) {
+                    e.printStackTrace();
+                }finally {
+                    //Step 5: Close the document
+                    for(int i=0; i<teamList.size(); i++)
+                       docList.get(i).close();
                 }
             }
 
@@ -86,19 +129,13 @@ public class CreatePDF extends AppCompatActivity {
         });
 
 
-        Log.d("CreatePDF","open success");
+        Log.d("CreatePDF", "open success");
         try {
             createPath();
-            createPDF();
-            uploadFile();
-                    Toast.makeText(this, "Success!",
-                    Toast.LENGTH_SHORT).show();
+            //  uploadFile();
+            Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
             //viewPdf();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -114,7 +151,7 @@ public class CreatePDF extends AppCompatActivity {
     }
 
     // @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void createPDF() throws DocumentException, IOException {
+    public void createPDF(int count) throws DocumentException, IOException {
         //Step 1
         Document document = new Document();
 
@@ -124,39 +161,38 @@ public class CreatePDF extends AppCompatActivity {
         //Step 3
         document.open();
 
-        //Step 4 get file from Firebase
+        //Step 4 add data to document
+        PdfPTable table = createTable(teamList.get(count));
 
-        /*
-        File localFile = File.createTempFile("images", "jpg");
+        document.add(table);
 
-
-        storageRef.child("TeamA").getFile(localFile)
-                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        // Successfully downloaded data to local file
-                        // ...
-                        Log.d("getFile","File created");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle failed download
-                // ...
-                Log.d("getFile","Error");
-            }
-        });*/
-        document.add(new Paragraph("test"));
-        document.add(new Paragraph("Testttt"));
+        document.add(new Paragraph("5.3"));
+        document.add(new Paragraph("good day"));
 
         //Step 5: Close the document
         document.close();
     }
+
+    private PdfPTable createTable(Team team) {
+        PdfPTable table = new PdfPTable(8);
+        for (int i = 0; i < 3; i++) {
+            table.addCell(team.getTeamName());
+            int point = team.getTeamPoint();
+            //  table.addCell(point);
+        }
+        return table;
+    }
+
     //this version is static. so you have to change it to work dynamically
-    private void uploadFile() {
-        final StorageReference childRef = storageRef.child("TeamA/Doc1.pdf");
-        Uri objectURI = FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName()+".provider",myFile);
+    private void uploadFile(StorageReference childRef) {
+        //여기에 ref를 팀마다 받아오고
+        //팀 리스트 사이즈만큼 pdf 생성
+        //final StorageReference childRef = storageRef.child("bogyuteam/Test.pdf");
+        Uri objectURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", myFile);
         UploadTask uploadTask = childRef.putFile(objectURI);
+        childRef.putFile(objectURI);
+        Log.d("Upload pdf", "success");
+
     }
 
     private StorageReference findImageFile(String imageFileName) {
