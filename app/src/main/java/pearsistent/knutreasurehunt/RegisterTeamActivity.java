@@ -34,7 +34,7 @@ public class RegisterTeamActivity extends BaseActivity {
     //////For Register
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener; //////Add Firebase
-    private String auth_id,auth_pwd,rgstr_team,rgstr_user;
+    private String auth_id, auth_pwd, rgstr_team, rgstr_user;
     private boolean CheckRegister;
 
     @Override
@@ -63,9 +63,9 @@ public class RegisterTeamActivity extends BaseActivity {
                     count++;
 
                     //if user create new account then get a user Id from that new account and add team to DB
-                    if(count==2){
+                    if (count == 2) {
                         String userId = user.getUid();
-                        addTeamToDB(rgstr_team,rgstr_user,userId);
+                        addTeamToDB(rgstr_team, rgstr_user, userId);
                     }
                 } else {
                     // User is signed out
@@ -86,7 +86,7 @@ public class RegisterTeamActivity extends BaseActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                     registerBtn.setOnClickListener(new View.OnClickListener() {
+                registerBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         auth_id = email.getText().toString();
@@ -94,14 +94,18 @@ public class RegisterTeamActivity extends BaseActivity {
                         rgstr_team = teamName.getText().toString();
                         rgstr_user = userName.getText().toString();
 
-                        createTeam(auth_id,auth_pwd);
+                        createTeam(auth_id, auth_pwd);
+
+                        //I have to get a new userid so, I wrote this.
+                        mAuth.signInWithEmailAndPassword(auth_id, auth_pwd).isSuccessful();
+
                     }
                 });
             }
         });
     }
     ///////Register Account to Firebase
-    private void createTeam(String email, String pwd){
+    private void createTeam(String email, String pwd) {
         Log.d(auth_id, "createAdminAccount:" + email);
         if (!validateForm()) {
             return;
@@ -115,12 +119,10 @@ public class RegisterTeamActivity extends BaseActivity {
                         Log.d("CREATE", "createUserWithEmail:onComplete:" + task.isSuccessful());
                         hideProgressDialog();
                         // [END_EXCLUDE]
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             Log.d("CREATE", "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(RegisterTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
-                            //I have to get a new userid so, I wrote this.
-                            mAuth.signInWithEmailAndPassword(auth_id,auth_pwd).isSuccessful();
                         }
                         // If sign up fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -133,7 +135,7 @@ public class RegisterTeamActivity extends BaseActivity {
     }
 
     /////Put team into DB
-    private void addTeamToDB(String teamname, String username, String userid){
+    private void addTeamToDB(String teamname, String username, String userid) {
         Team team = new Team(teamname, 0);
         TeamMember member = new TeamMember(username, userid);
         Item item = new Item();
@@ -147,7 +149,7 @@ public class RegisterTeamActivity extends BaseActivity {
         //mDatabase.child("team").setValue(team);
 
         mAuth.signOut();
-        Intent i = new Intent(RegisterTeamActivity.this,LoginTeamActivity.class);
+        Intent i = new Intent(RegisterTeamActivity.this, LoginTeamActivity.class);
         startActivity(i);
 
     }
@@ -168,6 +170,8 @@ public class RegisterTeamActivity extends BaseActivity {
             userPwd.setError(null);
         }
 
+
+
         return valid;
     }
     @Override
@@ -184,8 +188,7 @@ public class RegisterTeamActivity extends BaseActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(RegisterTeamActivity.this, LoginTeamActivity.class));
         finish();

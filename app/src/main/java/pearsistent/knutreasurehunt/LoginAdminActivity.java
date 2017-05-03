@@ -114,7 +114,7 @@ public class LoginAdminActivity extends BaseActivity {
                         if(task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
-                           checkAdmin();
+                            checkAdmin();
 
                         }
                         // If sign in fails, display a message to the user. If sign in succeeds
@@ -142,15 +142,15 @@ public class LoginAdminActivity extends BaseActivity {
 
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
-        mDatabase.child("Team").addListenerForSingleValueEvent(new ValueEventListener(){
+        mDatabase.child("Team").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int count = 0;
                 // Get Item data value
-                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                     Team team = tempSnapshot.getValue(Team.class);
-                    if(team.getTeamMembers()!=null){
+                    if (team.getTeamMembers() != null) {
                         //finding team name using member's userId
                         if (team.getTeamMembers().get(0).getUserId().equals(userId)) {
                             break;
@@ -158,15 +158,15 @@ public class LoginAdminActivity extends BaseActivity {
                     }
                     count++;
                 }
-                Log.i("How many",""+dataSnapshot.getChildrenCount()+"   "+count);
-                if(count==dataSnapshot.getChildrenCount()){
+                Log.i("How many", "" + dataSnapshot.getChildrenCount() + "   " + count);
+                if (count == dataSnapshot.getChildrenCount()) {
                     Toast.makeText(LoginAdminActivity.this, "Success!",
                             Toast.LENGTH_SHORT).show();
 
                     //seulki, 04.06 : if user login successful, go to next step.
-                    Intent i = new Intent(LoginAdminActivity.this,MainActivity_admin.class);
+                    Intent i = new Intent(LoginAdminActivity.this, MainActivity_admin.class);
                     startActivity(i);
-                }else{
+                } else {
                     Toast.makeText(LoginAdminActivity.this, "No Exist ID or Not Admin",
                             Toast.LENGTH_SHORT).show();
                 }

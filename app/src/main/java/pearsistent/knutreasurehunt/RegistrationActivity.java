@@ -37,7 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(RegistrationActivity.this, LoginTeamActivity.class);
-                    startActivity(i);
+                startActivity(i);
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });

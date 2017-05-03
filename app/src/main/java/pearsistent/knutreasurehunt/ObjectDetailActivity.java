@@ -186,16 +186,12 @@ public class ObjectDetailActivity extends AppCompatActivity {
         //there is teamName in pathArray[0](it was splited at getFile() function)
         teamName = pathArray[0];
 
-
         mDatabase.child(teamName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Team team = dataSnapshot.getValue(Team.class);
                 team.setTeamPoint(team.getTeamPoint() + itemPoint);
 
-
-                //Log.i("eeeeee",team.getTeamMembers().get(0).getMemberName());
-                //mDatabase.child(teamName).setValue(team);
                 mDatabase.child(teamName).child("teamPoint").setValue(team.getTeamPoint());
             }
             @Override

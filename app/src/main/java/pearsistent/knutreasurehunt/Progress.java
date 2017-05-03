@@ -41,11 +41,9 @@ public class Progress extends AppCompatActivity {
         storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
 
         Intent intent = getIntent();
-        //Bundle bundle = intent.getExtras();
         teamName = intent.getStringExtra("Teamname");
 
         if (teamName != null) {
-            //teamName = (String) bundle.get("Teamname");
             teamItemListNames = new ArrayList<Item>();
 
             mDatabase.child("Team").child(teamName).child("itemList").addValueEventListener(new ValueEventListener() {
@@ -70,6 +68,8 @@ public class Progress extends AppCompatActivity {
             });
         }
 
+
+
     }
 
     private void makeListView(ArrayList<Item> ar) {
@@ -80,7 +80,7 @@ public class Progress extends AppCompatActivity {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        progressListAdapter = new ProgressListAdapter(ar);
+        progressListAdapter = new ProgressListAdapter(ar, teamName, Progress.this);
         recyclerView.setAdapter(progressListAdapter);
     }
 

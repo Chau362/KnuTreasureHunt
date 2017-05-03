@@ -69,7 +69,9 @@ public class RegisterAdminActivity extends BaseActivity {
 
                 id = adminName.getText().toString();
                 pwd = adminPwd.getText().toString();
-
+                Log.i("eeee","etest");
+                Log.i("why","id:"+id);
+                Log.i("pw","pass:"+pwd);
                 createAdmin(id, pwd);
                 //Intent i = new Intent(getApplicationContext(),LoginAdminActivity.class);
                 //startActivity(i);
