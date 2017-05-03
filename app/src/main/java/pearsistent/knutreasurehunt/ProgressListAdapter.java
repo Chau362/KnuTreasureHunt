@@ -72,12 +72,13 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     int position = getAdapterPosition();
+                                    int minusPoint = allItems.get(position).getPoints();
 
                                     String itemName = allItems.get(position).getName()+".jpg";
                                     deleteItemFromDatabase(position);
                                     deleteItemFromStorage(itemName);
                                     deleteItemFromRecyclerView(position);
-                                    updatePoint(allItems.get(position).getPoints());
+                                    updatePoint(minusPoint);
 
                                 }
                             });
