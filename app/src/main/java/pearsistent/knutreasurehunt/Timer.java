@@ -27,6 +27,8 @@ public class Timer extends AppCompatActivity {
     private EditText hour, minute, second;
     private long receivedTime;
 
+    private boolean flag = false;       //receiver state
+
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
 
@@ -97,6 +99,38 @@ public class Timer extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference("time");
 
+        //not turn on receive
+        if(flag==false){
+
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue(Long.class) != null){
+                        String key = dataSnapshot.getKey();
+                        if(key.equals("time"));{
+                            receivedTime = dataSnapshot.getValue(Long.class);
+
+                            long durationSeconds = receivedTime / 1000;
+
+                            String remainedTime = String.format("%02d", durationSeconds / 3600)+":"
+                                    +String.format("%02d", (durationSeconds % 3600) / 60)+":"+
+                                    String.format("%02d", durationSeconds % 60);
+
+                            textView.setText(remainedTime);
+                        }
+                    }
+                    dataSnapshot.getValue(Long.class);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+        }
+
     }
 
 
@@ -105,6 +139,7 @@ public class Timer extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String realTime = intent.getStringExtra("TIME");
             textView.setText(realTime);
+            flag = true;
 
         }
 
@@ -124,44 +159,58 @@ public class Timer extends AppCompatActivity {
         switch (v.getId()) {
             case R.id.set:
                 editLinear.setVisibility(View.VISIBLE);
+
                 break;
 
             case R.id.timerButton:
-                editLinear.setVisibility(View.INVISIBLE);
-                int num = Integer.parseInt(sstr);
-                MILLISINFUTURE = num * 1000;
+                if(flag==false){
+                    String currentText = textView.getText().toString();
 
-                num = Integer.parseInt(mstr);
-                MILLISINFUTURE += num * 60000;
+                    String splitText[] = currentText.split(":");
 
-                num = Integer.parseInt(hstr);
-                MILLISINFUTURE += num * 60 * 60000;
+                    sstr = splitText[2];
+                    mstr = splitText[1];
+                    hstr = splitText[0];
 
-                editLinear.setVisibility(View.INVISIBLE);
 
-                myRef.setValue(MILLISINFUTURE);
+                }
+                    editLinear.setVisibility(View.INVISIBLE);
+                    int num = Integer.parseInt(sstr);
+                    MILLISINFUTURE = num * 1000;
 
-                myRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getValue(Long.class) != null){
-                            String key = dataSnapshot.getKey();
-                            if(key.equals("time"));{
-                                receivedTime = dataSnapshot.getValue(Long.class);
+                    num = Integer.parseInt(mstr);
+                    MILLISINFUTURE += num * 60000;
 
-                                Intent serviceIntent = new Intent(Timer.this, TimerService.class);
-                                serviceIntent.putExtra(TimerService.SERVICE_INTENT, receivedTime + "");
-                                startService(serviceIntent);
+                    num = Integer.parseInt(hstr);
+                    MILLISINFUTURE += num * 60 * 60000;
+
+                    editLinear.setVisibility(View.INVISIBLE);
+
+                    myRef.setValue(MILLISINFUTURE);
+
+                    myRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue(Long.class) != null) {
+                                String key = dataSnapshot.getKey();
+                                if (key.equals("time")) ;
+                                {
+                                    receivedTime = dataSnapshot.getValue(Long.class);
+
+                                    Intent serviceIntent = new Intent(Timer.this, TimerService.class);
+                                    serviceIntent.putExtra(TimerService.SERVICE_INTENT, receivedTime + "");
+                                    startService(serviceIntent);
+                                }
                             }
+                            dataSnapshot.getValue(Long.class);
                         }
-                        dataSnapshot.getValue(Long.class);
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+
 
         }
     }

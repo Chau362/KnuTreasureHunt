@@ -160,6 +160,9 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.countbutton){
+
+
+
             intent = new Intent(getContext(), Timer.class);
             startActivity(intent);
         }
