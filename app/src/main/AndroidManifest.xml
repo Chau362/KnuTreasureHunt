@@ -32,7 +32,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:largeHeap="true"
+        android:hardwareAccelerated="false"
+
+        >
         <activity
             android:name=".RegistrationActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -55,6 +59,7 @@
         <activity android:name=".AddMemberActivity"/>
         <activity android:name=".Progress" />
         <activity android:name=".AddItemActivity" />
+        <activity android:name=".CreatePDF" />
 
 
         <provider

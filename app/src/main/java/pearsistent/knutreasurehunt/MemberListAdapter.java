@@ -38,6 +38,7 @@ public class MemberListAdapter extends BaseAdapter{
     LayoutInflater inf;
     private DatabaseReference mDatabase;
     private String teamName;
+    private ChildEventListener temp;
 
 
 
@@ -94,7 +95,7 @@ public class MemberListAdapter extends BaseAdapter{
                     Log.i("Spinner","1");
 
 
-                    ChildEventListener temp = new ChildEventListener() {
+                    temp = new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             Log.i("Team Children"," "+dataSnapshot.getChildrenCount());
@@ -123,6 +124,7 @@ public class MemberListAdapter extends BaseAdapter{
 
                                                     }else{
                                                         Toast.makeText(context, "Member must have one more", Toast.LENGTH_SHORT).show();
+                                                        removeListener();
                                                     }
                                                 }
                                             }).show();
@@ -145,6 +147,7 @@ public class MemberListAdapter extends BaseAdapter{
                             updateDatabase.setValue(teamMembers);
 
                             //removeListener because it can cause duplicate : 존나 중요함. 진짜 개 중요함.
+                            mDatabase.child("Team").child(teamName).child("teamMembers").removeEventListener(this);
                             mDatabase.child("Team").child(teamName).removeEventListener(this);
                         }
 
@@ -228,6 +231,11 @@ public class MemberListAdapter extends BaseAdapter{
 
         return convertView;
     }
+
+    private void removeListener() {
+        mDatabase.child("Team").child(teamName).removeEventListener(temp);
+    }
+
 }
 
 

@@ -54,6 +54,7 @@ class TeamListAdapter extends BaseAdapter {
         teamName.setText(team.getTeamName());
         teamPoint.setText(team.getTeamPoint() + " pts");
 
+
         return convertView;
     }
 }

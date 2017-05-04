@@ -36,7 +36,6 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
     Button countdown, createlist;
     Intent intent;
 
-
     public Tab1_admin() {
         // Required empty public constructor
     }
@@ -104,7 +103,6 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
         });
 
-        //remove Item
         removeObjectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +116,6 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
                         updateItem.add(choicedList.get(i));
                     }
                 }
-                //remove Item and update Item key
                 updateDatabase.child("Items").setValue(updateItem);
 
             }

@@ -54,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        /*tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                tabLayout.setupWithViewPager(mViewPager);
+            }
+        });*/
 
     }
 
@@ -112,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
+
             return rootView;
         }
     }
@@ -135,22 +142,22 @@ public class MainActivity extends AppCompatActivity {
 
             if(position == 0){
                 fragment = new UserMainActivity();
-                Log.i("MainActivity","1");
-                //SeulKi : To post argument of teamName from this Activity, I used it.
+                Log.i("MainActivity", "1");
+                //SeulKi : To post teamName from this Activity I used it.
                 bundle = new Bundle(1);
                 bundle.putString("TEAM_NAME", teamName);
                 fragment.setArguments(bundle);
-            }
-
-            else if(position == 1){
+            } else if (position == 1) {
                 fragment = new UserAdditionalActivity();
-                Log.i("MainActivity","2");
+                Log.i("MainActivity", "2");
                 bundle = new Bundle();
 
-            }
-            else if(position == 2){
+                /*bundle = new Bundle(1);
+                bundle.putString("TEAM_NAME",teamName);
+                fragment.setArguments(bundle);*/
+            } else if (position == 2) {
                 fragment = new Usermap();
-                Log.i("MainActivitiy","3");
+                Log.i("MainActivitiy", "3");
                 bundle = new Bundle();
             }
 
@@ -159,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Show 4 total pages.
             return 3;
         }
 

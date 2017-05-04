@@ -25,6 +25,12 @@ public class Team {
         itemList = new ArrayList<>();
     }
 
+    /*public Team(String teamname, ArrayList<TeamMember> teamMembers, int i) {
+
+        this.teamName = teamname;
+        this.teamMembers = teamMembers;
+        this.teamPoint = i;
+    }*/
 
     public String getTeamName() {
         return this.teamName;

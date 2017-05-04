@@ -53,15 +53,6 @@ public class UserAdditionalActivity extends Fragment implements OnMapReadyCallba
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Tab2.
-     */
-    // TODO: Rename and change types and number of parameters
     public static UserAdditionalActivity newInstance(String param1, String param2) {
         UserAdditionalActivity fragment = new UserAdditionalActivity();
         Bundle args = new Bundle();
@@ -92,26 +83,26 @@ public class UserAdditionalActivity extends Fragment implements OnMapReadyCallba
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
 
-        mDatabase.child("Team").orderByChild("teamPoint").addValueEventListener(new ValueEventListener(){
+        mDatabase.child("Team").orderByChild("teamPoint").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 teamList.clear();
-                // Get team data value
-                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                // Get Item data value
+                for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                     Team team = tempSnapshot.getValue(Team.class);
 
                     teamList.add(team);
                 }
                 //when Tab2 work make a list
-                if(getActivity()!=null) {
-                    //Set team listview
+                if (getActivity() != null) {
+                    //Set Item listview
                     makeListView(listView, teamList);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.i("Error","Loading data from teamMember");
+                Log.i("Error", "Loading data from teamMember");
             }
         });
 
@@ -119,7 +110,7 @@ public class UserAdditionalActivity extends Fragment implements OnMapReadyCallba
     }
 
     public void makeListView(ListView listView, final ArrayList<Team> teamList) {
-        TeamListAdapter adapter = new TeamListAdapter(this.getActivity().getApplicationContext(),R.layout.teamview, teamList);
+        TeamListAdapter adapter = new TeamListAdapter(this.getActivity().getApplicationContext(), R.layout.teamview, teamList);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
