@@ -22,18 +22,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class Timer extends AppCompatActivity {
     private LinearLayout editLinear;
-    private int MILLISINFUTURE;
-    private static final int COUNT_DOWN_INTERVAL = 1000;
-    private int number;
+    private long MILLISINFUTURE = 0;
     private String hstr = "0", mstr = "0", sstr = "0";
-    private TextWatcher textWatcher;
     private TextView textView;
-
     private EditText hour, minute, second;
+    private long receivedTime;
 
-    private final Intent timer = new Intent("timer");
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,30 @@ public class Timer extends AppCompatActivity {
         registerReceiver(broadcastReceiver, new IntentFilter(TimerService.BROADCAST_ACTION));
 
 
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference("time");
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue(Long.class) != null){
+                    String key = dataSnapshot.getKey();
+                    if(key.equals("time"));{
+                        receivedTime = dataSnapshot.getValue(Long.class);
+
+                        Intent serviceIntent = new Intent(Timer.this, TimerService.class);
+                        serviceIntent.putExtra(TimerService.SERVICE_INTENT, receivedTime + "");
+                        startService(serviceIntent);
+                    }
+                }
+                dataSnapshot.getValue(Long.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -138,12 +167,11 @@ public class Timer extends AppCompatActivity {
 
                 num = Integer.parseInt(hstr);
                 MILLISINFUTURE += num * 60 * 60000;
-                Log.d("hi", MILLISINFUTURE + "");
 
                 editLinear.setVisibility(View.INVISIBLE);
-                Intent serviceIntent = new Intent(this, TimerService.class);
-                serviceIntent.putExtra(TimerService.SERVICE_INTENT, MILLISINFUTURE + "");
-                startService(serviceIntent);
+
+                myRef.setValue(MILLISINFUTURE);
+
         }
     }
 }
