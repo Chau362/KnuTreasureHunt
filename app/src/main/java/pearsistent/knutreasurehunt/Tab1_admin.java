@@ -21,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import static com.google.android.gms.wearable.DataMap.TAG;
 
@@ -35,6 +34,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
     private DatabaseReference mDatabase;
     Button countdown, createlist;
     Intent intent;
+
 
     public Tab1_admin() {
         // Required empty public constructor
@@ -106,6 +106,7 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         removeObjectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int itemCount = 0;
                 final ArrayList<Item> updateItem = new ArrayList<Item>();
                 int itemKey = 0;
                 final DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com");
@@ -114,9 +115,18 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
                     if (!choicedList.get(i).getCheckBox().isChecked()) {
                         updateItem.add(choicedList.get(i));
+                        itemCount++;
                     }
                 }
-                updateDatabase.child("Items").setValue(updateItem);
+
+                if(itemCount==choicedList.size()){
+                    Toast.makeText(getContext(), "Have to choice one more Item!", Toast.LENGTH_SHORT).show();
+                }
+                else if( itemCount!=choicedList.size()) {
+                    updateDatabase.child("Items").setValue(updateItem);
+                    Toast.makeText(getContext(), "Remove Item Success!", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
 
@@ -124,31 +134,30 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
 
         createlist.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                int itemCount = 0;
 
                 for (int i = 0; i < createItemList.size(); i++) {
                     //before update database, item choice flag have to set to false
                     Item initalItem = createItemList.get(i);
                     initalItem.setChoice(false);
-                    Map<String, Object> initalPostValues = initalItem.toMap();
-                    mDatabase.child("Items").child("" + i).updateChildren(initalPostValues);
 
                     if (createItemList.get(i).getCheckBox().isChecked()) {
                         createItemList.get(i).setChoice(true);
-                        Log.i("choice?", ":" + createItemList.get(i).getChoice());
-                        //update database : choice flag change to true
-                        Item updateItem = createItemList.get(i);
-                        Map<String, Object> postValues = updateItem.toMap();
-                        mDatabase.child("Items").child(""+i).updateChildren(postValues);
-                        /*if (!mDatabase.child("Items").child("" + i).updateChildren(postValues).isSuccessful()) {
-                            Toast.makeText(getContext(), "Create List Success!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "Create List Fail..", Toast.LENGTH_SHORT).show();
-                        }*/
+
+                    }else{
+                        itemCount++;
                     }
                 }
-                Toast.makeText(getContext(), "Create List Success!", Toast.LENGTH_SHORT).show();
+                if(itemCount!=createItemList.size()){
+                    mDatabase.child("Items").setValue(createItemList);
+                    Toast.makeText(getContext(), "Create List Success!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getContext(), "Have to choice one more Item!", Toast.LENGTH_SHORT).show();
+                }
             }
 
         });

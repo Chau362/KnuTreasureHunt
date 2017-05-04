@@ -254,6 +254,8 @@ public class UserMainActivity extends Fragment {
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(imageview);
+
+
             } else if (resultCode == 1 && data.getExtras().getInt("State") == 0) {
 
                 //update cache
