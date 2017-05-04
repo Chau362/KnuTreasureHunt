@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.TextView;
 
 public class TimerService extends Service {
@@ -45,6 +44,10 @@ public class TimerService extends Service {
 
         String timestr = intent.getStringExtra(SERVICE_INTENT);
         initialTime = Integer.parseInt(timestr);
+
+        if(countDownTimer!=null){
+            countDownTimer.cancel();
+        }
 
         countDownTimer();
         countDownTimer.start();

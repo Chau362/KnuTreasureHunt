@@ -63,7 +63,6 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
         final View rootView = inflater.inflate(R.layout.fragment_tab1_admin, container, false);
-        intent = new Intent(getContext(), Timer.class);
         countdown = (Button)rootView.findViewById(R.id.countbutton);
         ImageButton removeObjectBtn = (ImageButton) rootView.findViewById(R.id.removeItemBtn);
         countdown.setOnClickListener(this);
@@ -160,7 +159,10 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.countbutton)
+        if(view.getId() == R.id.countbutton){
+            intent = new Intent(getContext(), Timer.class);
             startActivity(intent);
+        }
+
     }
 }
