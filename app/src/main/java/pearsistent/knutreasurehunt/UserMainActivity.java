@@ -45,7 +45,7 @@ import static com.google.android.gms.wearable.DataMap.TAG;
 
 // last coder : seulki, 2017.05.02
 
-public class UserMainActivity extends Fragment {
+public class UserMainActivity extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -62,6 +62,7 @@ public class UserMainActivity extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private TextView timerView;
     private DatabaseReference mDatabase;
     private String teamName = null;
     private FirebaseStorage storage;
@@ -89,7 +90,9 @@ public class UserMainActivity extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         teamName = getArguments().getString("TEAM_NAME");
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,6 +104,8 @@ public class UserMainActivity extends Fragment {
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userItemList);
         addMemberBtn = (ImageButton) v.findViewById(R.id.addMember);
+        timerView = (TextView)v.findViewById(R.id.timerView);
+
 
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
@@ -154,6 +159,20 @@ public class UserMainActivity extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+            }
+        });
+
+        //timer
+        mDatabase.child("TimeStamp").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String currentTime = (String) dataSnapshot.getValue();
+                timerView.setText(currentTime);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
@@ -254,6 +273,8 @@ public class UserMainActivity extends Fragment {
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(imageview);
+
+
             } else if (resultCode == 1 && data.getExtras().getInt("State") == 0) {
 
                 //update cache

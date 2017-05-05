@@ -1,36 +1,42 @@
 package pearsistent.knutreasurehunt;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Timer extends AppCompatActivity {
-    private int MILLISINFUTURE;
-    private static final int COUNT_DOWN_INTERVAL = 1000;
-    private int number;
+    private LinearLayout editLinear;
+    private long MILLISINFUTURE = 0;
     private String hstr = "0", mstr = "0", sstr = "0";
-    private TextWatcher textWatcher;
-
+    private TextView textView;
     private EditText hour, minute, second;
-    private CountDownTimer countDownTimer;
+    private long receivedTime;
+
+    private boolean initialFlag = false;
+
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
+    private  DatabaseReference timeStamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
+
+        editLinear = (LinearLayout)findViewById(R.id.editLinear);
+        textView = (TextView)findViewById(R.id.realTime);
 
         hour = (EditText) findViewById(R.id.hour);
         hour.addTextChangedListener(new TextWatcher() {
@@ -85,60 +91,120 @@ public class Timer extends AppCompatActivity {
             }
         });
 
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        timeStamp = mFirebaseDatabase.getReference("TimeStamp");
 
-        // countTxt = (TextView)findViewById(R.id.count_txt);
-    //    countDownTimer();
+        timeStamp.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-//        MILLISINFUTURE = Integer.parseInt(hour.getText().toString()) * 3600 +
-//                Integer.parseInt(minute.getText().toString()) * 60 +
-//                Integer.parseInt(second.getText().toString());
-
-
-    }
-
-
-    public void countDownTimer() {
-
-        countDownTimer = new CountDownTimer(MILLISINFUTURE, COUNT_DOWN_INTERVAL) {
-            public void onTick(long millisUntilFinished) {
-                long durationSeconds = millisUntilFinished / 1000;
-                Log.d("hi", "hi");
-
-
-                hour.setText(String.format("%02d", durationSeconds / 3600));
-                minute.setText(String.format("%02d", (durationSeconds % 3600) / 60));
-                second.setText(String.format("%02d", durationSeconds % 60));
+                    String key = (String) dataSnapshot.getValue();
+                    textView.setText(key);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
+        });
 
-            public void onFinish() {
-            }
-        };
-    }
+        myRef = mFirebaseDatabase.getReference("time");
+
+       //
+        if(initialFlag==false){
+
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue(Long.class) != null){
+                        String key = dataSnapshot.getKey();
+                        if(key.equals("time"));{
+                            receivedTime = dataSnapshot.getValue(Long.class);
+
+                            long durationSeconds = receivedTime / 1000;
+
+                            String remainedTime = String.format("%02d", durationSeconds / 3600)+":"
+                                    +String.format("%02d", (durationSeconds % 3600) / 60)+":"+
+                                    String.format("%02d", durationSeconds % 60);
+
+                            textView.setText(remainedTime);
+                        }
+                    }
+                    dataSnapshot.getValue(Long.class);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        try {
-            countDownTimer.cancel();
-        } catch (Exception e) {
         }
-        countDownTimer = null;
+
     }
 
     public void onClick(View v) {
-        int num = Integer.parseInt(sstr);
-        MILLISINFUTURE = num * 1000;
+        switch (v.getId()) {
+            case R.id.set:
+                editLinear.setVisibility(View.VISIBLE);
+                initialFlag = true;
+                break;
 
-        num = Integer.parseInt(mstr);
-        MILLISINFUTURE += num * 60000;
+            case R.id.timerButton:
 
-        num = Integer.parseInt(hstr);
-        MILLISINFUTURE += num * 60 * 60000;
-        countDownTimer();
+                if(initialFlag==false){
+                    String currentText = textView.getText().toString();
 
-        countDownTimer.start();
+                    String splitText[] = currentText.split(":");
+
+                    sstr = splitText[2];
+                    mstr = splitText[1];
+                    hstr = splitText[0];
+
+                    initialFlag = true;
+
+                }
+                    editLinear.setVisibility(View.INVISIBLE);
+                    int num = Integer.parseInt(sstr);
+                    MILLISINFUTURE = num * 1000;
+
+                    num = Integer.parseInt(mstr);
+                    MILLISINFUTURE += num * 60000;
+
+                    num = Integer.parseInt(hstr);
+                    MILLISINFUTURE += num * 60 * 60000;
+
+                    editLinear.setVisibility(View.INVISIBLE);
+
+                    myRef.removeValue();
+                    myRef.setValue(MILLISINFUTURE);
+
+                    myRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue(Long.class) != null) {
+                                String key = dataSnapshot.getKey();
+                                if (key.equals("time")) ;
+                                {
+                                    receivedTime = dataSnapshot.getValue(Long.class);
+
+                                    Intent serviceIntent = new Intent(Timer.this, TimerService.class);
+                                    serviceIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+                                    serviceIntent.putExtra(TimerService.SERVICE_INTENT, receivedTime + "");
+                                    startService(serviceIntent);
+                                }
+                            }
+                            dataSnapshot.getValue(Long.class);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+        }
     }
 }
 

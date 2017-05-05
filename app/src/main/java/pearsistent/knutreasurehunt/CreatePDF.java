@@ -87,10 +87,7 @@ public class CreatePDF extends AppCompatActivity {
     public void makePDF(Team currentTeam, int i){
         Document document = new Document();
 
-        //You should create pdf in listener
-        try {
-
-            document.open();
+        try{
             //Step 2
             PdfWriter.getInstance(document, outputStreamArrayList.get(i));
             //Step 3
@@ -107,6 +104,7 @@ public class CreatePDF extends AppCompatActivity {
             table.addCell("score : " + point);
             //point, 멤버 더하기
             document.add(table);
+
             document.close();
 
         } catch (DocumentException e) {
