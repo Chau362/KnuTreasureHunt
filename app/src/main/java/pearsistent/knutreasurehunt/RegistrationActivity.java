@@ -30,6 +30,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         deleteCache();
 
+
         LinearLayout teamRegistrationLayout = (LinearLayout) findViewById(R.id.teamRegistrationBlock);
         teamRegistrationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
