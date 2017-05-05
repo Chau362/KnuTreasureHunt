@@ -28,7 +28,6 @@ public class RegistrationActivity extends AppCompatActivity {
         askForPermission(permission,APP_PERMISSION);
 
 
-
         deleteCache();
 
         LinearLayout teamRegistrationLayout = (LinearLayout) findViewById(R.id.teamRegistrationBlock);
