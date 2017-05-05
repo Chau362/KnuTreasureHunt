@@ -38,6 +38,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ImageView objectImage;
     private TextView objectText;
+    private TextView objectName;
     public final int CAM_REQUEST = 1;
     private StorageReference mStorageRef;
     public Button submitBtn;
@@ -48,6 +49,8 @@ public class ObjectDetailActivity extends AppCompatActivity {
     private StorageReference storageRef;
     private String imagePath;
     private String teamName;
+    private String itemName;
+    private String itemSubText;
     private int itemPoint;
     public String pathArray[];
 
@@ -56,16 +59,23 @@ public class ObjectDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_selfie);
         objectImage = (ImageView) findViewById(R.id.objectImage);
+        objectName = (TextView) findViewById(R.id.objectName);
         objectText = (TextView) findViewById(R.id.objectText);
         submitBtn = (Button) findViewById(R.id.selfieSubmitButton);
 
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
 
-        //To save picture on Storage using team name and item name try to get path information from UserMainAcitivity
+        //To save picture on Storage using team name and item name try to get path and something information from UserMainAcitivity
         Intent intent = getIntent();
+        itemName = intent.getExtras().getString("ITEM_NAME");
+        itemSubText = intent.getExtras().getString("ITEM_SUBTEXT");
         itemPoint = intent.getExtras().getInt("ITEM_POINT");
         imagePath = intent.getExtras().getString("PATH_TO_SAVE");
+
+
+        objectName.setText(itemName);
+        objectText.setText(itemSubText);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -112,7 +122,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
                     //can make a image file name
                     final StorageReference childRef = storageRef.child(getImagePath());
 
-
+                    //can download : file already exist. we dont have to update point
                     childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         //already exist file : already counted team point
                         @Override
@@ -130,12 +140,14 @@ public class ObjectDetailActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
-                                    backToPage(0);
+
+
+                                    backToPage(0);      //dont need to update itemlist in Team DB
                                 }
                             });
                         }
                         //not exist file : have to count team point
-                    }).addOnFailureListener(new OnFailureListener() {
+                    }).addOnFailureListener(new OnFailureListener() { //cant download : file doenst exist. we have to update point
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             UploadTask uploadTask = childRef.putFile(objectURI);
@@ -151,8 +163,10 @@ public class ObjectDetailActivity extends AppCompatActivity {
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                                     Toast.makeText(ObjectDetailActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
-                                    updateTeamPoint();
-                                    backToPage(1);
+
+
+                                    updateTeamPoint(); //update point
+                                    backToPage(1);     //need to update itemlist in Team DB
                                 }
                             });
                         }
@@ -169,8 +183,9 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team");
 
+        //there is teamName in pathArray[0](it was splited at getFile() function)
         teamName = pathArray[0];
-        //Log.i("iiii",teamName);
+
         mDatabase.child(teamName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -184,10 +199,10 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
+    //if state 0 : dont have to update itemlist in Team DB
+    //if state 1 : have to update itemlist in Team DB
     private void backToPage(int state) {
 
         Intent i = new Intent(this.getApplicationContext(),UserMainActivity.class);
@@ -215,6 +230,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
         //dynamically make a file name
         File imageFile = new File(folder,pathArray[1]);
+
         if(imageFile.exists()){
             imageFile.delete();
             imageFile = new File(folder,pathArray[1]);
@@ -229,6 +245,8 @@ public class ObjectDetailActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         String path = "sdcard/carmera_app/"+pathArray[1];
+
+        //set Image on Imageview screen
         objectImage.setImageDrawable(Drawable.createFromPath(path));
 
     }

@@ -43,7 +43,7 @@ import static com.google.android.gms.wearable.DataMap.TAG;
  * create an instance of this fragment.
  */
 
-// last coder : seulki, 2017.03.28
+// last coder : seulki, 2017.05.02
 
 public class UserMainActivity extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -63,7 +63,7 @@ public class UserMainActivity extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private DatabaseReference mDatabase;
-    private String teamName=null;
+    private String teamName = null;
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private ListAdapter adapter;
@@ -73,7 +73,6 @@ public class UserMainActivity extends Fragment {
     private String itemName;
     private int itemPoint;
     private Item selectItem;
-    private Item initailItem;
     private String itemKey;
     private int checkItemNum = 0;
 
@@ -96,7 +95,7 @@ public class UserMainActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.i("UserMain","come");
+        Log.i("UserMain", "come");
         View v = inflater.inflate(R.layout.fragment_tab1, container,false);
 
 
@@ -115,7 +114,7 @@ public class UserMainActivity extends Fragment {
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getContext(), AddMemberActivity.class);
-                intent.putExtra("TEAM_NAME",teamName);
+                intent.putExtra("TEAM_NAME", teamName);
                 startActivity(intent);
             }
 
@@ -124,28 +123,26 @@ public class UserMainActivity extends Fragment {
         mDatabase.child("Team").child(teamName).child("itemList").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                itemKey  = String.valueOf(dataSnapshot.getChildrenCount());
-                initailItem = dataSnapshot.child("0").getValue(Item.class);
-
+                itemKey = String.valueOf(dataSnapshot.getChildrenCount());
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
 
-
-        mDatabase.child("Items").addListenerForSingleValueEvent(new ValueEventListener(){
+        mDatabase.child("Items").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 getList.clear();
                 // Get Item data value
-                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                     Item item = tempSnapshot.getValue(Item.class);
 
-                    if(item.getChoice()) {
+                    if (item.getChoice()) {
                         //Set item image Reference
-                        item.setImageReference(findImageFile(item.getName()+".jpg"));
+                        item.setImageReference(findImageFile(item.getName() + ".jpg"));
                         getList.add(item);
                         //Log.i("cheeee",item.getName());
                     }
@@ -165,10 +162,10 @@ public class UserMainActivity extends Fragment {
 
     private StorageReference findImageFile(String imageFileName) {
 
-        if(teamName!=null){
+        if (teamName != null) {
 
             //can make a image file name
-            StorageReference childRef = storageRef.child(teamName+"/"+imageFileName);
+            StorageReference childRef = storageRef.child(teamName + "/" + imageFileName);
             return childRef;
         }
 
@@ -182,7 +179,7 @@ public class UserMainActivity extends Fragment {
         }
     }
 
-    public void makeListView(final ArrayList<Item> itemList){
+    public void makeListView(final ArrayList<Item> itemList) {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -191,10 +188,9 @@ public class UserMainActivity extends Fragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        final GestureDetector gestureDetector = new GestureDetector(getContext(),new GestureDetector.SimpleOnGestureListener(){
+        final GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override
-            public boolean onSingleTapUp(MotionEvent e)
-            {
+            public boolean onSingleTapUp(MotionEvent e) {
                 return true;
             }
         });
@@ -202,10 +198,10 @@ public class UserMainActivity extends Fragment {
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                View childView = rv.findChildViewUnder(e.getX(),e.getY());
+                View childView = rv.findChildViewUnder(e.getX(), e.getY());
                 int position = rv.getChildAdapterPosition(childView);
 
-                if(childView !=null && gestureDetector.onTouchEvent(e)) {
+                if (childView != null && gestureDetector.onTouchEvent(e)) {
 
                     TextView textview = (TextView) childView.findViewById(R.id.cardTitle);
                     selectItem = (Item) mAdapter.getItem(position);
@@ -214,9 +210,12 @@ public class UserMainActivity extends Fragment {
                     imageview = (ImageView) childView.findViewById(R.id.cardImage);
 
                     Intent i = new Intent(getContext(), ObjectDetailActivity.class);
+                    i.putExtra("ITEM_NAME",selectItem.getName());
+                    i.putExtra("ITEM_SUBTEXT",selectItem.getText());
                     i.putExtra("ITEM_POINT",selectItem.getPoints());
                     i.putExtra("PATH_TO_SAVE", teamName + "/" + itemName + ".jpg");
                     startActivityForResult(i, 1);
+
 
                 }
                 return false;
@@ -237,31 +236,30 @@ public class UserMainActivity extends Fragment {
 
     //if user take a selfie, imageview will be update. if not then it will not be change.
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode==1){
-            if(resultCode==1 && data.getExtras().getInt("State")==1){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == 1 && data.getExtras().getInt("State") == 1) {
 
-                if(itemKey.equals("1") && initailItem.getName()==null){
+                if (itemKey.equals("1") && checkItemNum == 0) {
                     itemKey = "0";
-                    //checkItemNum ++;
+                    checkItemNum++;
                 }
 
                 mDatabase.child("Team").child(teamName).child("itemList").child(itemKey).setValue(selectItem);
                 //update cache
                 Glide.with(getContext())
                         .using(new FirebaseImageLoader())
-                        .load(findImageFile(itemName+".jpg"))
+                        .load(findImageFile(itemName + ".jpg"))
                         .error(R.drawable.marker)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(imageview);
-            }
-            else if(resultCode==1 && data.getExtras().getInt("State")==0){
+            } else if (resultCode == 1 && data.getExtras().getInt("State") == 0) {
 
                 //update cache
                 Glide.with(getContext())
                         .using(new FirebaseImageLoader())
-                        .load(findImageFile(itemName+".jpg"))
+                        .load(findImageFile(itemName + ".jpg"))
                         .error(R.drawable.marker)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
@@ -271,14 +269,11 @@ public class UserMainActivity extends Fragment {
     }
 
 
-
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
-
 
     /**
      * This interface must be implemented by activities that contain this

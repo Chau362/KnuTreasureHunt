@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="130dp"
     android:orientation="vertical"
-    android:id="@+id/popup"
-    android:background="#fff">
+    android:id="@+id/popup">
 
     <EditText
         android:id="@+id/newMemberName"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="30dp"
         android:layout_width="300dp"
-        android:layout_height="30dp"
+        android:layout_height="80dp"
         android:hint="Input name"
         android:backgroundTint="#000"
-        android:textColor="#000"
+        android:textSize="20dp"
+        android:textColor="#fff"
         android:layout_gravity="center" />
 
 </LinearLayout>
