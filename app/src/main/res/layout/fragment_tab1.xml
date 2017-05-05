@@ -33,7 +33,7 @@
                 android:clickable="true">
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/timerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
