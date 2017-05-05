@@ -10,6 +10,8 @@
     tools:context="pearsistent.knutreasurehunt.Timer">
 
     <LinearLayout
+        android:visibility="invisible"
+        android:id="@+id/editLinear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -39,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=":"
+            android:textColor="#000"
             android:textSize="70dp"/>
         <EditText
             android:id="@+id/second"
@@ -48,10 +51,18 @@
             android:text="00"
             android:textColor="#000"
             android:textSize="70dp"/>
+
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/realTime"
+        android:textColor="#000"
+        android:textSize="70dp"/>
 
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -61,7 +72,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/buttonborder"
-            android:text="Set"/>
+            android:text="Set"
+            android:onClick="onClick"/>
         <FrameLayout
             android:layout_width="5dp"
             android:layout_height="match_parent"></FrameLayout>
@@ -75,3 +87,4 @@
     </LinearLayout>
 
 </LinearLayout>
+
