@@ -53,19 +53,19 @@ public class AddItemActivity extends AppCompatActivity{
             public void onClick(View v) {
                 String name = itemName.getText().toString();
                 String description = itemDescription.getText().toString();
-                Log.i("eesss",itemPoint.getText().toString());
+                Log.i("eesss", itemPoint.getText().toString());
                 int point = Integer.parseInt(itemPoint.getText().toString());
                 Item newItem = new Item(name, description, point);
 
                 //if you have any question about this part ask to seulki
-                String itemKey = ""+countOfItem;    //make a item Key
+                String itemKey = "" + countOfItem;    //make a item Key
 
 
                 if(newItem != null) {
                     FirebaseUser user = mAuth.getCurrentUser();
                     //String userId = user.getUid();
 
-                    Toast.makeText(AddItemActivity.this, newItem.getName()+" Item Upload Success!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddItemActivity.this, newItem.getName() + " Item Upload Success!", Toast.LENGTH_SHORT).show();
                     myRef.child(itemKey).setValue(newItem);
 
                     itemName.setText("");
@@ -92,9 +92,9 @@ public class AddItemActivity extends AppCompatActivity{
         };
 
 
-        myRef.addValueEventListener(new ValueEventListener(){
+        myRef.addValueEventListener(new ValueEventListener() {
 
-            int key=0;
+            int key = 0;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -124,7 +124,6 @@ public class AddItemActivity extends AppCompatActivity{
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-
 
 
 }

@@ -142,25 +142,22 @@ public class MainActivity extends AppCompatActivity {
 
             if(position == 0){
                 fragment = new UserMainActivity();
-                Log.i("MainActivity","1");
+                Log.i("MainActivity", "1");
                 //SeulKi : To post teamName from this Activity I used it.
                 bundle = new Bundle(1);
-                bundle.putString("TEAM_NAME",teamName);
+                bundle.putString("TEAM_NAME", teamName);
                 fragment.setArguments(bundle);
-            }
-
-            else if(position == 1){
+            } else if (position == 1) {
                 fragment = new UserAdditionalActivity();
-                Log.i("MainActivity","2");
+                Log.i("MainActivity", "2");
                 bundle = new Bundle();
 
                 /*bundle = new Bundle(1);
                 bundle.putString("TEAM_NAME",teamName);
                 fragment.setArguments(bundle);*/
-            }
-            else if(position == 2){
+            } else if (position == 2) {
                 fragment = new Usermap();
-                Log.i("MainActivitiy","3");
+                Log.i("MainActivitiy", "3");
                 bundle = new Bundle();
             }
 

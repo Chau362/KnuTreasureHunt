@@ -23,7 +23,7 @@ class TeamListAdapter extends BaseAdapter {
         this.context = context;
         this.layout = layout;
         this.teamList = teamList;
-        this.inf = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
     @Override
@@ -45,10 +45,15 @@ class TeamListAdapter extends BaseAdapter {
 
         TextView teamName = (TextView) convertView.findViewById(R.id.teamName);
         TextView teamPoint = (TextView) convertView.findViewById(R.id.teamPoint);
-        Team team = teamList.get(position);
+        TextView teamRank = (TextView) convertView.findViewById(R.id.rank);
 
+        //set team data decrease order
+        Team team = teamList.get(getCount() - 1 - position);
+
+        teamRank.setText(String.valueOf(position+1).toString());
         teamName.setText(team.getTeamName());
         teamPoint.setText(team.getTeamPoint() + " pts");
+
 
         return convertView;
     }

@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class LoginTeamActivity extends BaseActivity{
+public class LoginTeamActivity extends BaseActivity {
     private static final String TAG = "LOGIN_TEAM_USER";
 
     private FirebaseAuth mAuth;
@@ -71,9 +71,10 @@ public class LoginTeamActivity extends BaseActivity{
                 String user = userName.getText().toString();
                 String pwd = userPwd.getText().toString();
 
-                signIn(user,pwd);
-    }
-});
+                signIn(user, pwd);
+
+            }
+        });
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,11 +85,12 @@ public class LoginTeamActivity extends BaseActivity{
             }
         });
     }
-    public void goToNextPage(String name){
+
+    public void goToNextPage(String name) {
 
         //2017.04.03 seulki : If you complete login function, you can use it.
-        Intent i = new Intent(getApplicationContext(),MainActivity.class);
-        i.putExtra("TEAM_NAME",name);
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        i.putExtra("TEAM_NAME", name);
         startActivity(i);
     }
 
@@ -120,12 +122,11 @@ public class LoginTeamActivity extends BaseActivity{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(LoginTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
                             getTeamName();
-
 
                         }
                         // If sign in fails, display a message to the user. If sign in succeeds
@@ -153,32 +154,33 @@ public class LoginTeamActivity extends BaseActivity{
         final String userId = user.getUid();
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
-        mDatabase.child("Team").addListenerForSingleValueEvent(new ValueEventListener(){
+        mDatabase.child("Team").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 // Get Item data value
-                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
                     boolean check = false;
                     Team team = new Team();
                     team = tempSnapshot.getValue(Team.class);
-                    if(team.getTeamMembers()!=null){
-                        for(int i = 0 ; i < team.getTeamMembers().size() ; i++) {
+                    if (team.getTeamMembers() != null) {
+                        for (int i = 0; i < team.getTeamMembers().size(); i++) {
 
-                        //finding team name using member's userId
+                            //finding team name using member's userId
                             if (team.getTeamMembers().get(i).getUserId().equals(userId)) {
-                            //if find right team information
+
+                                //if find right team information
                                 goToNextPage(team.getTeamName());
                                 check = true;
                                 break;
                             }
-                    }
-                        if(check){
+                        }
+                        if (check) {
 
                             break;
                         }
-                    }else{
+                    } else {
                         Toast.makeText(LoginTeamActivity.this, "No exist ID or Not team user",
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -193,10 +195,8 @@ public class LoginTeamActivity extends BaseActivity{
     }
 
 
-
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(LoginTeamActivity.this, RegistrationActivity.class));
         finish();

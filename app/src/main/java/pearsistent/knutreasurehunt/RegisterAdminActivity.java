@@ -150,9 +150,9 @@ public class RegisterAdminActivity extends BaseActivity {
 
         return valid;
     }
+
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(RegisterAdminActivity.this, LoginTeamActivity.class));
         finish();

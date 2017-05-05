@@ -14,11 +14,11 @@
 
         <TextView
         android:id="@+id/membername"
-        android:layout_width="0dp"
+            android:layout_width="0dp"
         android:layout_height="30dp"
-        android:layout_weight="2"
+            android:layout_weight="2"
         android:textStyle="bold"
-        android:textSize="18dp"
+            android:textSize="18dp"
         android:background="@drawable/itemborder" />
 
         <Spinner
