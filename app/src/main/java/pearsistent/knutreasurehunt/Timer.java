@@ -1,9 +1,6 @@
 package pearsistent.knutreasurehunt;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -27,10 +24,11 @@ public class Timer extends AppCompatActivity {
     private EditText hour, minute, second;
     private long receivedTime;
 
-    private boolean receiveFlag = false;       //receiver state
+    private boolean initialFlag = false;
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
+    private  DatabaseReference timeStamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,14 +91,26 @@ public class Timer extends AppCompatActivity {
             }
         });
 
-        registerReceiver(broadcastReceiver, new IntentFilter(TimerService.BROADCAST_ACTION));
-
-
         mFirebaseDatabase = FirebaseDatabase.getInstance();
+        timeStamp = mFirebaseDatabase.getReference("TimeStamp");
+
+        timeStamp.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    String key = (String) dataSnapshot.getValue();
+                    textView.setText(key);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         myRef = mFirebaseDatabase.getReference("time");
 
-        //not turn on receive
-        if(receiveFlag==false){
+       //
+        if(initialFlag==false){
 
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -133,28 +143,16 @@ public class Timer extends AppCompatActivity {
 
     }
 
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String realTime = intent.getStringExtra("TIME");
-            textView.setText(realTime);
-            receiveFlag = true;
-
-        }
-
-    };
-
-
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.set:
                 editLinear.setVisibility(View.VISIBLE);
-                receiveFlag = true;
+                initialFlag = true;
                 break;
 
             case R.id.timerButton:
-                if(receiveFlag==false){
+
+                if(initialFlag==false){
                     String currentText = textView.getText().toString();
 
                     String splitText[] = currentText.split(":");
@@ -163,7 +161,7 @@ public class Timer extends AppCompatActivity {
                     mstr = splitText[1];
                     hstr = splitText[0];
 
-                    receiveFlag = true;
+                    initialFlag = true;
 
                 }
                     editLinear.setVisibility(View.INVISIBLE);
@@ -178,6 +176,7 @@ public class Timer extends AppCompatActivity {
 
                     editLinear.setVisibility(View.INVISIBLE);
 
+                    myRef.removeValue();
                     myRef.setValue(MILLISINFUTURE);
 
                     myRef.addValueEventListener(new ValueEventListener() {
@@ -190,6 +189,7 @@ public class Timer extends AppCompatActivity {
                                     receivedTime = dataSnapshot.getValue(Long.class);
 
                                     Intent serviceIntent = new Intent(Timer.this, TimerService.class);
+                                    serviceIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                                     serviceIntent.putExtra(TimerService.SERVICE_INTENT, receivedTime + "");
                                     startService(serviceIntent);
                                 }

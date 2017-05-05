@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-    }
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 //SeulKi : To post teamName from this Activity I used it.
                 bundle = new Bundle(1);
                 bundle.putString("TEAM_NAME", teamName);
+
                 fragment.setArguments(bundle);
             } else if (position == 1) {
                 fragment = new UserAdditionalActivity();

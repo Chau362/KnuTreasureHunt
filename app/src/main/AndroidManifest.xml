@@ -26,6 +26,7 @@
     <uses-feature android:name="android.permission.LOCATION_HARDWARE" />
 
 
+
     <application
 
         android:networkSecurityConfig="@xml/network_security_config"

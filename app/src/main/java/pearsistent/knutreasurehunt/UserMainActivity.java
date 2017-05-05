@@ -1,9 +1,6 @@
 package pearsistent.knutreasurehunt;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,7 +31,6 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 import static com.google.android.gms.wearable.DataMap.TAG;
-import static pearsistent.knutreasurehunt.R.id.textView;
 //import static pearsistent.knutreasurehunt.R.id.itemList;
 
 
@@ -49,7 +45,7 @@ import static pearsistent.knutreasurehunt.R.id.textView;
 
 // last coder : seulki, 2017.05.02
 
-public class UserMainActivity extends Fragment {
+public class UserMainActivity extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -94,16 +90,9 @@ public class UserMainActivity extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         teamName = getArguments().getString("TEAM_NAME");
+
     }
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String realTime = intent.getStringExtra("TIME");
-            timerView.setText(realTime);
-
-        }
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -117,7 +106,6 @@ public class UserMainActivity extends Fragment {
         addMemberBtn = (ImageButton) v.findViewById(R.id.addMember);
         timerView = (TextView)v.findViewById(R.id.timerView);
 
-        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(TimerService.BROADCAST_ACTION));
 
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
@@ -171,6 +159,20 @@ public class UserMainActivity extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+            }
+        });
+
+        //timer
+        mDatabase.child("TimeStamp").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String currentTime = (String) dataSnapshot.getValue();
+                timerView.setText(currentTime);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 

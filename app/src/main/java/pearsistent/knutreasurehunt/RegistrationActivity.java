@@ -26,8 +26,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         String[] permission = {android.Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE};
         askForPermission(permission,APP_PERMISSION);
-        //askForPermission(android.Manifest.permission.ACCESS_FINE_LOCATION, APP_PERMISSION);
-        //askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, APP_PERMISSION);
+
 
 
         deleteCache();
