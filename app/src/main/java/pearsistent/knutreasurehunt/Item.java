@@ -24,8 +24,8 @@ public class Item {
     //String location;
 
     public Item() {
-        this.name = null;
-        this.text = null;
+        this.name = "null";
+        this.text = "null";
         this.points = 0;
         this.choice = false;
 
