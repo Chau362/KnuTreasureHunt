@@ -183,6 +183,7 @@ public class CreatePDF extends AppCompatActivity {
                     try {
 
                         Image image = Image.getInstance(tempfile.getPath());
+                        //image.setAbsolutePosition(5,5);
                         document.add(image);
 
                         if(temp == currentTeam.getItemList().size()){
