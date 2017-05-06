@@ -75,7 +75,7 @@ public class UserMainActivity extends Fragment{
     private int itemPoint;
     private Item selectItem;
     private String itemKey;
-    private int checkItemNum = 0;
+    private Item checkIniItem;
 
     public UserMainActivity() {
         // Required empty public constructor
@@ -129,6 +129,10 @@ public class UserMainActivity extends Fragment{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 itemKey = String.valueOf(dataSnapshot.getChildrenCount());
+                for(DataSnapshot temp : dataSnapshot.getChildren()){
+                    checkIniItem = temp.getValue(Item.class);
+                    break;
+                }
             }
 
             @Override
@@ -259,9 +263,8 @@ public class UserMainActivity extends Fragment{
         if (requestCode == 1) {
             if (resultCode == 1 && data.getExtras().getInt("State") == 1) {
 
-                if (itemKey.equals("1") && checkItemNum == 0) {
+                if (itemKey.equals("1") && checkIniItem.getName().equals("null")) {
                     itemKey = "0";
-                    checkItemNum++;
                 }
 
                 mDatabase.child("Team").child(teamName).child("itemList").child(itemKey).setValue(selectItem);
