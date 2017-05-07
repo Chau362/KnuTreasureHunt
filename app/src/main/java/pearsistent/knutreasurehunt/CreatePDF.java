@@ -9,6 +9,9 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -47,10 +50,12 @@ public class CreatePDF extends AppCompatActivity {
     private ArrayList<File> fileList;
     private ArrayList<OutputStream> outputStreamArrayList;
     private int teamNum = 0;
+    private int count = 0;
     ////////////////////
-    private ArrayList<Item> itemList;
-    private int count=0;
-    private ArrayList<ByteArrayOutputStream> streamList = new ArrayList<ByteArrayOutputStream>();
+
+    private EditText email;
+    private Button send;
+
 
 
     @Override
@@ -65,6 +70,17 @@ public class CreatePDF extends AppCompatActivity {
         fileList = new ArrayList<File>();
         outputStreamArrayList = new ArrayList<>();
 
+        //////Edited by bogyu , david you can add function that send email in here
+        email = (EditText) findViewById(R.id.email);
+        send = (Button) findViewById(R.id.send);
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               String account = email.getText().toString();
+               //sendEmail(account);
+            }
+        });
 
         // Read from the database
         mDatabase.child("Team").addValueEventListener(new ValueEventListener() {
@@ -78,12 +94,12 @@ public class CreatePDF extends AppCompatActivity {
                     Team currentTeam = teamSnapshot.getValue(Team.class);
 
                     //current team itemlist setting
-                    for(int i = 0 ; i < currentTeam.getItemList().size() ; i ++){
+                    for (int i = 0; i < currentTeam.getItemList().size(); i++) {
 
-                        Log.i("Who!!",currentTeam.getTeamName());
+                        Log.i("Who!!", currentTeam.getTeamName());
 
-                        if(currentTeam.getItemList().get(0).getName()!="null")
-                            currentTeam.getItemList().get(i).setImageReference(findImageFile(currentTeam.getItemList().get(i).getName() +".jpg",currentTeam.getTeamName()));
+                        if (currentTeam.getItemList().get(0).getName() != "null")
+                            currentTeam.getItemList().get(i).setImageReference(findImageFile(currentTeam.getItemList().get(i).getName() + ".jpg", currentTeam.getTeamName()));
                     }
 
                     //DownloadStorage(currentTeam);
@@ -122,7 +138,7 @@ public class CreatePDF extends AppCompatActivity {
 */
     public void makePDF(final Team currentTeam, final int i) {
 
-        Log.i("MAKEPDF",currentTeam.getTeamName());
+        Log.i("MAKEPDF", currentTeam.getTeamName());
         final Document document = new Document();
 
         try {
@@ -134,7 +150,7 @@ public class CreatePDF extends AppCompatActivity {
             //Step 4 add data to document
             /////////////for Team
             final PdfPTable table = new PdfPTable(2);
-
+            final PdfPTable item_table = new PdfPTable(2);
             //Convert int to string
             StringBuilder sb = new StringBuilder();
             sb.append("");
@@ -143,29 +159,41 @@ public class CreatePDF extends AppCompatActivity {
 
             table.addCell(currentTeam.getTeamName());
             table.addCell("score : " + point);
-
+            document.top(400);
             document.add(table);
+            Log.d("addTable", "success!");
 
-            addImageToPDF(currentTeam,document,i);
+            for (int j = 0; j < currentTeam.getItemList().size(); j++) {
+                StringBuilder sb2 = new StringBuilder();
+                sb2.append("");
+                sb2.append(currentTeam.getItemList().get(j).getPoints());
+
+                String point2 = sb2.toString();
+                item_table.addCell(currentTeam.getItemList().get(j).getName()+"("+point2+")");
+                item_table.addCell(currentTeam.getItemList().get(j).getText());
+                Log.d("ITEMTABLE",""+currentTeam.getItemList().get(j).getName()+" point :"+sb2);
+            }
+            document.add(item_table);
+            addImageToPDF(currentTeam, document, i);
+
         } catch (DocumentException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void addImageToPDF(final Team currentTeam, final Document document, final int index){
-
-        Log.i("AddImageToPDF","INTO!");
+    public void addImageToPDF(final Team currentTeam, final Document document, final int index) {
+        Log.i("AddImageToPDF", "INTO!");
         final ArrayList<File> FileList = new ArrayList<File>();
-        int itemCount=0;
+        int itemCount = 0;
 
         for (int item_count = 0; item_count < currentTeam.getItemList().size(); item_count++) {
             final File tempfile = getFile(count++);
             itemCount++;
             final int temp = itemCount;
 
-            final StorageReference islandRef = storageRef.child(currentTeam.getTeamName()).child(currentTeam.getItemList().get(item_count).getName()+".jpg");
-            Log.d("ItemList",currentTeam.getTeamName()+"  "+ currentTeam.getItemList().get(item_count).getName());
+            final StorageReference islandRef = currentTeam.getItemList().get(item_count).getImageReference();
+            Log.d("ItemList", currentTeam.getTeamName() + "  " + currentTeam.getItemList().get(item_count).getName());
 
             islandRef.getFile(tempfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
@@ -177,25 +205,29 @@ public class CreatePDF extends AppCompatActivity {
                     Log.d("FilePath", "" + path);
 
                     try {
-
                         Image image = Image.getInstance(tempfile.getPath());
                         //image.setAbsolutePosition(5,5);
+                        document.newPage();
+                        image.scaleAbsolute(400, 300);
+                        image.setPaddingTop(150);
+
                         document.add(image);
 
-                        if(temp == currentTeam.getItemList().size()){
+                        if (temp == currentTeam.getItemList().size()) {
 
                             document.close();
-                            uploadPDFFile(currentTeam.getTeamName(),index);
+                            uploadPDFFile(currentTeam.getTeamName(), index);
                         }
 
-                    }  catch (IOException e) {
-                        Log.i("Errrrrrr","InputStream");
+                    } catch (IOException e) {
+                        Log.i("Errrrrrr", "InputStream");
                         e.printStackTrace();
                     } catch (BadElementException e) {
                         e.printStackTrace();
-                        Log.i("Errrrrrr","Image");
+                        Log.i("Errrrrrr", "Image");
                     } catch (DocumentException e) {
-                        Log.i("Errrrrrr","Document");
+                        Log.i("Errrrrrr",""+currentTeam.getTeamName());
+                        Log.i("Errrrrrr", "Document");
                         e.printStackTrace();
                     }
                 }
@@ -203,7 +235,7 @@ public class CreatePDF extends AppCompatActivity {
         }
 
 
-        Log.i("AddImageToPDF","FINISH!");
+        Log.i("AddImageToPDF", "FINISH!");
 
     }
 
@@ -218,8 +250,9 @@ public class CreatePDF extends AppCompatActivity {
 
     public static Bitmap decodeBase64(String input) {
         byte[] decodedByte = Base64.decode(input, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedByte, 0,    decodedByte.length);
+        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
     }
+
     public void createPDFPath(int i) {
         pdfFolder = new File("sdcard/TreasureHunt_PDF");
         if (!pdfFolder.exists()) {
@@ -269,11 +302,11 @@ public class CreatePDF extends AppCompatActivity {
         }
 
         //dynamically make a file name
-        File imageFile = new File(folder, "Image"+num+".jpg");
+        File imageFile = new File(folder, "Image" + num + ".jpg");
 
         if (imageFile.exists()) {
             imageFile.delete();
-            imageFile = new File(folder, "Image"+num+".jpg");
+            imageFile = new File(folder, "Image" + num + ".jpg");
         }
 
         return imageFile;
