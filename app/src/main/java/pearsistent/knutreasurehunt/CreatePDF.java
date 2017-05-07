@@ -55,24 +55,24 @@ public class CreatePDF extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-                setContentView(R.layout.activity_createpdf);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_createpdf);
 
 
-                mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
-                storage = FirebaseStorage.getInstance();
-                storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
-                fileList = new ArrayList<File>();
-                outputStreamArrayList = new ArrayList<>();
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
+        fileList = new ArrayList<File>();
+        outputStreamArrayList = new ArrayList<>();
 
 
-                // Read from the database
-                mDatabase.child("Team").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        ///팀을 받아와야 한다..
+        // Read from the database
+        mDatabase.child("Team").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ///팀을 받아와야 한다..
 
-                        Log.d("DB", "Cheer up ");
+                Log.d("DB", "Cheer up ");
 
                 for (DataSnapshot teamSnapshot : dataSnapshot.getChildren()) {
                     Team currentTeam = teamSnapshot.getValue(Team.class);
@@ -86,7 +86,7 @@ public class CreatePDF extends AppCompatActivity {
                             currentTeam.getItemList().get(i).setImageReference(findImageFile(currentTeam.getItemList().get(i).getName() +".jpg",currentTeam.getTeamName()));
                     }
 
-                   //DownloadStorage(currentTeam);
+                    //DownloadStorage(currentTeam);
 
                     createPDFPath(teamNum);
                     makePDF(currentTeam, teamNum);
@@ -108,17 +108,13 @@ public class CreatePDF extends AppCompatActivity {
     }
 
     /*private void DownloadStorage(Team currentTeam) {
-
         File treasureHuntImage = getFile(currentTeam.getTeamName());
-
         gs://treasurehunt-5d55f.appspot.com/bogyuTeam
         StorageReference teamStorage = storageRef.child(currentTeam.getTeamName());
-
         storageRef.child(currentTeam.getTeamName()).getFile(treasureHuntImage).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 long transfer = taskSnapshot.getBytesTransferred();
-
                 Log.i("BFFFFFFF",transfer+"  ");
             }
         });
