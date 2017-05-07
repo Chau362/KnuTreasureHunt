@@ -1,7 +1,6 @@
 package pearsistent.knutreasurehunt;
 
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -38,8 +37,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-
-import butterknife.OnClick;
 
 public class CreatePDF extends AppCompatActivity {
 
@@ -195,7 +192,7 @@ public class CreatePDF extends AppCompatActivity {
             itemCount++;
             final int temp = itemCount;
 
-            final StorageReference islandRef = storageRef.child(currentTeam.getTeamName()).child(currentTeam.getItemList().get(item_count).getName() + ".jpg");
+            final StorageReference islandRef = currentTeam.getItemList().get(item_count).getImageReference();
             Log.d("ItemList", currentTeam.getTeamName() + "  " + currentTeam.getItemList().get(item_count).getName());
 
             islandRef.getFile(tempfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
