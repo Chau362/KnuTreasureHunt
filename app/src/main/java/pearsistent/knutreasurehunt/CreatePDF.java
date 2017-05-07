@@ -1,6 +1,7 @@
 package pearsistent.knutreasurehunt;
 
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -9,6 +10,9 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +39,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import butterknife.OnClick;
+
 public class CreatePDF extends AppCompatActivity {
 
     private OutputStream output;
@@ -47,10 +53,12 @@ public class CreatePDF extends AppCompatActivity {
     private ArrayList<File> fileList;
     private ArrayList<OutputStream> outputStreamArrayList;
     private int teamNum = 0;
-    ////////////////////
-    private ArrayList<Item> itemList;
     private int count = 0;
-    private ArrayList<ByteArrayOutputStream> streamList = new ArrayList<ByteArrayOutputStream>();
+    ////////////////////
+
+    private EditText email;
+    private Button send;
+
 
 
     @Override
@@ -65,6 +73,17 @@ public class CreatePDF extends AppCompatActivity {
         fileList = new ArrayList<File>();
         outputStreamArrayList = new ArrayList<>();
 
+        //////Edited by bogyu , david you can add function that send email in here
+        email = (EditText) findViewById(R.id.email);
+        send = (Button) findViewById(R.id.send);
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               String account = email.getText().toString();
+               //sendEmail(account);
+            }
+        });
 
         // Read from the database
         mDatabase.child("Team").addValueEventListener(new ValueEventListener() {
@@ -90,6 +109,7 @@ public class CreatePDF extends AppCompatActivity {
 
                     createPDFPath(teamNum);
                     makePDF(currentTeam, teamNum);
+
 
                     teamNum++;
                 }
@@ -122,16 +142,15 @@ public class CreatePDF extends AppCompatActivity {
     public void makePDF(final Team currentTeam, final int i) {
 
         Log.i("MAKEPDF", currentTeam.getTeamName());
-
+        final Document document = new Document();
 
         try {
-            final Document document = new Document();
-
             document.open();
-
+            //Step 2
             PdfWriter.getInstance(document, outputStreamArrayList.get(i));
-
-            // add data to document
+            //Step 3
+            document.open();
+            //Step 4 add data to document
             /////////////for Team
             final PdfPTable table = new PdfPTable(2);
             final PdfPTable item_table = new PdfPTable(2);
@@ -150,11 +169,12 @@ public class CreatePDF extends AppCompatActivity {
             for (int j = 0; j < currentTeam.getItemList().size(); j++) {
                 StringBuilder sb2 = new StringBuilder();
                 sb2.append("");
-                sb.append(currentTeam.getItemList().get(j).getPoints());
+                sb2.append(currentTeam.getItemList().get(j).getPoints());
+
                 String point2 = sb2.toString();
                 item_table.addCell(currentTeam.getItemList().get(j).getName()+"("+point2+")");
                 item_table.addCell(currentTeam.getItemList().get(j).getText());
-                Log.d("ITEMTABLE",""+currentTeam.getItemList().get(j).getName());
+                Log.d("ITEMTABLE",""+currentTeam.getItemList().get(j).getName()+" point :"+sb2);
             }
             document.add(item_table);
             addImageToPDF(currentTeam, document, i);
@@ -197,6 +217,7 @@ public class CreatePDF extends AppCompatActivity {
                         document.add(image);
 
                         if (temp == currentTeam.getItemList().size()) {
+
                             document.close();
                             uploadPDFFile(currentTeam.getTeamName(), index);
                         }
@@ -208,6 +229,7 @@ public class CreatePDF extends AppCompatActivity {
                         e.printStackTrace();
                         Log.i("Errrrrrr", "Image");
                     } catch (DocumentException e) {
+                        Log.i("Errrrrrr",""+currentTeam.getTeamName());
                         Log.i("Errrrrrr", "Document");
                         e.printStackTrace();
                     }
