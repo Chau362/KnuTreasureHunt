@@ -156,7 +156,7 @@ public class RegisterAdminActivity extends BaseActivity {
         super.onBackPressed();
         startActivity(new Intent(RegisterAdminActivity.this, LoginTeamActivity.class));
         finish();
-        overridePendingTransition(R.anim.righttoleft, R.anim.lefttoright);
+        overridePendingTransition(R.anim.lefttoright, R.anim.righttoleft);
 
 
     }

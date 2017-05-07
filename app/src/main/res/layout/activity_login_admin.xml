@@ -1,85 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fff"
-    tools:context="pearsistent.knutreasurehunt.LoginAdminActivity"
-    android:orientation="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:windowSoftInputMode="adjustNothing"
+    android:fitsSystemWindows="true">
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="70dp" />
-
-    <TextView
-        android:id="@+id/textView6"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="LOGIN"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:textAlignment="center"
-        android:textSize="28dp" />
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:weightSum="1">
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="246dp"
+            android:layout_height="130dp"
+            android:src="@drawable/treasure12"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:scaleX="1.3"
+            android:scaleY="1.5" />
 
-    <EditText
-        android:id="@+id/login_admin_usr"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:ems="10"
-        android:hint="Username"
-        android:textColorHint="#B5B5B5"
-        android:backgroundTint="#B5B5B5"
-        android:inputType="textPersonName"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textAlignment="center" />
+        <!--  Username Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/login_admin_usr"
+                android:layout_width="match_parent"
+                android:textColor="@android:color/black"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:hint="Email" />
+        </android.support.design.widget.TextInputLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        <!--  Password Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:theme="@style/TextLabel2"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/login_admin_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:inputType="textPassword"
+                android:hint="Password"/>
+        </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/login_admin_pwd"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:ems="10"
-        android:textColorHint="#B5B5B5"
-        android:backgroundTint="#B5B5B5"
-        android:hint="Password"
-        android:inputType="textPersonName"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textAlignment="center" />
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/Btn_login_admin_Login"
+            android:background="@color/yellow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:text="Login"/>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        <TextView android:id="@+id/Btn_login_admin_Register"
+            android:layout_width="fill_parent"
+            android:textColor="@color/yellow"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@string/stringinlogin"
+            android:gravity="center"
+            android:textSize="16dip"/>
 
-    <Button
-        android:id="@+id/Btn_login_admin_Login"
-        android:layout_width="180dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:textStyle="bold"
-        android:background="@drawable/buttonborder"
-        android:text="Login" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
-
-    <Button
-        android:id="@+id/Btn_login_admin_Register"
-        android:layout_width="150dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center"
-        android:text="Register"
-        android:background="@drawable/registerbuttonborder"
-        />
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
