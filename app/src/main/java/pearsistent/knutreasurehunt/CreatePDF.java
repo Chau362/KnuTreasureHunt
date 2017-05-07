@@ -91,7 +91,6 @@ public class CreatePDF extends AppCompatActivity {
                     createPDFPath(teamNum);
                     makePDF(currentTeam, teamNum);
 
-
                     teamNum++;
                 }
 
@@ -123,15 +122,16 @@ public class CreatePDF extends AppCompatActivity {
     public void makePDF(final Team currentTeam, final int i) {
 
         Log.i("MAKEPDF", currentTeam.getTeamName());
-        final Document document = new Document();
+
 
         try {
+            final Document document = new Document();
+
             document.open();
-            //Step 2
+
             PdfWriter.getInstance(document, outputStreamArrayList.get(i));
-            //Step 3
-            document.open();
-            //Step 4 add data to document
+
+            // add data to document
             /////////////for Team
             final PdfPTable table = new PdfPTable(2);
             final PdfPTable item_table = new PdfPTable(2);
@@ -148,7 +148,11 @@ public class CreatePDF extends AppCompatActivity {
             Log.d("addTable", "success!");
 
             for (int j = 0; j < currentTeam.getItemList().size(); j++) {
-                item_table.addCell(currentTeam.getItemList().get(j).getName());
+                StringBuilder sb2 = new StringBuilder();
+                sb2.append("");
+                sb.append(currentTeam.getItemList().get(j).getPoints());
+                String point2 = sb2.toString();
+                item_table.addCell(currentTeam.getItemList().get(j).getName()+"("+point2+")");
                 item_table.addCell(currentTeam.getItemList().get(j).getText());
                 Log.d("ITEMTABLE",""+currentTeam.getItemList().get(j).getName());
             }
@@ -193,7 +197,6 @@ public class CreatePDF extends AppCompatActivity {
                         document.add(image);
 
                         if (temp == currentTeam.getItemList().size()) {
-
                             document.close();
                             uploadPDFFile(currentTeam.getTeamName(), index);
                         }
