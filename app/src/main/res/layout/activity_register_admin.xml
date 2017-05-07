@@ -78,12 +78,14 @@
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 
+
+
     <Button
         android:id="@+id/Btn_rgstr_admin_Register"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:layout_gravity="center"
         android:textStyle="bold"
-        android:background="@drawable/registerbuttonborder"
-        android:layout_gravity="center"/>
+        android:background="@color/yellow"
+        android:text="Register" />
 </LinearLayout>

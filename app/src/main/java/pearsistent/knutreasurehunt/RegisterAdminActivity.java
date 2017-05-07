@@ -9,8 +9,8 @@ import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +28,7 @@ public class RegisterAdminActivity extends BaseActivity {
     private EditText adminName;
     private EditText adminPwd;
     private EditText adminConfirmPwd;
-    private Button registerBtn;
+    private TextView registerBtn;
 
     String id,pwd;
     private FirebaseAuth mAuth;
@@ -41,7 +41,7 @@ public class RegisterAdminActivity extends BaseActivity {
         adminName = (EditText) findViewById(R.id.rgstr_admin_usr);
         adminPwd = (EditText) findViewById(R.id.rgstr_admin_pwd);
         adminConfirmPwd= (EditText) findViewById(R.id.rgstr_admin_cpwd);
-        registerBtn = (Button) findViewById(R.id.Btn_rgstr_admin_Register);
+        registerBtn = (TextView) findViewById(R.id.Btn_rgstr_admin_Register);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -156,7 +156,7 @@ public class RegisterAdminActivity extends BaseActivity {
         super.onBackPressed();
         startActivity(new Intent(RegisterAdminActivity.this, LoginTeamActivity.class));
         finish();
-        overridePendingTransition(R.anim.righttoleft, R.anim.lefttoright);
+        overridePendingTransition(R.anim.lefttoright, R.anim.righttoleft);
 
 
     }
