@@ -3,19 +3,16 @@ package pearsistent.knutreasurehunt;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
-
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,8 +27,6 @@ import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.ByteBuffer;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -55,10 +50,12 @@ public class CreatePDF extends AppCompatActivity {
     private ArrayList<File> fileList;
     private ArrayList<OutputStream> outputStreamArrayList;
     private int teamNum = 0;
+    private int count = 0;
     ////////////////////
-    private ArrayList<Item> itemList;
-    private int count=0;
-    private ArrayList<ByteArrayOutputStream> streamList = new ArrayList<ByteArrayOutputStream>();
+
+    private EditText email;
+    private Button send;
+
 
 
     @Override
@@ -66,12 +63,24 @@ public class CreatePDF extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createpdf);
 
+
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
         fileList = new ArrayList<File>();
         outputStreamArrayList = new ArrayList<>();
 
+        //////Edited by bogyu , david you can add function that send email in here
+        email = (EditText) findViewById(R.id.email);
+        send = (Button) findViewById(R.id.send);
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               String account = email.getText().toString();
+               //sendEmail(account);
+            }
+        });
 
         // Read from the database
         mDatabase.child("Team").addValueEventListener(new ValueEventListener() {
@@ -84,10 +93,20 @@ public class CreatePDF extends AppCompatActivity {
                 for (DataSnapshot teamSnapshot : dataSnapshot.getChildren()) {
                     Team currentTeam = teamSnapshot.getValue(Team.class);
 
+                    //current team itemlist setting
+                    for (int i = 0; i < currentTeam.getItemList().size(); i++) {
+
+                        Log.i("Who!!", currentTeam.getTeamName());
+
+                        if (currentTeam.getItemList().get(0).getName() != "null")
+                            currentTeam.getItemList().get(i).setImageReference(findImageFile(currentTeam.getItemList().get(i).getName() + ".jpg", currentTeam.getTeamName()));
+                    }
+
+                    //DownloadStorage(currentTeam);
+
                     createPDFPath(teamNum);
                     makePDF(currentTeam, teamNum);
 
-                    uploadPDFFile(currentTeam.getTeamName(), teamNum);
 
                     teamNum++;
                 }
@@ -104,103 +123,135 @@ public class CreatePDF extends AppCompatActivity {
 
     }
 
+    /*private void DownloadStorage(Team currentTeam) {
+        File treasureHuntImage = getFile(currentTeam.getTeamName());
+        gs://treasurehunt-5d55f.appspot.com/bogyuTeam
+        StorageReference teamStorage = storageRef.child(currentTeam.getTeamName());
+        storageRef.child(currentTeam.getTeamName()).getFile(treasureHuntImage).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                long transfer = taskSnapshot.getBytesTransferred();
+                Log.i("BFFFFFFF",transfer+"  ");
+            }
+        });
+    }
+*/
     public void makePDF(final Team currentTeam, final int i) {
 
-        mDatabase.child("Team").child(currentTeam.getTeamName()).child("itemList").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                itemList = new ArrayList<>();
-                for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                    Item currentItem = itemSnapshot.getValue(Item.class);
-                    currentItem.setImageReference(findImageFile(currentItem.getName() + ".jpg", currentTeam.getTeamName()));
-                    itemList.add(currentItem);
-                    Log.d("currnetItem", "" + currentItem.getName());
-                }
-                Document document = new Document();
-                try {
-                    document.open();
-                    //Step 2
-                    PdfWriter.getInstance(document, outputStreamArrayList.get(i));
-                    //Step 3
-                    document.open();
-                    //Step 4 add data to document
-                    /////////////for Team
-                    PdfPTable table = new PdfPTable(1);
-                    //Convert int to string
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("");
-                    sb.append(currentTeam.getTeamPoint());
-                    String point = sb.toString();
+        Log.i("MAKEPDF", currentTeam.getTeamName());
+        final Document document = new Document();
 
+        try {
+            document.open();
+            //Step 2
+            PdfWriter.getInstance(document, outputStreamArrayList.get(i));
+            //Step 3
+            document.open();
+            //Step 4 add data to document
+            /////////////for Team
+            final PdfPTable table = new PdfPTable(2);
+            final PdfPTable item_table = new PdfPTable(2);
+            //Convert int to string
+            StringBuilder sb = new StringBuilder();
+            sb.append("");
+            sb.append(currentTeam.getTeamPoint());
+            String point = sb.toString();
 
-                    table.addCell(currentTeam.getTeamName());
-                    table.addCell("score : " + point);
+            table.addCell(currentTeam.getTeamName());
+            table.addCell("score : " + point);
+            document.top(400);
+            document.add(table);
+            Log.d("addTable", "success!");
 
-                    //////////////for Item
-                    ArrayList<File> FileList = new ArrayList<File>();
+            for (int j = 0; j < currentTeam.getItemList().size(); j++) {
+                StringBuilder sb2 = new StringBuilder();
+                sb2.append("");
+                sb2.append(currentTeam.getItemList().get(j).getPoints());
 
-                    for (int item_count = 0; item_count < itemList.size(); item_count++) {
-                         File tempfile = getFile(item_count);
-                         FileList.add(tempfile);
-
-                        StorageReference islandRef = storageRef.child(currentTeam.getTeamName() + "/" + itemList.get(item_count).getName() + ".jpg");
-
-                        islandRef.getFile(FileList.get(item_count)).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                Log.d("makeFile", "Success");
-                                // Local temp file has been created
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // Handle any errors
-                                Log.d("makeFile", "Failure");
-                            }
-                       });
-                        //
-
-
-                        while(count<FileList.size()) {
-                            String path = FileList.get(count).getPath();
-                            Log.d("FilePath", "" + path);
-                            Bitmap bitmap = BitmapFactory.decodeFile(path);
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            streamList.add(stream);
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, streamList.get(count));
-                            byte[] byteArray = streamList.get(count).toByteArray();
-                            try {
-                                Image image = Image.getInstance(byteArray);
-                                table.addCell(image);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            count++;
-                        }
-
-                        //Drawable d = new BitmapDrawable(getResources(), bitmap);
-
-                        /////////////////////////////
-                    }
-                    //제목추가
-                    document.add(table);
-                    document.close();
-
-                } catch (DocumentException e) {
-                    e.printStackTrace();
-                }
+                String point2 = sb2.toString();
+                item_table.addCell(currentTeam.getItemList().get(j).getName()+"("+point2+")");
+                item_table.addCell(currentTeam.getItemList().get(j).getText());
+                Log.d("ITEMTABLE",""+currentTeam.getItemList().get(j).getName()+" point :"+sb2);
             }
-                @Override
-                public void onCancelled (DatabaseError databaseError){
+            document.add(item_table);
+            addImageToPDF(currentTeam, document, i);
 
-                }
-                //You should create pdf in listener
-
-
-        });
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
 
     }
 
+    public void addImageToPDF(final Team currentTeam, final Document document, final int index) {
+        Log.i("AddImageToPDF", "INTO!");
+        final ArrayList<File> FileList = new ArrayList<File>();
+        int itemCount = 0;
+
+        for (int item_count = 0; item_count < currentTeam.getItemList().size(); item_count++) {
+            final File tempfile = getFile(count++);
+            itemCount++;
+            final int temp = itemCount;
+
+            final StorageReference islandRef = currentTeam.getItemList().get(item_count).getImageReference();
+            Log.d("ItemList", currentTeam.getTeamName() + "  " + currentTeam.getItemList().get(item_count).getName());
+
+            islandRef.getFile(tempfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    FileList.add(tempfile);
+                    Log.d("makeFile", "Success");
+                    Log.d("FileListSize", "" + FileList.size());
+                    String path = tempfile.getPath();
+                    Log.d("FilePath", "" + path);
+
+                    try {
+                        Image image = Image.getInstance(tempfile.getPath());
+                        //image.setAbsolutePosition(5,5);
+                        document.newPage();
+                        image.scaleAbsolute(400, 300);
+                        image.setPaddingTop(150);
+
+                        document.add(image);
+
+                        if (temp == currentTeam.getItemList().size()) {
+
+                            document.close();
+                            uploadPDFFile(currentTeam.getTeamName(), index);
+                        }
+
+                    } catch (IOException e) {
+                        Log.i("Errrrrrr", "InputStream");
+                        e.printStackTrace();
+                    } catch (BadElementException e) {
+                        e.printStackTrace();
+                        Log.i("Errrrrrr", "Image");
+                    } catch (DocumentException e) {
+                        Log.i("Errrrrrr",""+currentTeam.getTeamName());
+                        Log.i("Errrrrrr", "Document");
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+
+        Log.i("AddImageToPDF", "FINISH!");
+
+    }
+
+    public static String encodeTobase64(Bitmap image) {
+        Bitmap immagex = image;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        immagex.compress(Bitmap.CompressFormat.PNG, 90, baos);
+        byte[] b = baos.toByteArray();
+        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+        return imageEncoded;
+    }
+
+    public static Bitmap decodeBase64(String input) {
+        byte[] decodedByte = Base64.decode(input, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+    }
 
     public void createPDFPath(int i) {
         pdfFolder = new File("sdcard/TreasureHunt_PDF");
@@ -251,14 +302,21 @@ public class CreatePDF extends AppCompatActivity {
         }
 
         //dynamically make a file name
-        File imageFile = new File(folder, "tempFile"+num);
+        File imageFile = new File(folder, "Image" + num + ".jpg");
 
         if (imageFile.exists()) {
             imageFile.delete();
-            imageFile = new File(folder, "tempFile"+num);
+            imageFile = new File(folder, "Image" + num + ".jpg");
         }
 
         return imageFile;
+    }
+
+    private Uri getFileUri(File fileName) {
+
+        Uri objectURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", fileName);
+
+        return objectURI;
     }
 
 }
