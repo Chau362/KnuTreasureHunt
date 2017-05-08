@@ -41,7 +41,6 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_tab2_admin, container, false);
 //        Point = (Button)rootView.findViewById(R.id.changePoint);
 //        Point.setOnClickListener(this);
-
         countdown = (Button)rootView.findViewById(R.id.countbutton);
         countdown.setOnClickListener(this);
 
@@ -106,14 +105,11 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-
-        if(view.getId() == R.id.countbutton){
-
-            intent = new Intent(getContext(), Timer.class);
+        if(view.getId() == R.id.create_pdf) {
             startActivity(intent);
+        } else if (view.getId() == R.id.countbutton) {
+            intent2 = new Intent(getContext(), Timer.class);
+            startActivity(intent2);
         }
-
-        else if(view.getId() == R.id.create_pdf)
-            startActivity(intent);
     }
 }
