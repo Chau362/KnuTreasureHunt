@@ -47,13 +47,16 @@
 
             <ImageButton
                 android:id="@+id/selfieTrashBtn"
-                android:layout_width="@dimen/ic_album_overflow_width"
-                android:layout_height="@dimen/ic_album_overflow_height"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/selfieImage"
+                android:layout_marginBottom="@dimen/ic_album_overflow_margin_top"
+                android:layout_marginRight="@dimen/ic_album_overflow_margin_top"
                 android:layout_marginTop="@dimen/ic_album_overflow_margin_top"
+                android:background="@android:color/transparent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_delete_black_24dp" />
+                android:src="@drawable/ic_delete_white_36dp" />
 
         </RelativeLayout>
 
