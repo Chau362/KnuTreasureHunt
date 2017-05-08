@@ -17,6 +17,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
+            <Button
+            android:id="@+id/countbutton"
+            android:background="#ffcb3a"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_weight="1"
+            android:text="Set Countdown" />
+
         <ImageButton
             android:id="@+id/removeItemBtn"
             android:layout_width="1dp"
