@@ -135,10 +135,11 @@ public class CreatePDF extends AppCompatActivity {
                 emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,uris);
                 try {
                     startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-                    finish();
                 } catch (android.content.ActivityNotFoundException ex) {
                     Toast.makeText(CreatePDF.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
                 }
+
+                finish();
             }
         });
 
