@@ -135,6 +135,7 @@ public class CreatePDF extends AppCompatActivity {
                 emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,uris);
                 try {
                     startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                    finish();
                 } catch (android.content.ActivityNotFoundException ex) {
                     Toast.makeText(CreatePDF.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
                 }
@@ -216,7 +217,7 @@ public class CreatePDF extends AppCompatActivity {
             Log.d("ItemList", currentTeam.getTeamName() + "  " + currentTeam.getItemList().get(item_count).getName());
 
             if (currentTeam.getItemList().get(0).getName().equals("null")) {
-                Toast.makeText(CreatePDF.this, currentTeam.getTeamName() + " doesn't have items.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CreatePDF.this, currentTeam.getTeamName() + " doesn't have items.", Toast.LENGTH_SHORT).show();
                 document.close();
             } else {
                 islandRef.getFile(tempfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
