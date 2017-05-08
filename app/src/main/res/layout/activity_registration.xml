@@ -41,8 +41,8 @@
                 android:id="@+id/userRegistrationImage"
                 android:layout_width="140dp"
                 android:layout_height="150dp"
-                android:layout_weight="0.1" />
-                <!--android:src="@mipmap/user" />-->
+                android:layout_weight="0.1"
+                android:src="@drawable/user" />
             <!--app:srcCompat="@mipmap/user" -->
 
             <TextView
@@ -95,8 +95,8 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_weight="0.19"
-                android:adjustViewBounds="false" />
-            <!--android:src="@mipmap/admin" />-->
+                android:adjustViewBounds="false"
+                android:src="@drawable/admin" />
             <!--app:srcCompat="@mipmap/admin" -->
 
             <FrameLayout
