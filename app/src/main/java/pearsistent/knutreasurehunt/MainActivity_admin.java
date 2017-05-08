@@ -18,8 +18,8 @@ public class MainActivity_admin extends AppCompatActivity {
         TabLayout tabLayout =
                 (TabLayout) findViewById(R.id.tab_layout);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Tab1"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab2"));
+        tabLayout.addTab(tabLayout.newTab().setText("List"));
+        tabLayout.addTab(tabLayout.newTab().setText("Scores"));
 
         final ViewPager viewPager =
                 (ViewPager) findViewById(R.id.pager);
