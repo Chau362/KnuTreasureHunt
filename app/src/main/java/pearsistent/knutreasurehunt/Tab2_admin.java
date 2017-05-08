@@ -47,7 +47,7 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
         Selfie = (Button)rootView.findViewById(R.id.create_pdf);
         Selfie.setOnClickListener(this);
 
-        intent = new Intent(getContext(), Progress.class);
+        intent = new Intent(getContext(), Timer.class);
         intent2 = new Intent(getContext(),CreatePDF.class);
         // Inflate the layout for this fragment
 
@@ -106,10 +106,9 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.create_pdf) {
-            startActivity(intent);
-        } else if (view.getId() == R.id.countbutton) {
-            intent2 = new Intent(getContext(), Timer.class);
             startActivity(intent2);
+        } else if (view.getId() == R.id.countbutton) {
+            startActivity(intent);
         }
     }
 }
