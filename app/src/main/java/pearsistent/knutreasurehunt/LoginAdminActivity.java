@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,7 +31,7 @@ public class LoginAdminActivity extends BaseActivity {
     private EditText adminName;
     private EditText adminPwd;
     private Button loginBtn;
-    private Button registerBtn;
+    private TextView registerBtn;
 
     private boolean result = false;
 
@@ -42,7 +43,7 @@ public class LoginAdminActivity extends BaseActivity {
         adminName = (EditText) findViewById(R.id.login_admin_usr);
         adminPwd = (EditText) findViewById(R.id.login_admin_pwd);
         loginBtn = (Button) findViewById(R.id.Btn_login_admin_Login);
-        registerBtn = (Button) findViewById(R.id.Btn_login_admin_Register);
+        registerBtn = (TextView) findViewById(R.id.Btn_login_admin_Register);
 
         //hide type password
         adminPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());

@@ -108,6 +108,7 @@ public class Progress extends AppCompatActivity {
             this.includeEdge = includeEdge;
         }
 
+
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             int position = parent.getChildAdapterPosition(view); // item position

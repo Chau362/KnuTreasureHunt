@@ -16,9 +16,9 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="Teams"
-        android:textColor="#000"
-        android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/yellow"
+        android:textStyle="bold" />
 
 
     <LinearLayout
@@ -43,30 +43,31 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:text="Rank"
-                android:textColor="@android:color/black"
+                android:textColor="@color/yellow"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="1.43"
                 android:layout_marginRight="3dp"
-                android:textColor="@android:color/black"
+                android:textColor="@color/yellow"
                 android:gravity="center"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:text="Team Name" />
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:text="Team Points"
+                android:textColor="@color/yellow"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:gravity="center"
-                android:text="Team Point" />
+                android:layout_weight="0.12" />
         </LinearLayout>
 
         <ListView
@@ -77,20 +78,20 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/changePoint"
-        android:layout_marginTop="20dp"
-        android:text="Change Points"
+        android:id="@+id/countbutton"
         android:layout_width="250dp"
-        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:background="@drawable/registerbuttonborder" />
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="#ffcb3a"
+        android:text="Set Countdown" />
 
     <Button
         android:id="@+id/create_pdf"
-        android:layout_marginTop="20dp"
-        android:text="Create PDF"
         android:layout_width="250dp"
-        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:background="@drawable/registerbuttonborder"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="#ffcb3a"
+        android:text="Create PDF" />
 </LinearLayout>

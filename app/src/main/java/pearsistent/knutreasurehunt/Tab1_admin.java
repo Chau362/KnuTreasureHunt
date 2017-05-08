@@ -28,11 +28,11 @@ import static com.google.android.gms.wearable.DataMap.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Tab1_admin extends Fragment implements View.OnClickListener {
+public class Tab1_admin extends Fragment {
 
     private ArrayList<Item> choicedList;
     private DatabaseReference mDatabase;
-    Button countdown, createlist;
+    private Button createlist;
     Intent intent;
 
 
@@ -62,9 +62,9 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
         final View rootView = inflater.inflate(R.layout.fragment_tab1_admin, container, false);
-        countdown = (Button)rootView.findViewById(R.id.countbutton);
+
         ImageButton removeObjectBtn = (ImageButton) rootView.findViewById(R.id.removeItemBtn);
-        countdown.setOnClickListener(this);
+
 
         final ListView listView = (ListView) rootView.findViewById(R.id.objectList);
 
@@ -170,16 +170,4 @@ public class Tab1_admin extends Fragment implements View.OnClickListener {
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 
-
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.countbutton){
-
-
-
-            intent = new Intent(getContext(), Timer.class);
-            startActivity(intent);
-        }
-
-    }
 }

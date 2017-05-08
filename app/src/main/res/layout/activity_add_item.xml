@@ -13,10 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add Item"
-        android:textColor="#000"
-        android:textStyle="bold"
         android:textAlignment="center"
-        android:textSize="28dp" />
+        android:textColor="@color/yellow"
+        android:textSize="28dp"
+        android:textStyle="bold" />
 
 
     <EditText
@@ -56,11 +56,11 @@
         android:inputType="textMultiLine" />
 
     <ImageButton
+        android:layout_marginTop="20dp"
+        android:background="#B5B5B5"
         android:id="@+id/addItemToDatabaseBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="#B5B5B5"
         app:srcCompat="?android:attr/textCheckMark" />
 
 </LinearLayout>

@@ -3,18 +3,7 @@
     package="pearsistent.knutreasurehunt"
     >
 
-    <!-- <application -->
-    <!-- android:allowBackup="true" -->
-    <!-- android:icon="@mipmap/ic_launcher" -->
-    <!-- android:label="@string/app_name" -->
-    <!-- android:roundIcon="@mipmap/ic_launcher_round" -->
-    <!-- android:supportsRtl="true" -->
-    <!-- android:theme="@style/AppTheme"> -->
-    <!-- <activity -->
-    <!-- android:name=".MainActivity" -->
-    <!-- android:label="@string/title_activity_main" -->
-    <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
-    <!-- </application> -->
+
     <uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
     <uses-feature android:name = "android.hardware.camera2"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -58,11 +47,11 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".RegisterTeamActivity" />
         <activity android:name=".MainActivity_admin"/>
+        <activity android:name=".CreatePDF"/>
         <activity android:name=".Timer" />
         <activity android:name=".AddMemberActivity"/>
         <activity android:name=".Progress" />
         <activity android:name=".AddItemActivity" />
-        <activity android:name=".CreatePDF" />
 
 
 
