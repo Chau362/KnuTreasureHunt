@@ -24,23 +24,19 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="Team Member"
-            android:textColor="@android:color/black"
+            android:textColor="@color/yellow"
             android:textSize="28dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:paddingLeft="23dp"
-        android:paddingRight="23dp"
-        android:paddingTop="3dp">
+        android:layout_height="350dp">
+
         <ListView
             android:id="@+id/memberlist"
-            android:background="@drawable/listborder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            ></ListView>
+            android:layout_height="match_parent"></ListView>
     </LinearLayout>
 
     <FrameLayout
@@ -63,6 +59,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/addmember" />
+
         <FrameLayout
             android:layout_width="30dp"
             android:layout_height="match_parent"

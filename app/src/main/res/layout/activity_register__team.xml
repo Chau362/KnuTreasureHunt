@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:text="Registration"
         android:textColor="#000"
-        android:textStyle="italic|bold"
+        android:textStyle="bold"
         android:textAlignment="center"
         android:textSize="28dp" />
 

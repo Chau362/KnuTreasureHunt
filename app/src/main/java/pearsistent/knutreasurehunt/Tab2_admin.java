@@ -39,8 +39,8 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tab2_admin, container, false);
-        Point = (Button)rootView.findViewById(R.id.changePoint);
-        Point.setOnClickListener(this);
+//        Point = (Button)rootView.findViewById(R.id.changePoint);
+//        Point.setOnClickListener(this);
 
         Selfie = (Button)rootView.findViewById(R.id.create_pdf);
         Selfie.setOnClickListener(this);
@@ -103,10 +103,7 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.changePoint)
+        if(view.getId() == R.id.create_pdf)
             startActivity(intent);
-        else if(view.getId() == R.id.create_pdf){
-            startActivity(intent2);
-        }
     }
 }

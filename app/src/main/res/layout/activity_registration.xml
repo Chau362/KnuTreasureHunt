@@ -39,15 +39,11 @@
 
             <ImageView
                 android:id="@+id/userRegistrationImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_weight="0.1"/>
+                android:layout_width="140dp"
+                android:layout_height="150dp"
+                android:layout_weight="0.1" />
                 <!--android:src="@mipmap/user" />-->
             <!--app:srcCompat="@mipmap/user" -->
-
-            <FrameLayout
-                android:layout_width="3dp"
-                android:layout_height="match_parent"></FrameLayout>
 
             <TextView
                 android:id="@+id/text_usr"
@@ -58,9 +54,14 @@
                 android:gravity="center"
                 android:text="TEAM"
 
+                android:textAlignment="center"
                 android:textColor="#FDB932"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
+            <FrameLayout
+                android:layout_width="3dp"
+                android:layout_height="match_parent"></FrameLayout>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -91,10 +92,11 @@
 
             <ImageView
                 android:id="@+id/adminRegistrationImage"
-                android:layout_width="110dp"
-                android:layout_height="100dp"
-                android:layout_weight="0.1"/>
-                <!--android:src="@mipmap/admin" />-->
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_weight="0.19"
+                android:adjustViewBounds="false" />
+            <!--android:src="@mipmap/admin" />-->
             <!--app:srcCompat="@mipmap/admin" -->
 
             <FrameLayout
@@ -109,6 +111,7 @@
                 android:layout_weight="0.9"
                 android:gravity="center_vertical"
                 android:text="ADMINISTRATOR"
+                android:textAlignment="center"
                 android:textColor="#FDB932"
                 android:textSize="24sp"
                 android:textStyle="bold" />
