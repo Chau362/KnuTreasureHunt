@@ -47,11 +47,11 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".RegisterTeamActivity" />
         <activity android:name=".MainActivity_admin"/>
+        <activity android:name=".CreatePDF"/>
         <activity android:name=".Timer" />
         <activity android:name=".AddMemberActivity"/>
         <activity android:name=".Progress" />
         <activity android:name=".AddItemActivity" />
-        <activity android:name=".CreatePDF" />
 
 
 

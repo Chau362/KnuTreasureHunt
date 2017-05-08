@@ -51,7 +51,6 @@
             android:text="00"
             android:textColor="#000"
             android:textSize="70dp"/>
-
     </LinearLayout>
 
     <TextView
@@ -60,6 +59,7 @@
         android:id="@+id/realTime"
         android:textColor="#000"
         android:textSize="70dp"/>
+
 
     <LinearLayout
         android:layout_marginTop="20dp"
@@ -71,9 +71,10 @@
             android:id="@+id/set"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/buttonborder"
-            android:text="Set"
-            android:onClick="onClick"/>
+            android:background="@color/yellow"
+            android:onClick="onClick"
+            android:text="Set" />
+
         <FrameLayout
             android:layout_width="5dp"
             android:layout_height="match_parent"></FrameLayout>
@@ -81,10 +82,9 @@
             android:id="@+id/timerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start"
-            android:background="@drawable/buttonborder"
-            android:onClick="onClick"/>
+            android:background="@color/yellow"
+            android:onClick="onClick"
+            android:text="Start" />
     </LinearLayout>
 
 </LinearLayout>
-
