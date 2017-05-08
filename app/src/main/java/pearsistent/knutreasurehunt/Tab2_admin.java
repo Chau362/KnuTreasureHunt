@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class Tab2_admin extends Fragment implements View.OnClickListener {
     private Intent intent,intent2;
-    private Button Point;
+    private Button countdown;
     private Button Selfie;
     private DatabaseReference mDatabase;
 
@@ -41,6 +41,8 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_tab2_admin, container, false);
 //        Point = (Button)rootView.findViewById(R.id.changePoint);
 //        Point.setOnClickListener(this);
+        countdown = (Button)rootView.findViewById(R.id.countbutton);
+        countdown.setOnClickListener(this);
 
         Selfie = (Button)rootView.findViewById(R.id.create_pdf);
         Selfie.setOnClickListener(this);
@@ -103,7 +105,11 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.create_pdf)
+        if(view.getId() == R.id.create_pdf) {
             startActivity(intent);
+        } else if (view.getId() == R.id.countbutton) {
+            intent2 = new Intent(getContext(), Timer.class);
+            startActivity(intent2);
+        }
     }
 }
