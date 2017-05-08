@@ -1,6 +1,7 @@
 package pearsistent.knutreasurehunt;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -9,6 +10,10 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +29,7 @@ import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -47,10 +53,12 @@ public class CreatePDF extends AppCompatActivity {
     private ArrayList<File> fileList;
     private ArrayList<OutputStream> outputStreamArrayList;
     private int teamNum = 0;
-    ////////////////////
-    private ArrayList<Item> itemList;
     private int count = 0;
-    private ArrayList<ByteArrayOutputStream> streamList = new ArrayList<ByteArrayOutputStream>();
+    final ArrayList<Uri> uris = new ArrayList<>();
+    ////////////////////
+
+    private EditText email;
+    private Button send;
 
 
     @Override
@@ -64,6 +72,10 @@ public class CreatePDF extends AppCompatActivity {
         storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
         fileList = new ArrayList<File>();
         outputStreamArrayList = new ArrayList<>();
+
+        //////Edited by bogyu , david you can add function that send email in here
+        email = (EditText) findViewById(R.id.email);
+        send = (Button) findViewById(R.id.send);
 
 
         // Read from the database
@@ -104,6 +116,30 @@ public class CreatePDF extends AppCompatActivity {
             }
         });
 
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                emailIntent.setType("application/pdf");
+                //emailIntent.putExtra(Intent.EXTRA_EMAIL  , new String[]{"seul0411@naver.com"});
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email.getText().toString()});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "PDF with the TreasureHunt summary");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Here is attached the PDF with the TreasureHunt summary");
+                int count = 0;
+                for (int i = 0; i < teamNum; i++) {
+                    Uri uri = Uri.fromFile(new File("sdcard/TreasureHunt_PDF/Doc" + count + ".pdf"));
+                    uris.add(uri);
+                    ++count;
+                }
+                emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+                try {
+                    startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(CreatePDF.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     /*private void DownloadStorage(Team currentTeam) {
@@ -122,16 +158,15 @@ public class CreatePDF extends AppCompatActivity {
     public void makePDF(final Team currentTeam, final int i) {
 
         Log.i("MAKEPDF", currentTeam.getTeamName());
-
+        final Document document = new Document();
 
         try {
-            final Document document = new Document();
-
             document.open();
-
+            //Step 2
             PdfWriter.getInstance(document, outputStreamArrayList.get(i));
-
-            // add data to document
+            //Step 3
+            document.open();
+            //Step 4 add data to document
             /////////////for Team
             final PdfPTable table = new PdfPTable(2);
             final PdfPTable item_table = new PdfPTable(2);
@@ -145,16 +180,19 @@ public class CreatePDF extends AppCompatActivity {
             table.addCell("score : " + point);
             document.top(400);
             document.add(table);
+            document.newPage();
+            //여기에 다음페이지를 넘기고
             Log.d("addTable", "success!");
 
             for (int j = 0; j < currentTeam.getItemList().size(); j++) {
                 StringBuilder sb2 = new StringBuilder();
                 sb2.append("");
-                sb.append(currentTeam.getItemList().get(j).getPoints());
+                sb2.append(currentTeam.getItemList().get(j).getPoints());
+
                 String point2 = sb2.toString();
-                item_table.addCell(currentTeam.getItemList().get(j).getName()+"("+point2+")");
+                item_table.addCell(currentTeam.getItemList().get(j).getName() + "(" + point2 + ")");
                 item_table.addCell(currentTeam.getItemList().get(j).getText());
-                Log.d("ITEMTABLE",""+currentTeam.getItemList().get(j).getName());
+                Log.d("ITEMTABLE", "" + currentTeam.getItemList().get(j).getName() + " point :" + sb2);
             }
             document.add(item_table);
             addImageToPDF(currentTeam, document, i);
@@ -175,46 +213,56 @@ public class CreatePDF extends AppCompatActivity {
             itemCount++;
             final int temp = itemCount;
 
-            final StorageReference islandRef = storageRef.child(currentTeam.getTeamName()).child(currentTeam.getItemList().get(item_count).getName() + ".jpg");
+            final StorageReference islandRef = currentTeam.getItemList().get(item_count).getImageReference();
             Log.d("ItemList", currentTeam.getTeamName() + "  " + currentTeam.getItemList().get(item_count).getName());
 
-            islandRef.getFile(tempfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    FileList.add(tempfile);
-                    Log.d("makeFile", "Success");
-                    Log.d("FileListSize", "" + FileList.size());
-                    String path = tempfile.getPath();
-                    Log.d("FilePath", "" + path);
+            if (item_count / 2 == 1) {
+                document.newPage();
+            }
+            if (currentTeam.getItemList().get(0).getName().equals("null")) {
+                Toast.makeText(CreatePDF.this, currentTeam.getTeamName() + " doesn't have items.", Toast.LENGTH_SHORT).show();
+                document.close();
+            } else {
+                islandRef.getFile(tempfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        FileList.add(tempfile);
+                        Log.d("makeFile", "Success");
+                        Log.d("FileListSize", "" + FileList.size());
+                        String path = tempfile.getPath();
+                        Log.d("FilePath", "" + path);
 
-                    try {
-                        Image image = Image.getInstance(tempfile.getPath());
-                        //image.setAbsolutePosition(5,5);
-                        document.newPage();
-                        image.scaleAbsolute(400, 300);
-                        image.setPaddingTop(150);
+                        try {
+                            Image image = Image.getInstance(tempfile.getPath());
+                            //image.setAbsolutePosition(5,5);
+                            image.scaleAbsolute(400, 300);
+                            image.setPaddingTop(150);
 
-                        document.add(image);
+                            document.add(image);
+                            document.add(new Paragraph(" "));
+                            document.add(new Paragraph(" "));
 
-                        if (temp == currentTeam.getItemList().size()) {
-                            document.close();
-                            uploadPDFFile(currentTeam.getTeamName(), index);
+                            if (temp == currentTeam.getItemList().size()) {
+
+                                document.close();
+                                //uploadPDFFile(currentTeam.getTeamName(), index);
+                            }
+
+                        } catch (IOException e) {
+                            Log.i("Errrrrrr", "InputStream");
+                            e.printStackTrace();
+                        } catch (BadElementException e) {
+                            e.printStackTrace();
+                            Log.i("Errrrrrr", "Image");
+                        } catch (DocumentException e) {
+                            Log.i("Errrrrrr", "" + currentTeam.getTeamName());
+                            Log.i("Errrrrrr", "Document");
+                            e.printStackTrace();
                         }
-
-                    } catch (IOException e) {
-                        Log.i("Errrrrrr", "InputStream");
-                        e.printStackTrace();
-                    } catch (BadElementException e) {
-                        e.printStackTrace();
-                        Log.i("Errrrrrr", "Image");
-                    } catch (DocumentException e) {
-                        Log.i("Errrrrrr", "Document");
-                        e.printStackTrace();
                     }
-                }
-            });
+                });
+            }
         }
-
 
         Log.i("AddImageToPDF", "FINISH!");
 
@@ -292,6 +340,7 @@ public class CreatePDF extends AppCompatActivity {
 
         return imageFile;
     }
+
 
     private Uri getFileUri(File fileName) {
 
