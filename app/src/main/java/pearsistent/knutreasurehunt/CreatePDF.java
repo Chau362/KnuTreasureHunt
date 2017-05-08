@@ -138,6 +138,7 @@ public class CreatePDF extends AppCompatActivity {
                 } catch (android.content.ActivityNotFoundException ex) {
                     Toast.makeText(CreatePDF.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
                 }
+                finish();
             }
         });
 
