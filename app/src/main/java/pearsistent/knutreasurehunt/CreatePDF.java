@@ -54,7 +54,7 @@ public class CreatePDF extends AppCompatActivity {
     private int teamNum = 0;
     private int count = 0;
     final ArrayList<Uri> uris = new ArrayList<>();
-    ////////////////////
+    private int flag = 0;
 
     private EditText email;
     private Button send;
@@ -120,33 +120,40 @@ public class CreatePDF extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                emailIntent.setType("application/pdf");
+
+                if(flag == teamNum){
+                    flag = 0;
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    emailIntent.setType("application/pdf");
                 //emailIntent.putExtra(Intent.EXTRA_EMAIL  , new String[]{"seul0411@naver.com"});
-                emailIntent.putExtra(Intent.EXTRA_EMAIL  , new String[]{email.getText().toString()});
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "PDF with the TreasureHunt summary");
-                emailIntent.putExtra(Intent.EXTRA_TEXT   , "Here is attached the PDF with the TreasureHunt summary");
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL  , new String[]{email.getText().toString()});
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "PDF with the TreasureHunt summary");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT   , "Here is attached the PDF with the TreasureHunt summary");
 
 
-                for(File f :pdfFolder.listFiles()){
-                    Uri uri = Uri.fromFile(f);
-                    uris.add(uri);
-                }
+                    for(File f :pdfFolder.listFiles()){
+                        Uri uri = Uri.fromFile(f);
+                        uris.add(uri);
+                    }
 
-                emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,uris);
+                    emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,uris);
                 //emailIntent.put
-                try {
-                    startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(CreatePDF.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                    try {
+                        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(CreatePDF.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                    }
+                    finish();
+                }else{
+                        Toast.makeText(CreatePDF.this, "Creating PDF file... wait please...", Toast.LENGTH_SHORT).show();
                 }
-                finish();
             }
         });
 
     }
 
     public void makePDF(final Team currentTeam, final int i) {
+
 
         Log.i("MAKEPDF", currentTeam.getTeamName());
         final Document document = new Document();
@@ -170,19 +177,33 @@ public class CreatePDF extends AppCompatActivity {
 
             //TeamName
             fntSize = 40.7f;
-            lineSpacing = 330f;
+            lineSpacing = 300f;
             Paragraph teamName = new Paragraph(new Phrase(lineSpacing,currentTeam.getTeamName(),
                     FontFactory.getFont(FontFactory.COURIER, fntSize)));
             teamName.setAlignment(Paragraph.ALIGN_RIGHT);
             document.add(teamName);
 
-            //TeamPoint
+
+            fntSize = 20.7f;
+            lineSpacing = 21f;
+
+            //TeamMember
+            for(int j=0;j<currentTeam.getTeamMembers().size();j++){
+                Paragraph teamMember =  new Paragraph(new Phrase(lineSpacing,currentTeam.getTeamMembers().get(j).getMemberName(),
+                        FontFactory.getFont(FontFactory.COURIER, fntSize)));
+
+                teamMember.setAlignment(Paragraph.ALIGN_RIGHT);
+                document.add(teamMember);
+
+            }
+
+            /*//TeamPoint
             fntSize = 20.7f;
             lineSpacing = 20f;
             Paragraph teamPoint = new Paragraph(new Phrase(lineSpacing,"Team point : "+currentTeam.getTeamPoint(),
                     FontFactory.getFont(FontFactory.COURIER, fntSize)));
             teamPoint.setAlignment(Paragraph.ALIGN_RIGHT);
-            document.add(teamPoint);
+            document.add(teamPoint);*/
 
             //Date
             fntSize = 16.7f;
@@ -211,6 +232,7 @@ public class CreatePDF extends AppCompatActivity {
         final ArrayList<File> FileList = new ArrayList<File>();
         int itemCount = 0;
 
+
         for (int item_count = 0; item_count < currentTeam.getItemList().size(); item_count++) {
             final File tempfile = getFile(count++);
             itemCount++;
@@ -222,6 +244,7 @@ public class CreatePDF extends AppCompatActivity {
             if (currentTeam.getItemList().get(0).getName().equals("null")) {
                 //Toast.makeText(CreatePDF.this, currentTeam.getTeamName() + " doesn't have items.", Toast.LENGTH_SHORT).show();
                 document.close();
+                flag++;
             } else {
                 islandRef.getFile(tempfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
@@ -269,6 +292,8 @@ public class CreatePDF extends AppCompatActivity {
                             if (temp == currentTeam.getItemList().size()) {
 
                                 document.close();
+                                flag++;
+                                Log.i("FLAGGGG"," "+flag);
                                 //uploadPDFFile(currentTeam.getTeamName(), index);
                             }
 
