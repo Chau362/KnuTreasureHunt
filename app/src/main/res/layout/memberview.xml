@@ -10,7 +10,7 @@
          <TextView
             android:id="@+id/membername"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_weight="0.65"
             android:background="@drawable/itemborder"
             android:textSize="18dp"
