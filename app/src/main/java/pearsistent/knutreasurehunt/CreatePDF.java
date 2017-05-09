@@ -233,15 +233,19 @@ public class CreatePDF extends AppCompatActivity {
                             Image image = Image.getInstance(tempfile.getPath());
                             //image.setAbsolutePosition(5,5);
                             document.newPage();
-                            image.scaleAbsolute(400, 300);
-                            image.setPaddingTop(150);
+                            image.scaleAbsolute(image.getScaledWidth()/4, image.getScaledHeight()/4);
+                            //image.scaleAbsolute(image.getPlainWidth()/4, image.getPlainHeight()/4);
+                            //image.setPaddingTop(150);
+
 
                             document.add(image);
+                            //String name = currentTeam.getItemList().get(index).getName().toString();
+                            //document.add(name);
 
                             if (temp == currentTeam.getItemList().size()) {
 
                                 document.close();
-                                //uploadPDFFile(currentTeam.getTeamName(), index);
+                                uploadPDFFile(currentTeam.getTeamName(), index);
                             }
 
                         } catch (IOException e) {
