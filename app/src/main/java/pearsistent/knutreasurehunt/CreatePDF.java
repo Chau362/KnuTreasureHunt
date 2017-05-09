@@ -166,12 +166,12 @@ public class CreatePDF extends AppCompatActivity {
 
         try {
 
-            //Step 2
+
             PdfWriter.getInstance(document, outputStreamArrayList.get(i));
-            //Step 3
             document.open();
 
             float fntSize, lineSpacing;
+
 
             fntSize = 60.7f;
             lineSpacing = 300f;
@@ -266,7 +266,7 @@ public class CreatePDF extends AppCompatActivity {
                             if (temp == currentTeam.getItemList().size()) {
 
                                 document.close();
-                                uploadPDFFile(currentTeam.getTeamName(), index);
+                                //uploadPDFFile(currentTeam.getTeamName(), index);
                             }
 
                         } catch (IOException e) {
