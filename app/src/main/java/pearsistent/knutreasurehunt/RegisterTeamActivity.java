@@ -123,6 +123,11 @@ public class RegisterTeamActivity extends BaseActivity {
                             Log.d("CREATE", "signInWithEmail:onComplete:" + task.isSuccessful());
                             Toast.makeText(RegisterTeamActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
+
+                            addTeamToDB(rgstr_team,rgstr_user,mAuth.getCurrentUser().getUid());
+                            //Bogyu, 04.18 : if admin sigup is successful, go to next step.
+                            Intent i = new Intent(RegisterTeamActivity.this, LoginTeamActivity.class);
+                            startActivity(i);
                         }
                         // If sign up fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the

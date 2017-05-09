@@ -89,7 +89,7 @@ public class MemberListAdapter extends BaseAdapter{
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
-                mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+                mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/");
                 //Delete team member
                 if(position==1){
                     Log.i("Spinner","1");
@@ -119,7 +119,7 @@ public class MemberListAdapter extends BaseAdapter{
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     if(memberCount!=1 && context!=null) {
-                                                        DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team" + "/" + teamName + "/teamMembers/" + tempSnapshot.getKey());
+                                                        DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/Team" + "/" + teamName + "/teamMembers/" + tempSnapshot.getKey());
                                                         updateDatabase.removeValue();
 
                                                     }else{
@@ -143,7 +143,7 @@ public class MemberListAdapter extends BaseAdapter{
                                 TeamMember temp = tempSnapshot.getValue(TeamMember.class);
                                 teamMembers.add(temp);
                             }
-                            DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team" + "/" + teamName + "/teamMembers");
+                            DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/Team" + "/" + teamName + "/teamMembers");
                             updateDatabase.setValue(teamMembers);
 
                             //removeListener because it can cause duplicate : 존나 중요함. 진짜 개 중요함.
@@ -185,7 +185,7 @@ public class MemberListAdapter extends BaseAdapter{
                                         if (memberName.getText().equals(temp.getMemberName())) {
 
                                             final LinearLayout popupLayout = (LinearLayout) tempView.inflate(context,R.layout.popup,null);
-                                            final DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team" + "/" + teamName + "/teamMembers/" + tempSnapshot.getKey());
+                                            final DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/Team" + "/" + teamName + "/teamMembers/" + tempSnapshot.getKey());
 
                                             //popup about modify
                                             new AlertDialog.Builder(context)

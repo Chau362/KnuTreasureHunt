@@ -28,8 +28,10 @@ import com.google.firebase.storage.UploadTask;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.ByteArrayOutputStream;
@@ -67,9 +69,9 @@ public class CreatePDF extends AppCompatActivity {
         setContentView(R.layout.activity_createpdf);
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/");
         storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
+        storageRef = storage.getReferenceFromUrl("gs://knutreasurehunt.appspot.com");
         fileList = new ArrayList<File>();
         outputStreamArrayList = new ArrayList<>();
 
@@ -163,38 +165,36 @@ public class CreatePDF extends AppCompatActivity {
         final Document document = new Document();
 
         try {
-            document.open();
+
             //Step 2
             PdfWriter.getInstance(document, outputStreamArrayList.get(i));
             //Step 3
             document.open();
-            //Step 4 add data to document
-            /////////////for Team
-            final PdfPTable table = new PdfPTable(2);
-            final PdfPTable item_table = new PdfPTable(2);
-            //Convert int to string
-            StringBuilder sb = new StringBuilder();
-            sb.append("");
-            sb.append(currentTeam.getTeamPoint());
-            String point = sb.toString();
 
-            table.addCell(currentTeam.getTeamName());
-            table.addCell("score : " + point);
-            document.top(400);
-            document.add(table);
-            Log.d("addTable", "success!");
+            float fntSize, lineSpacing;
 
-            for (int j = 0; j < currentTeam.getItemList().size(); j++) {
-                StringBuilder sb2 = new StringBuilder();
-                sb2.append("");
-                sb2.append(currentTeam.getItemList().get(j).getPoints());
+            fntSize = 60.7f;
+            lineSpacing = 300f;
+            Paragraph title = new Paragraph(new Phrase(lineSpacing,"Treasure Hunt",
+                    FontFactory.getFont(FontFactory.COURIER, fntSize)));
+            title.setPaddingTop(40);
+            title.setAlignment(Paragraph.ALIGN_CENTER);
+            document.add(title);
 
-                String point2 = sb2.toString();
-                item_table.addCell(currentTeam.getItemList().get(j).getName()+"("+point2+")");
-                item_table.addCell(currentTeam.getItemList().get(j).getText());
-                Log.d("ITEMTABLE",""+currentTeam.getItemList().get(j).getName()+" point :"+sb2);
-            }
-            document.add(item_table);
+            fntSize = 40.7f;
+            lineSpacing = 330f;
+            Paragraph teamName = new Paragraph(new Phrase(lineSpacing,currentTeam.getTeamName(),
+                    FontFactory.getFont(FontFactory.COURIER, fntSize)));
+            teamName.setAlignment(Paragraph.ALIGN_RIGHT);
+            document.add(teamName);
+
+            fntSize = 20.7f;
+            lineSpacing = 20f;
+            Paragraph teamPoint = new Paragraph(new Phrase(lineSpacing,"Team point : "+currentTeam.getTeamPoint(),
+                    FontFactory.getFont(FontFactory.COURIER, fntSize)));
+            teamPoint.setAlignment(Paragraph.ALIGN_RIGHT);
+            document.add(teamPoint);
+
             addImageToPDF(currentTeam, document, i);
 
         } catch (DocumentException e) {
@@ -230,18 +230,43 @@ public class CreatePDF extends AppCompatActivity {
                         Log.d("FilePath", "" + path);
 
                         try {
-                            Image image = Image.getInstance(tempfile.getPath());
-                            //image.setAbsolutePosition(5,5);
                             document.newPage();
-                            image.scaleAbsolute(image.getScaledWidth()/4, image.getScaledHeight()/4);
-                            //image.scaleAbsolute(image.getPlainWidth()/4, image.getPlainHeight()/4);
-                            //image.setPaddingTop(150);
+
+                            float fntSize, lineSpacing;
+                            Image image = Image.getInstance(tempfile.getPath());
 
 
+                            if(image.getPlainHeight()/4 < document.getPageSize().getHeight()-200)
+                                image.scaleAbsolute(image.getPlainWidth()/4,image.getPlainHeight()/4);
+                            else if(image.getPlainHeight()/4 > document.getPageSize().getHeight()-200)
+                                image.scaleAbsolute(image.getPlainWidth()/(float)4.5,image.getPlainHeight()/(float)4.5);
+                            /*if(image.getPlainWidth()/4 > document.getPageSize().getWidth()-200){
+                                image.scaleAbsolute(image.getPlainWidth()/(float)8,image.getPlainHeight()/(float)8);
+                            }*/
+
+
+                            image.setAlignment(Image.ALIGN_CENTER);
                             document.add(image);
-                            //String name = currentTeam.getItemList().get(index).getName().toString();
-                            //document.add(name);
 
+                            fntSize = 20.7f;
+                            lineSpacing = 25f;
+                            Paragraph itemTitle = new Paragraph(new Phrase(lineSpacing,currentTeam.getItemList().get(temp-1).getName(),
+                                    FontFactory.getFont(FontFactory.COURIER, fntSize)));
+                            itemTitle.setPaddingTop(40);
+                            itemTitle.setIndentationRight(30);
+                            document.add(itemTitle);
+
+                            fntSize = 13.7f;
+                            lineSpacing = 23f;
+                            Paragraph itemDescript = new Paragraph(new Phrase(lineSpacing,
+                                    currentTeam.getItemList().get(temp-1).getText()+" ("+
+                                            currentTeam.getItemList().get(temp-1).getPoints()+" pts)\n",
+                                    FontFactory.getFont(FontFactory.COURIER, fntSize)));
+                            //itemTitle.setPaddingTop(40);
+                            document.add(itemDescript);
+
+
+                            Log.i("temp"," "+temp);
                             if (temp == currentTeam.getItemList().size()) {
 
                                 document.close();

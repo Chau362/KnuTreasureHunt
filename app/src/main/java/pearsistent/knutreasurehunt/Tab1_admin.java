@@ -60,7 +60,7 @@ public class Tab1_admin extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/");
         final View rootView = inflater.inflate(R.layout.fragment_tab1_admin, container, false);
 
         ImageButton removeObjectBtn = (ImageButton) rootView.findViewById(R.id.removeItemBtn);
@@ -108,7 +108,7 @@ public class Tab1_admin extends Fragment {
                 int itemCount = 0;
                 final ArrayList<Item> updateItem = new ArrayList<Item>();
                 int itemKey = 0;
-                final DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com");
+                final DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReference();
 
                 for (int i = 0; i < choicedList.size(); i++) {
 

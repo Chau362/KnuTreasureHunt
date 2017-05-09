@@ -64,7 +64,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
         submitBtn = (Button) findViewById(R.id.selfieSubmitButton);
 
         storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
+        storageRef = storage.getReferenceFromUrl("gs://knutreasurehunt.appspot.com");
 
         //To save picture on Storage using team name and item name try to get path and something information from UserMainAcitivity
         Intent intent = getIntent();
@@ -181,7 +181,7 @@ public class ObjectDetailActivity extends AppCompatActivity {
 
     private void updateTeamPoint() {
 
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/Team");
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/Team");
 
         //there is teamName in pathArray[0](it was splited at getFile() function)
         teamName = pathArray[0];

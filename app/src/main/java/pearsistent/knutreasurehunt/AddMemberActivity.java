@@ -43,7 +43,7 @@ public class AddMemberActivity extends AppCompatActivity {
         teamName = intent.getStringExtra("TEAM_NAME");
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/");
 
         //whenever teamMember list change, this function will be call
         mDatabase.child("Team").child(teamName).child("teamMembers").addValueEventListener(new ValueEventListener(){

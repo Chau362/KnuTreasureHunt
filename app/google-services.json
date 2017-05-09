@@ -1,51 +1,27 @@
 {
   "project_info": {
-    "project_number": "486290562390",
-    "firebase_url": "https://treasurehunt-5d55f.firebaseio.com",
-    "project_id": "treasurehunt-5d55f",
-    "storage_bucket": "treasurehunt-5d55f.appspot.com"
+    "project_number": "830203625855",
+    "firebase_url": "https://knutreasurehunt.firebaseio.com",
+    "project_id": "knutreasurehunt",
+    "storage_bucket": "knutreasurehunt.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:486290562390:android:9c8d0fbb325fa53f",
+        "mobilesdk_app_id": "1:830203625855:android:9c8d0fbb325fa53f",
         "android_client_info": {
           "package_name": "pearsistent.knutreasurehunt"
         }
       },
       "oauth_client": [
         {
-          "client_id": "486290562390-1bkfd2fqgk86kthj06a2jpdn9d6q9qp7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "pearsistent.knutreasurehunt",
-            "certificate_hash": "8b15aa341f45e5b6c998abb62a75c4e80b10a18f"
-          }
-        },
-        {
-          "client_id": "486290562390-cud64h8jv9jb90uq37oiifl0sutmobk6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "pearsistent.knutreasurehunt",
-            "certificate_hash": "eef3c425b953e349cdb525f3ff26e448cbe37f29"
-          }
-        },
-        {
-          "client_id": "486290562390-63cbjtnd43hqjhlnmhijnvqrgea4da6k.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "pearsistent.knutreasurehunt",
-            "certificate_hash": "e7799485924f9a476ed865dbb3c43cd972fe0a05"
-          }
-        },
-        {
-          "client_id": "486290562390-cdod8281o825f4qpf7k7hr29ilt6j2cl.apps.googleusercontent.com",
+          "client_id": "830203625855-l7hcd9vn92jh6a0i1lmhfhjb877orrsq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBikYW8K9Wb3Ayytw3CjnGyipRyOpgsfGQ"
+          "current_key": "AIzaSyDBTh7OUDNxmdqRsqVDrqif-hzLVe13UHo"
         }
       ],
       "services": {
@@ -53,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "486290562390-cdod8281o825f4qpf7k7hr29ilt6j2cl.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

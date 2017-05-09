@@ -108,9 +108,9 @@ public class UserMainActivity extends Fragment{
 
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/");
         storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
+        storageRef = storage.getReferenceFromUrl("gs://knutreasurehunt.appspot.com");
 
         final ArrayList<Item> getList = new ArrayList<>();
 
