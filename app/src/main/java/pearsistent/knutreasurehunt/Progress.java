@@ -36,9 +36,9 @@ public class Progress extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
 
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/");
         storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
+        storageRef = storage.getReferenceFromUrl("gs://knutreasurehunt.appspot.com");
 
         Intent intent = getIntent();
         teamName = intent.getStringExtra("Teamname");

@@ -81,7 +81,7 @@ public class UserAdditionalActivity extends Fragment implements OnMapReadyCallba
         final ListView listView = (ListView) v.findViewById(R.id.teamList);
         final ArrayList<Team> teamList = new ArrayList<>();
 
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mDatabase.child("Team").orderByChild("teamPoint").addValueEventListener(new ValueEventListener() {
             @Override

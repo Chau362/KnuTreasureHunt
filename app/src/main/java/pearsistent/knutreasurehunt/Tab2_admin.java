@@ -55,7 +55,7 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
     final ListView teamListView = (ListView) rootView.findViewById(R.id.teamListAdmin);
     final ArrayList<Team> teamList = new ArrayList<>();
 
-    mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/");
 
         //get item data increase order
         mDatabase.child("Team").orderByChild("teamPoint").addValueEventListener(new ValueEventListener(){

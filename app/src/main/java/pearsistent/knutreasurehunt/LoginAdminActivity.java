@@ -142,7 +142,7 @@ public class LoginAdminActivity extends BaseActivity {
         final String userId = user.getUid();
 
 
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/");
         mDatabase.child("Team").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override

@@ -153,7 +153,7 @@ public class LoginTeamActivity extends BaseActivity {
         String userProId = user.getProviderId();
         final String userId = user.getUid();
 
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/");
         mDatabase.child("Team").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
