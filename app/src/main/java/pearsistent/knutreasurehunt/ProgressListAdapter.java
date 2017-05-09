@@ -75,9 +75,9 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
                                     int minusPoint = allItems.get(position).getPoints();
 
                                     String itemName = allItems.get(position).getName()+".jpg";
-                                    deleteItemFromDatabase(position);
                                     deleteItemFromStorage(itemName);
                                     deleteItemFromRecyclerView(position);
+                                    deleteItemFromDatabase(position);
                                     updatePoint(minusPoint);
 
                                 }
@@ -100,7 +100,7 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
 
     private void updatePoint(final int point) {
 
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mDatabase.child("Team").child(teamName).child("teamPoint").addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -157,7 +157,8 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
 
 
     private void deleteItemFromDatabase(int position) {
-        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treasurehunt-5d55f.firebaseio.com/");
+
+        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://knutreasurehunt.firebaseio.com/");
         final String stringPosition = String.valueOf(position);
 
         //final ArrayList<Item> updateKeyList = new ArrayList<>();
@@ -174,6 +175,12 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
                         updateKeyList.add(item);
                     }
                 }
+
+                if(updateKeyList.size()==0){
+                    Item iniItem = new Item();
+                    updateKeyList.add(iniItem);
+                }
+
                 mDatabase.child("Team").child(teamName).child("itemList").setValue(updateKeyList);
             }
 
@@ -193,7 +200,7 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
 
     private void deleteItemFromStorage(String imageFileName) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://treasurehunt-5d55f.appspot.com");
+        StorageReference storageRef = storage.getReference();
         StorageReference childRef = storageRef.child(teamName + "/" + imageFileName);
 
         childRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
