@@ -2,13 +2,10 @@ package pearsistent.knutreasurehunt;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,13 +31,14 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class CreatePDF extends AppCompatActivity {
 
@@ -102,7 +100,7 @@ public class CreatePDF extends AppCompatActivity {
 
                     //DownloadStorage(currentTeam);
 
-                    createPDFPath(teamNum);
+                    createPDFPath(currentTeam.getTeamName());
                     makePDF(currentTeam, teamNum);
 
 
@@ -128,13 +126,15 @@ public class CreatePDF extends AppCompatActivity {
                 emailIntent.putExtra(Intent.EXTRA_EMAIL  , new String[]{email.getText().toString()});
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "PDF with the TreasureHunt summary");
                 emailIntent.putExtra(Intent.EXTRA_TEXT   , "Here is attached the PDF with the TreasureHunt summary");
-                int count = 0;
-                for(int i = 0; i < teamNum; i++){
-                    Uri uri = Uri.fromFile(new File("sdcard/TreasureHunt_PDF/Doc" + count + ".pdf"));
+
+
+                for(File f :pdfFolder.listFiles()){
+                    Uri uri = Uri.fromFile(f);
                     uris.add(uri);
-                    ++count;
                 }
+
                 emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,uris);
+                //emailIntent.put
                 try {
                     startActivity(Intent.createChooser(emailIntent, "Send mail..."));
                 } catch (android.content.ActivityNotFoundException ex) {
@@ -146,19 +146,6 @@ public class CreatePDF extends AppCompatActivity {
 
     }
 
-    /*private void DownloadStorage(Team currentTeam) {
-        File treasureHuntImage = getFile(currentTeam.getTeamName());
-        gs://treasurehunt-5d55f.appspot.com/bogyuTeam
-        StorageReference teamStorage = storageRef.child(currentTeam.getTeamName());
-        storageRef.child(currentTeam.getTeamName()).getFile(treasureHuntImage).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                long transfer = taskSnapshot.getBytesTransferred();
-                Log.i("BFFFFFFF",transfer+"  ");
-            }
-        });
-    }
-*/
     public void makePDF(final Team currentTeam, final int i) {
 
         Log.i("MAKEPDF", currentTeam.getTeamName());
@@ -172,7 +159,7 @@ public class CreatePDF extends AppCompatActivity {
 
             float fntSize, lineSpacing;
 
-
+            //Title
             fntSize = 60.7f;
             lineSpacing = 300f;
             Paragraph title = new Paragraph(new Phrase(lineSpacing,"Treasure Hunt",
@@ -181,6 +168,7 @@ public class CreatePDF extends AppCompatActivity {
             title.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(title);
 
+            //TeamName
             fntSize = 40.7f;
             lineSpacing = 330f;
             Paragraph teamName = new Paragraph(new Phrase(lineSpacing,currentTeam.getTeamName(),
@@ -188,6 +176,7 @@ public class CreatePDF extends AppCompatActivity {
             teamName.setAlignment(Paragraph.ALIGN_RIGHT);
             document.add(teamName);
 
+            //TeamPoint
             fntSize = 20.7f;
             lineSpacing = 20f;
             Paragraph teamPoint = new Paragraph(new Phrase(lineSpacing,"Team point : "+currentTeam.getTeamPoint(),
@@ -195,6 +184,20 @@ public class CreatePDF extends AppCompatActivity {
             teamPoint.setAlignment(Paragraph.ALIGN_RIGHT);
             document.add(teamPoint);
 
+            //Date
+            fntSize = 16.7f;
+            lineSpacing = 23f;
+            Calendar c = Calendar.getInstance();
+
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+            String formattedDate = df.format(c.getTime());
+
+            Paragraph date = new Paragraph(new Phrase(lineSpacing, formattedDate,
+                    FontFactory.getFont(FontFactory.COURIER, fntSize)));
+            date.setAlignment(Paragraph.ALIGN_RIGHT);
+            document.add(date);
+
+            //Add images
             addImageToPDF(currentTeam, document, i);
 
         } catch (DocumentException e) {
@@ -289,27 +292,14 @@ public class CreatePDF extends AppCompatActivity {
 
     }
 
-    public static String encodeTobase64(Bitmap image) {
-        Bitmap immagex = image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.PNG, 90, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-        return imageEncoded;
-    }
 
-    public static Bitmap decodeBase64(String input) {
-        byte[] decodedByte = Base64.decode(input, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
-
-    public void createPDFPath(int i) {
+    public void createPDFPath(String teamName) {
         pdfFolder = new File("sdcard/TreasureHunt_PDF");
         if (!pdfFolder.exists()) {
             pdfFolder.mkdir();
             Log.i("PDF directory", "Pdf Directory created");
         }
-        myFile = new File(pdfFolder, "Doc" + String.valueOf(i) + ".pdf");
+        myFile = new File(pdfFolder, teamName + ".pdf");
         try {
             output = new FileOutputStream(myFile);
         } catch (FileNotFoundException e) {
