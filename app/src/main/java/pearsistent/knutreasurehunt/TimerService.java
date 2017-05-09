@@ -49,6 +49,7 @@ public class TimerService extends Service {
             }
 
             public void onFinish() {
+                myRef.setValue("Finish");
             }
         };
     }
