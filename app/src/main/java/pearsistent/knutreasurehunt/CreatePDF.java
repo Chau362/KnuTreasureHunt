@@ -240,10 +240,6 @@ public class CreatePDF extends AppCompatActivity {
                                 image.scaleAbsolute(image.getPlainWidth()/4,image.getPlainHeight()/4);
                             else if(image.getPlainHeight()/4 > document.getPageSize().getHeight()-200)
                                 image.scaleAbsolute(image.getPlainWidth()/(float)4.5,image.getPlainHeight()/(float)4.5);
-                            /*if(image.getPlainWidth()/4 > document.getPageSize().getWidth()-200){
-                                image.scaleAbsolute(image.getPlainWidth()/(float)8,image.getPlainHeight()/(float)8);
-                            }*/
-
 
                             image.setAlignment(Image.ALIGN_CENTER);
                             document.add(image);
