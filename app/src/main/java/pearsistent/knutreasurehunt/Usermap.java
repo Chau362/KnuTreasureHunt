@@ -30,6 +30,7 @@ import java.util.List;
 
 ///Edited by Bogyu 4.16
 
+//it can show current location in map
 public class Usermap extends Fragment implements OnMapReadyCallback, LocationListener {
     private MapView mapView;
     private LocationManager locationManager;
@@ -49,8 +50,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
             locationManager = (LocationManager)
                     getContext().getSystemService(Context.LOCATION_SERVICE);
             // Get the last location.
-            //location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            Log.d("LOCAIONMANGER", "KKKK");
+
         }
 
         @Override
@@ -140,7 +140,7 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
         // get manager instance
         locationManager = (LocationManager)
                 getActivity().getSystemService(Context.LOCATION_SERVICE);
-        //Criteria 선언
+
         Criteria criteria = new Criteria();
 
         String provider = locationManager.getBestProvider(criteria, false);
@@ -174,26 +174,26 @@ public class Usermap extends Fragment implements OnMapReadyCallback, LocationLis
         List<Address> address;
         try {
             if (geocoder != null) {
-                // 세번째 인수는 최대결과값인데 하나만 리턴받도록 설정했다
+                // Third parameter is max value and it setted to get only one
                 address = geocoder.getFromLocation(lat, lng, 1);
-                // 설정한 데이터로 주소가 리턴된 데이터가 있으면
+                //if get some address from data before setted
                 if (address != null && address.size() > 0) {
-                    // 주소
+                    //address
                     currentLocationAddress = address.get(0).getAddressLine(0).toString();
 
-                    // 전송할 주소 데이터 (위도/경도 포함 편집)
+                    //address for tranport
                     bf.append(currentLocationAddress);
                 }
             }
 
         } catch (IOException e) {
-            Toast.makeText(this.getActivity(), "주소취득 실패"
+            Toast.makeText(this.getActivity(), "Can not find current location"
                     , Toast.LENGTH_LONG).show();
 
             e.printStackTrace();
         }
         return bf.toString();
-    }///
+    }
 
 }
 

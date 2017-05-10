@@ -67,7 +67,6 @@ public class UserMainActivity extends Fragment{
     private String teamName = null;
     private FirebaseStorage storage;
     private StorageReference storageRef;
-    private ListAdapter adapter;
     ImageView imageview;
     Item item;
     private boolean uploadFlag = false;
@@ -166,7 +165,7 @@ public class UserMainActivity extends Fragment{
             }
         });
 
-        //timer
+        //for timer
         mDatabase.child("TimeStamp").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

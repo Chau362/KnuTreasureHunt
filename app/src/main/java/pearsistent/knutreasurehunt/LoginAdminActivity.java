@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+//Login for Admin
 public class LoginAdminActivity extends BaseActivity {
     private static final String TAG = "LOGIN_ADMIN";
 
@@ -32,8 +33,6 @@ public class LoginAdminActivity extends BaseActivity {
     private EditText adminPwd;
     private Button loginBtn;
     private TextView registerBtn;
-
-    private boolean result = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +71,9 @@ public class LoginAdminActivity extends BaseActivity {
                 String user = adminName.getText().toString();
                 String pwd = adminPwd.getText().toString();
                 signIn(user,pwd);
-
-
             }
         });
+
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,9 +97,6 @@ public class LoginAdminActivity extends BaseActivity {
     private void signIn(String email, String password) {
 
         Log.d(TAG, "signIn:" + email);
-        //if (!validateForm()) {
-        //    return;
-        //}
 
         showProgressDialog();
 
@@ -115,6 +110,7 @@ public class LoginAdminActivity extends BaseActivity {
                         if(task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
+                            //we have to check this user is admin or not
                             checkAdmin();
 
                         }
@@ -138,7 +134,6 @@ public class LoginAdminActivity extends BaseActivity {
     //check Admin ID
     private void checkAdmin() {
         FirebaseUser user = mAuth.getCurrentUser();
-        String userProId = user.getProviderId();
         final String userId = user.getUid();
 
 

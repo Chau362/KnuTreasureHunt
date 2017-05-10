@@ -31,6 +31,7 @@ import java.io.File;
 
 // last coder : seulki, 2017.04.27
 
+//It's for takeing a selfie screen
 public class ObjectDetailActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;

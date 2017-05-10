@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 //last coder :seulki, 04.05
 //Edited by bogyu, 4.18 : distinguish success or failure
 
+//Registration for admin
 public class RegisterAdminActivity extends BaseActivity {
     private static final String TAG = "EmailPassword";
 
@@ -131,8 +132,6 @@ public class RegisterAdminActivity extends BaseActivity {
     private boolean validateForm() {
         boolean valid = true;
 
-        //String email = Txt_user.getText().toString();
-
         if (TextUtils.isEmpty(id)) {
             adminName.setError("Required.");
             valid = false;
@@ -140,7 +139,6 @@ public class RegisterAdminActivity extends BaseActivity {
             adminName.setError(null);
         }
 
-        //  String password = mPasswordField.getText().toString();
         if (TextUtils.isEmpty(pwd)) {
             adminPwd.setError("Required.");
             valid = false;

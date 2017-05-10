@@ -21,6 +21,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+//this class works to delete selfies
 public class Progress extends AppCompatActivity {
 
     private RecyclerView recyclerView;

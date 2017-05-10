@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+//Timer for admin user
 public class Timer extends AppCompatActivity {
     private LinearLayout editLinear;
     private long MILLISINFUTURE = 0;
@@ -107,9 +108,9 @@ public class Timer extends AppCompatActivity {
             }
         });
 
+        //get Time information from DB
         myRef = mFirebaseDatabase.getReference("time");
 
-       //
         if(initialFlag==false){
 
             myRef.addValueEventListener(new ValueEventListener() {

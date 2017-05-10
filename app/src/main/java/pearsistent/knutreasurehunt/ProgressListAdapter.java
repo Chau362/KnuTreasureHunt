@@ -33,6 +33,7 @@ import java.util.ArrayList;
  * Created by Chau Pham on 01.05.2017.
  */
 
+//it's for progress
 public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapter.ViewHolder> {
 
     private ArrayList<Item> allItems = new ArrayList<>();
@@ -98,6 +99,7 @@ public class ProgressListAdapter extends RecyclerView.Adapter<ProgressListAdapte
         }
     }
 
+    //if admin delete some of picutres then it function will be call
     private void updatePoint(final int point) {
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();

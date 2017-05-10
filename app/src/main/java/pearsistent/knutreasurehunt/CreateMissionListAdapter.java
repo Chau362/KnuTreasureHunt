@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * Created by Zzeulki on 2017. 4. 21..
  */
 
+//It's List for Admin Screen
 public class CreateMissionListAdapter extends BaseAdapter{
     Context context;
     int layout;

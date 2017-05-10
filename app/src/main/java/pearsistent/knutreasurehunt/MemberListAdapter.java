@@ -31,6 +31,8 @@ import java.util.Map;
  */
 
 //last coder : seulki, 2017.05.01
+
+//It's for AddMemberActivity
 public class MemberListAdapter extends BaseAdapter{
     Context context;
     int layout;

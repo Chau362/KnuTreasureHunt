@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
  * Created by Chau Pham on 17.04.2017.
  */
 
+//Create Item and upload on DB
 public class AddItemActivity extends AppCompatActivity{
     private static final String TAG = "ADD_ITEM_TO_DATABASE";
 
@@ -63,9 +64,10 @@ public class AddItemActivity extends AppCompatActivity{
 
                 if(newItem != null) {
                     FirebaseUser user = mAuth.getCurrentUser();
-                    //String userId = user.getUid();
 
                     Toast.makeText(AddItemActivity.this, newItem.getName() + " Item Upload Success!", Toast.LENGTH_SHORT).show();
+
+                    //upload itemlist in Database
                     myRef.child(itemKey).setValue(newItem);
 
                     itemName.setText("");
@@ -92,6 +94,7 @@ public class AddItemActivity extends AppCompatActivity{
         };
 
 
+        //get count of Items from DB
         myRef.addValueEventListener(new ValueEventListener() {
 
             int key = 0;

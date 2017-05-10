@@ -69,12 +69,10 @@ public class Tab1_admin extends Fragment {
         final ListView listView = (ListView) rootView.findViewById(R.id.objectList);
 
         createlist = (Button)rootView.findViewById(R.id.createlist);
-        //ArrayList<Item> choicedList = new ArrayList<Item>();
         final ArrayList<Item> createItemList = new ArrayList<>();
 
         mDatabase.child("Items").addValueEventListener(new ValueEventListener() {
 
-            //ArrayList<Item> itemList = new ArrayList<>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 createItemList.clear();
@@ -102,6 +100,7 @@ public class Tab1_admin extends Fragment {
 
         });
 
+        //listener for removeObjectBtn button
         removeObjectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +131,7 @@ public class Tab1_admin extends Fragment {
         });
 
 
+        //listener for createList button
         createlist.setOnClickListener(new View.OnClickListener() {
 
             @Override

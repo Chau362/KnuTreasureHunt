@@ -18,6 +18,7 @@ import java.util.ArrayList;
  * Created by Chau Pham on 25.04.2017.
  */
 
+//It's for List for User Screen
 public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHolder> {
 
     ArrayList<Item> allItems = new ArrayList<>();

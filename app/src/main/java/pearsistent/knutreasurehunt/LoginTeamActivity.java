@@ -22,14 +22,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+//login for team
 public class LoginTeamActivity extends BaseActivity {
     private static final String TAG = "LOGIN_TEAM_USER";
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
-    private String teamName;
-    //String userId;
     EditText userName;
     EditText userPwd;
     Button loginBtn;
@@ -109,9 +108,7 @@ public class LoginTeamActivity extends BaseActivity {
     private void signIn(String email, String password) {
 
         Log.d(TAG, "signIn:" + email);
-        //if (!validateForm()) {
-        //    return;
-        //}
+
 
         showProgressDialog();
 
@@ -175,6 +172,7 @@ public class LoginTeamActivity extends BaseActivity {
                                 break;
                             }
                         }
+                        //if find right team information for DB : it means he is Team user
                         if (check) {
                             break;
                         }
