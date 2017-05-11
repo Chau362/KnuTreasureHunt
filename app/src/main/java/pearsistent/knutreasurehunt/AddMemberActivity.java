@@ -23,10 +23,10 @@ import java.util.ArrayList;
 
 // last coder : seulki, 2017.05.01
 
+//Add Member and upload it on DB
 public class AddMemberActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
-    private ListAdapter adapter;
     private String teamName;
     private ArrayList<TeamMember> teamMembers;
 
@@ -73,7 +73,7 @@ public class AddMemberActivity extends AppCompatActivity {
                 //set up popupLayout
                 final LinearLayout popupLayout = (LinearLayout) v.inflate(AddMemberActivity.this,R.layout.popup,null);
 
-                //popup
+                //popup to notice situation
                 new AlertDialog.Builder(AddMemberActivity.this)
                         .setTitle("Add Member Name")
                         .setView(popupLayout)

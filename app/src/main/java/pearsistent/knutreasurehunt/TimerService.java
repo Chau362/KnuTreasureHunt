@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+//Timer Service to update timer and this result can be upload on firebase DB
 public class TimerService extends Service {
     private CountDownTimer countDownTimer;
     private TextView realTime;
@@ -39,15 +40,12 @@ public class TimerService extends Service {
                         +String.format("%02d", (durationSeconds % 3600) / 60)+":"+
                         String.format("%02d", durationSeconds % 60);
 
-                //intent = new Intent(BROADCAST_ACTION);
-                //intent.putExtra("TIME",remainedTime);
-                //sendBroadcast(intent);
-                //Log.i("Receive","Start broadcast");
 
                 myRef.setValue(remainedTime);
 
             }
 
+            //if finish to count time
             public void onFinish() {
                 myRef.setValue("Finish");
             }

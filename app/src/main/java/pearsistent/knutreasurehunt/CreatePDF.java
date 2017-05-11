@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+//Create Pdf file using images and item informations
 public class CreatePDF extends AppCompatActivity {
 
     private OutputStream output;
@@ -73,7 +74,6 @@ public class CreatePDF extends AppCompatActivity {
         fileList = new ArrayList<File>();
         outputStreamArrayList = new ArrayList<>();
 
-        //////Edited by bogyu , david you can add function that send email in here
         email = (EditText) findViewById(R.id.email);
         send = (Button) findViewById(R.id.send);
 
@@ -82,9 +82,6 @@ public class CreatePDF extends AppCompatActivity {
         mDatabase.child("Team").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ///팀을 받아와야 한다..
-
-                Log.d("DB", "Cheer up ");
 
                 for (DataSnapshot teamSnapshot : dataSnapshot.getChildren()) {
                     Team currentTeam = teamSnapshot.getValue(Team.class);
@@ -92,22 +89,15 @@ public class CreatePDF extends AppCompatActivity {
                     //current team itemlist setting
                     for (int i = 0; i < currentTeam.getItemList().size(); i++) {
 
-                        Log.i("Who!!", currentTeam.getTeamName());
-
                         if (currentTeam.getItemList().get(0).getName() != "null")
                             currentTeam.getItemList().get(i).setImageReference(findImageFile(currentTeam.getItemList().get(i).getName() + ".jpg", currentTeam.getTeamName()));
                     }
 
-                    //DownloadStorage(currentTeam);
-
                     createPDFPath(currentTeam.getTeamName());
                     makePDF(currentTeam, teamNum);
 
-
                     teamNum++;
                 }
-
-
             }
 
             @Override
@@ -117,27 +107,29 @@ public class CreatePDF extends AppCompatActivity {
             }
         });
 
+        //send email to others
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(flag == teamNum){
+
                     flag = 0;
                     Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+
                     emailIntent.setType("application/pdf");
-                //emailIntent.putExtra(Intent.EXTRA_EMAIL  , new String[]{"seul0411@naver.com"});
                     emailIntent.putExtra(Intent.EXTRA_EMAIL  , new String[]{email.getText().toString()});
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, "PDF with the TreasureHunt summary");
                     emailIntent.putExtra(Intent.EXTRA_TEXT   , "Here is attached the PDF with the TreasureHunt summary");
 
-
+                    //get all of files from folder
                     for(File f :pdfFolder.listFiles()){
                         Uri uri = Uri.fromFile(f);
                         uris.add(uri);
                     }
 
                     emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,uris);
-                //emailIntent.put
+
                     try {
                         startActivity(Intent.createChooser(emailIntent, "Send mail..."));
                     } catch (android.content.ActivityNotFoundException ex) {
@@ -152,6 +144,7 @@ public class CreatePDF extends AppCompatActivity {
 
     }
 
+    //Make pdf file
     public void makePDF(final Team currentTeam, final int i) {
 
 
@@ -166,7 +159,7 @@ public class CreatePDF extends AppCompatActivity {
 
             float fntSize, lineSpacing;
 
-            //Title
+            //Title for docutment
             fntSize = 60.7f;
             lineSpacing = 300f;
             Paragraph title = new Paragraph(new Phrase(lineSpacing,"Treasure Hunt",
@@ -175,7 +168,7 @@ public class CreatePDF extends AppCompatActivity {
             title.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(title);
 
-            //TeamName
+            //TeamName for document
             fntSize = 40.7f;
             lineSpacing = 300f;
             Paragraph teamName = new Paragraph(new Phrase(lineSpacing,currentTeam.getTeamName(),
@@ -184,10 +177,11 @@ public class CreatePDF extends AppCompatActivity {
             document.add(teamName);
 
 
+            //Team Member Name for document
             fntSize = 20.7f;
             lineSpacing = 21f;
 
-            //TeamMember
+
             for(int j=0;j<currentTeam.getTeamMembers().size();j++){
                 Paragraph teamMember =  new Paragraph(new Phrase(lineSpacing,currentTeam.getTeamMembers().get(j).getMemberName(),
                         FontFactory.getFont(FontFactory.COURIER, fntSize)));
@@ -197,15 +191,8 @@ public class CreatePDF extends AppCompatActivity {
 
             }
 
-            /*//TeamPoint
-            fntSize = 20.7f;
-            lineSpacing = 20f;
-            Paragraph teamPoint = new Paragraph(new Phrase(lineSpacing,"Team point : "+currentTeam.getTeamPoint(),
-                    FontFactory.getFont(FontFactory.COURIER, fntSize)));
-            teamPoint.setAlignment(Paragraph.ALIGN_RIGHT);
-            document.add(teamPoint);*/
 
-            //Date
+            //Date for document
             fntSize = 16.7f;
             lineSpacing = 23f;
             Calendar c = Calendar.getInstance();
@@ -227,6 +214,7 @@ public class CreatePDF extends AppCompatActivity {
 
     }
 
+    //Add Images to pdf
     public void addImageToPDF(final Team currentTeam, final Document document, final int index) {
         Log.i("AddImageToPDF", "INTO!");
         final ArrayList<File> FileList = new ArrayList<File>();
@@ -242,7 +230,6 @@ public class CreatePDF extends AppCompatActivity {
             Log.d("ItemList", currentTeam.getTeamName() + "  " + currentTeam.getItemList().get(item_count).getName());
 
             if (currentTeam.getItemList().get(0).getName().equals("null")) {
-                //Toast.makeText(CreatePDF.this, currentTeam.getTeamName() + " doesn't have items.", Toast.LENGTH_SHORT).show();
                 document.close();
                 flag++;
             } else {
@@ -270,6 +257,7 @@ public class CreatePDF extends AppCompatActivity {
                             image.setAlignment(Image.ALIGN_CENTER);
                             document.add(image);
 
+                            //Item name for document
                             fntSize = 20.7f;
                             lineSpacing = 25f;
                             Paragraph itemTitle = new Paragraph(new Phrase(lineSpacing,currentTeam.getItemList().get(temp-1).getName(),
@@ -278,22 +266,20 @@ public class CreatePDF extends AppCompatActivity {
                             itemTitle.setIndentationRight(30);
                             document.add(itemTitle);
 
+                            //Item description for document
                             fntSize = 13.7f;
                             lineSpacing = 23f;
                             Paragraph itemDescript = new Paragraph(new Phrase(lineSpacing,
                                     currentTeam.getItemList().get(temp-1).getText()+" ("+
                                             currentTeam.getItemList().get(temp-1).getPoints()+" pts)\n",
                                     FontFactory.getFont(FontFactory.COURIER, fntSize)));
-                            //itemTitle.setPaddingTop(40);
                             document.add(itemDescript);
 
 
-                            Log.i("temp"," "+temp);
+                            //if finished to write document close document
                             if (temp == currentTeam.getItemList().size()) {
-
                                 document.close();
                                 flag++;
-                                Log.i("FLAGGGG"," "+flag);
                                 //uploadPDFFile(currentTeam.getTeamName(), index);
                             }
 
@@ -318,6 +304,7 @@ public class CreatePDF extends AppCompatActivity {
     }
 
 
+    //Create Pdf file path
     public void createPDFPath(String teamName) {
         pdfFolder = new File("sdcard/TreasureHunt_PDF");
         if (!pdfFolder.exists()) {
@@ -336,10 +323,9 @@ public class CreatePDF extends AppCompatActivity {
 
     }
 
-    //Upload File to Firebase
+    //Upload File to Firebase (not use now)
     private void uploadPDFFile(String name, int i) {
-        //여기에 ref를 팀마다 받아오고
-        //팀 리스트 사이즈만큼 pdf 생성
+
         StorageReference childRef = storageRef.child(name + "/" + name + ".pdf");
         Uri objectURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", fileList.get(i));
         UploadTask uploadTask = childRef.putFile(objectURI);
@@ -347,6 +333,7 @@ public class CreatePDF extends AppCompatActivity {
         Log.d("Upload pdf", "success");
     }
 
+    //find Image file from firebase storage
     private StorageReference findImageFile(String imageFileName, String teamName) {
 
         if (teamName != null) {
@@ -377,12 +364,5 @@ public class CreatePDF extends AppCompatActivity {
         return imageFile;
     }
 
-
-    private Uri getFileUri(File fileName) {
-
-        Uri objectURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", fileName);
-
-        return objectURI;
-    }
 
 }

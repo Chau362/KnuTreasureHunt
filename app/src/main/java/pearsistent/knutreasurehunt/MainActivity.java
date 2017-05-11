@@ -54,13 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        /*tabLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                tabLayout.setupWithViewPager(mViewPager);
-            }
-        });*/
-
 
     }
 
@@ -153,9 +146,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("MainActivity", "2");
                 bundle = new Bundle();
 
-                /*bundle = new Bundle(1);
-                bundle.putString("TEAM_NAME",teamName);
-                fragment.setArguments(bundle);*/
             } else if (position == 2) {
                 fragment = new Usermap();
                 Log.i("MainActivitiy", "3");

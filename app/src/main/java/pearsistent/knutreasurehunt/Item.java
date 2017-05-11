@@ -21,7 +21,6 @@ public class Item {
     private String text;
     private String name;
     private int points;
-    //String location;
 
     public Item() {
         this.name = "null";
@@ -43,11 +42,6 @@ public class Item {
         this.choice = false;
     }
 
-//    public Item(String t, String n, int temp) {
-//        this.text = t;
-//        this.name = n;
-//        this.image_i = temp;
-//    }
 
     public int getPoints() {
         return points;
@@ -71,11 +65,13 @@ public class Item {
         this.choice = value;
     }
 
+    //dont put in DB
     @Exclude
     public CheckBox getCheckBox() {
         return this.checkBox;
     }
 
+    //dont put in DB
     @Exclude
     public void setCheckBox(CheckBox c) {
         this.checkBox = c;

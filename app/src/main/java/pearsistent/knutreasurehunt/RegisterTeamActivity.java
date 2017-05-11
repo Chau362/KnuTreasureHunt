@@ -21,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 ///////Edited by bogyu 4.18
+
+//registration for team
 public class RegisterTeamActivity extends BaseActivity {
     private EditText teamName;
     private EditText userName;
@@ -71,21 +73,16 @@ public class RegisterTeamActivity extends BaseActivity {
                     // User is signed out
                     Log.d("STATE", "onAuthStateChanged:signed_out");
                 }
-                //updateUI(user);
             }
         };
-        ///////For DB
+        //For DB
         mDatabase = FirebaseDatabase.getInstance().getReference("Team");
 
-        /////////
 
         //hide type password
         userPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
         userConfirmPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 registerBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -94,15 +91,20 @@ public class RegisterTeamActivity extends BaseActivity {
                         rgstr_team = teamName.getText().toString();
                         rgstr_user = userName.getText().toString();
 
-                        createTeam(auth_id, auth_pwd);
 
-                        //I have to get a new userid so, I wrote this.
-                        mAuth.signInWithEmailAndPassword(auth_id, auth_pwd).isSuccessful();
+                        if(!auth_id.equals("") && !auth_pwd.equals("") && !rgstr_team.equals("") && !rgstr_user.equals("") ) {
+                            createTeam(auth_id, auth_pwd);
+                            //I have to get a new userid so, I wrote this.
+
+                            mAuth.signInWithEmailAndPassword(auth_id, auth_pwd).isSuccessful();
+                        }else{
+                            Toast.makeText(RegisterTeamActivity.this, "Please Check Empty Field", Toast.LENGTH_SHORT).show();
+                        }
+
+
 
                     }
                 });
-            }
-        });
     }
     ///////Register Account to Firebase
     private void createTeam(String email, String pwd) {
@@ -139,7 +141,7 @@ public class RegisterTeamActivity extends BaseActivity {
                 });
     }
 
-    /////Put team into DB
+    /////Put team informations into DB
     private void addTeamToDB(String teamname, String username, String userid) {
         Team team = new Team(teamname, 0);
         TeamMember member = new TeamMember(username, userid);
@@ -148,10 +150,8 @@ public class RegisterTeamActivity extends BaseActivity {
         team.addTeamMember(member);
         team.addItem(item);
 
-        //Log.i("Team name",team.getTeamName());
-        //mDatabase.setValue("team");
         mDatabase.child(team.getTeamName()).setValue(team);
-        //mDatabase.child("team").setValue(team);
+
 
         mAuth.signOut();
         Intent i = new Intent(RegisterTeamActivity.this, LoginTeamActivity.class);

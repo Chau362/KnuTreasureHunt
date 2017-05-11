@@ -18,6 +18,7 @@ import java.util.ArrayList;
  * Created by Zzeulki on 2017. 3. 28..
  */
 
+//Adapter for
 class ListAdapter extends BaseAdapter {
 
     Context context;

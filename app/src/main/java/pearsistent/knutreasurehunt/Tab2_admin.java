@@ -39,8 +39,8 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tab2_admin, container, false);
-//        Point = (Button)rootView.findViewById(R.id.changePoint);
-//        Point.setOnClickListener(this);
+
+
         countdown = (Button)rootView.findViewById(R.id.countbutton);
         countdown.setOnClickListener(this);
 
@@ -49,7 +49,7 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
 
         intent = new Intent(getContext(), Timer.class);
         intent2 = new Intent(getContext(),CreatePDF.class);
-        // Inflate the layout for this fragment
+
 
 
     final ListView teamListView = (ListView) rootView.findViewById(R.id.teamListAdmin);
@@ -81,6 +81,8 @@ public class Tab2_admin extends Fragment implements View.OnClickListener {
             Log.i("Error","Loading data from teamMember");
         }
     });
+
+        //if admin click one of team in teamList
         teamListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
