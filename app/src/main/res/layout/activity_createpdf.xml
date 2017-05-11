@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+
+    android:background="#fff"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:textColor="#000"
+            android:hint="E-Mail"
+            android:textColorHint="#B5B5B5"
+            android:inputType="textEmailAddress" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@color/yellow"
+        android:onClick="onClick"
+        android:text="Send" />
+
+
+    <!--
+        <EditText
+
+            android:id="@+id/edit_text_subject"
+
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+
+            />
+
+        <EditText
+
+            android:id="@+id/edit_text_body"
+
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+        <Button
+
+            android:id="@+id/button_save"
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal"
+
+            android:text="Save" /> -->
+</LinearLayout>

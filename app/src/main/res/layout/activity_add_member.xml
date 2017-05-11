@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical"
+    tools:context="pearsistent.knutreasurehunt.AddMemberActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <FrameLayout
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.43"></FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Team Member"
+            android:textColor="@color/yellow"
+            android:textSize="28dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp">
+
+        <ListView
+            android:id="@+id/memberlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"></FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="105dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <FrameLayout
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.82">
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/addmemberbutton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/addmember" />
+
+        <FrameLayout
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.37">
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

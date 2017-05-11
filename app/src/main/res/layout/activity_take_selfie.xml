@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#fff"
     android:orientation="vertical"
-    tools:context="pearsistent.knutreasurehunt.TakeSelfie"
+    tools:context="pearsistent.knutreasurehunt.ObjectDetailActivity"
     android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="74dp"
+        android:layout_height="60dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -21,63 +21,76 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="Object Name"
-            android:textColor="@android:color/black"
+            android:textColor="#ffcb3a"
             android:textSize="28dp"
             android:textStyle="bold" />
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="235dp"
+        android:layout_height="206dp"
+        android:gravity="center"
         android:paddingRight="45dp"
-        android:paddingLeft="45dp">
+        android:paddingLeft="45dp"
+        android:baselineAligned="false"
+        android:weightSum="1">
+
         <ImageView
             android:id="@+id/objectImage"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_width="285dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:src="@drawable/camera"
+            android:background="@drawable/listborder"
             android:clickable="true"
-            android:background="@drawable/listborder"></ImageView>
+            android:src="@drawable/camera2"
+            android:layout_weight="0.10"></ImageView>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="205dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:paddingLeft="30dp">
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="276dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.63"
+            android:src="@drawable/photo3" />
 
         <TextView
             android:id="@+id/objectText"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:text="text"
-            android:textSize="20dp"
-            android:background="@drawable/itemborder"
-            android:textColor="@android:color/black"
-            android:layout_gravity="center"/>
+            android:layout_width="284dp"
+            android:layout_height="106dp"
+            android:layout_gravity="center"
+            android:background="#ffffff"
+            android:textColor="#020102"
+            android:textSize="20dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="1">
-        <FrameLayout
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.34"></FrameLayout>
+
         <Button
-            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:id="@+id/selfieSubmitButton"
+            android:layout_width="180dp"
+            android:layout_height="45dp"
             android:layout_gravity="center"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="#ffcb3a"
             android:clickable="true"
             android:text="Submit Selfie"
-            android:textStyle="bold"
+            android:textColor="#ffffff"
             android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/buttonborder"
-            android:layout_width="180dp"
-            android:layout_height="45dp" />
+            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>
