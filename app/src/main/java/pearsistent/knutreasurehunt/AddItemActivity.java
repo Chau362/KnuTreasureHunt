@@ -62,7 +62,7 @@ public class AddItemActivity extends AppCompatActivity{
                 String itemKey = "" + countOfItem;    //make a item Key
 
 
-                if(newItem != null) {
+                if(name!=null && description != null && itemPoint.getText() !=null  && newItem != null) {
                     FirebaseUser user = mAuth.getCurrentUser();
 
                     Toast.makeText(AddItemActivity.this, newItem.getName() + " Item Upload Success!", Toast.LENGTH_SHORT).show();
@@ -72,8 +72,12 @@ public class AddItemActivity extends AppCompatActivity{
 
                     itemName.setText("");
                     itemDescription.setText("");
+
+                    finish();
+                }else{
+                    Toast.makeText(AddItemActivity.this, "Please Check Empty Field", Toast.LENGTH_SHORT).show();
                 }
-                finish();
+
 
             }
         });

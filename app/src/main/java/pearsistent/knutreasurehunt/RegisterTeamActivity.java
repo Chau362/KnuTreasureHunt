@@ -83,9 +83,6 @@ public class RegisterTeamActivity extends BaseActivity {
         userPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
         userConfirmPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 registerBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -94,15 +91,20 @@ public class RegisterTeamActivity extends BaseActivity {
                         rgstr_team = teamName.getText().toString();
                         rgstr_user = userName.getText().toString();
 
-                        createTeam(auth_id, auth_pwd);
 
-                        //I have to get a new userid so, I wrote this.
-                        mAuth.signInWithEmailAndPassword(auth_id, auth_pwd).isSuccessful();
+                        if(!auth_id.equals("") && !auth_pwd.equals("") && !rgstr_team.equals("") && !rgstr_user.equals("") ) {
+                            createTeam(auth_id, auth_pwd);
+                            //I have to get a new userid so, I wrote this.
+
+                            mAuth.signInWithEmailAndPassword(auth_id, auth_pwd).isSuccessful();
+                        }else{
+                            Toast.makeText(RegisterTeamActivity.this, "Please Check Empty Field", Toast.LENGTH_SHORT).show();
+                        }
+
+
 
                     }
                 });
-            }
-        });
     }
     ///////Register Account to Firebase
     private void createTeam(String email, String pwd) {

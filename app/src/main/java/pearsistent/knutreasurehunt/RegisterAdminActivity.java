@@ -73,9 +73,15 @@ public class RegisterAdminActivity extends BaseActivity {
                 Log.i("eeee","etest");
                 Log.i("why","id:"+id);
                 Log.i("pw","pass:"+pwd);
-                createAdmin(id, pwd);
+
                 //Intent i = new Intent(getApplicationContext(),LoginAdminActivity.class);
                 //startActivity(i);
+
+                if(id!=null && pwd != null  ) {
+                    createAdmin(id, pwd);
+                }else{
+                    Toast.makeText(RegisterAdminActivity.this, "Please Check Empty Field", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
